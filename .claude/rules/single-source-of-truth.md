@@ -1,69 +1,52 @@
 ---
 paths:
-  - "Figures/**/*"
-  - "Quarto/**/*.qmd"
-  - "Slides/**/*.tex"
+  - "code/**/*"
+  - "data/**/*"
+  - "results/**/*"
+  - "docs/deliverables/articles/**/*.tex"
+  - "docs/deliverables/slides/**/*.tex"
+  - "docs/deliverables/assets/**/*"
 ---
 
-# Single Source of Truth: Enforcement Protocol
+# Single Source of Truth: Paper-Centric Empirical Pipeline
 
-**The Beamer `.tex` file is the authoritative source for ALL content.** Everything else is derived.
+## Authoritative Layers
 
-## The SSOT Chain
-
-```
-Beamer .tex (SOURCE OF TRUTH)
-  ├── extract_tikz.tex → PDF → SVGs (derived)
-  ├── Quarto .qmd → HTML (derived)
-  ├── Bibliography_base.bib (shared)
-  └── Figures/LectureN/*.rds → plotly charts (data source)
-
-NEVER edit derived artifacts independently.
-ALWAYS propagate changes from source → derived.
+```text
+data/raw/*                                      immutable project inputs
+code/00_fetch/*                                 retrieval scripts
+code/01_build/*                                 construction/transformation scripts
+code/02_analyze/*                               estimation/report scripts
+docs/deliverables/articles/main.tex             canonical paper source
+docs/deliverables/articles/sections/*.tex       canonical paper sections
+docs/sources/references.bib                     canonical bibliography
 ```
 
----
+The paper is authoritative for the research argument, notation, empirical claims, tables, and figures. Beamer talks and appendices must derive from it.
 
-## TikZ Freshness Protocol (MANDATORY)
+## Derived Layers
 
-**Before using ANY TikZ SVG in a Quarto slide, verify it matches the current Beamer source.**
-
-### Diff-Check Procedure
-
-1. Read the TikZ block from the Beamer `.tex` file
-2. Read the corresponding block from `Figures/LectureN/extract_tikz.tex`
-3. Compare EVERY coordinate, label, color, opacity, and anchor point
-4. If ANY difference exists: update `extract_tikz.tex` from Beamer, recompile, regenerate SVGs
-5. Only then reference the SVG in the QMD
-
-### When to Re-Extract
-
-Re-extract ALL TikZ diagrams when:
-- The Beamer `.tex` file has been modified since last extraction
-- Starting a new Quarto translation
-- Any TikZ-related quality issue is reported
-- Before any commit that includes QMD changes
-
----
-
-## Environment Parity (MANDATORY)
-
-**Every Beamer environment MUST have a CSS equivalent before translation begins.**
-
-1. Scan the Beamer source for all custom environments
-2. Check each against your theme SCSS file
-3. If ANY environment is missing from SCSS, create it BEFORE translating
-
----
-
-## Content Fidelity Checklist
-
+```text
+data/clean/*
+data/tmp/*
+results/*
+docs/deliverables/slides/*.tex                  derivative talk material
+compiled PDFs
 ```
-[ ] Frame count: Beamer frames == Quarto slides
-[ ] Math check: every equation appears with identical notation
-[ ] Citation check: every \cite has a @key in Quarto
-[ ] Environment check: every Beamer box has CSS equivalent
-[ ] Figure check: every \includegraphics has SVG or plotly equivalent
-[ ] No added content: Quarto does not invent slides not in Beamer
-[ ] No dropped content: every Beamer idea appears in Quarto
-```
+
+## Rules
+
+- Never hand-edit generated artifacts in `data/clean/`, `data/tmp/`, or `results/`.
+- Regenerate outputs by running scripts or Make targets.
+- Keep raw data immutable unless the user explicitly requests replacement.
+- If a derived output looks wrong, fix upstream code, then rebuild.
+- If a slide contradicts the paper, update the slide or explicitly revise the paper first.
+- Every numerical claim in the paper should be traceable to a script and generated output.
+
+## Verification Checklist
+
+- [ ] Upstream script(s) updated, not only outputs
+- [ ] Pipeline rerun for impacted stage(s)
+- [ ] Outputs regenerated at expected paths
+- [ ] Paper claim updated if results changed
+- [ ] Talks/appendices checked for derived-claim consistency

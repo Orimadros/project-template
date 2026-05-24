@@ -1,53 +1,52 @@
 ---
 paths:
-  - "Slides/**/*.tex"
-  - "Quarto/**/*.qmd"
-  - "docs/**"
+  - "Makefile"
+  - "code/**/*"
+  - "docs/deliverables/articles/**/*.tex"
+  - "docs/deliverables/slides/**/*.tex"
 ---
 
 # Task Completion Verification Protocol
 
-**At the end of EVERY task, Claude MUST verify the output works correctly.** This is non-negotiable.
+Every substantive task must end with a runnable verification step.
 
-## For Quarto/HTML Slides:
-1. Run `./scripts/sync_to_docs.sh` (or `./scripts/sync_to_docs.sh LectureN`) to render and deploy
-2. Open the HTML in browser: `open docs/slides/LectureX.html` (macOS) or `xdg-open` (Linux)
-3. Verify images display by reading 2-3 image files to confirm valid content
-4. Check HTML source for correct image paths
-5. Check for overflow by scanning dense slides
-6. Verify environment parity: every Beamer box environment has a CSS equivalent in the QMD
-7. Report verification results
+## For Pipeline Changes (`code/`, `Makefile`)
 
-## For LaTeX/Beamer Slides:
-1. Compile with xelatex and check for errors
-2. Open the PDF to verify figures render (`open` on macOS, `xdg-open` on Linux)
-3. Check for overfull hbox warnings
+1. Run the narrowest relevant target first (`make fetch`, `make build`, or `make analysis`).
+2. If stage-level behavior changed broadly, run `make all`.
+3. Confirm expected outputs exist and are non-empty (`data/clean/`, `results/`).
+4. Report what was run and what passed/failed.
 
-## For TikZ Diagrams in HTML/Quarto:
-1. Browsers **cannot** display PDF images inline — ALWAYS convert to SVG
-2. Use SVG (vector format) for crisp rendering: `pdf2svg input.pdf output.svg`
-3. **NEVER use PNG for diagrams** — PNG is raster and looks blurry
-4. Verify SVG files contain valid XML/SVG markup
-5. Copy SVGs to `docs/Figures/LectureX/` via `sync_to_docs.sh`
-6. **Freshness check:** Before using any TikZ SVG, verify extract_tikz.tex matches current Beamer source
+## For R Scripts (`.R`)
 
-## For R Scripts:
-1. Run `Rscript scripts/R/filename.R`
-2. Verify output files (PDF, RDS) were created with non-zero size
-3. Spot-check estimates for reasonable magnitude
+1. Execute script directly or through the Make stage.
+2. Check output artifacts exist with non-zero size.
+3. Spot-check key values for plausibility.
 
-## Common Pitfalls:
-- **PDF images in HTML**: Browsers don't render PDFs inline → convert to SVG
-- **Relative paths**: `../Figures/` works from `Quarto/` but not from `docs/slides/` → use `sync_to_docs.sh`
-- **Assuming success**: Always verify output files exist AND contain correct content
-- **Stale TikZ SVGs**: extract_tikz.tex diverges from Beamer source → always diff-check
+## For Python / Notebooks (`.py`, `.ipynb`)
 
-## Verification Checklist:
-```
-[ ] Output file created successfully
-[ ] No compilation/render errors
-[ ] Images/figures display correctly
-[ ] Paths resolve in deployment location (docs/)
-[ ] Opened in browser/viewer to confirm visual appearance
-[ ] Reported results to user
-```
+1. Run script/notebook execution target.
+2. Ensure execution completes without errors.
+3. Confirm generated outputs are written to expected locations.
+
+## For The Paper (`docs/deliverables/articles/main.tex`)
+
+1. Compile with XeLaTeX.
+2. If citations are involved, run BibTeX and the full 3-pass compile.
+3. Check for hard errors, undefined citations/references, and major overfull boxes.
+4. Verify generated numbers/tables/figures trace back to `results/`.
+
+## For Beamer Talks (`docs/deliverables/slides/*.tex`)
+
+1. Compile with XeLaTeX.
+2. If citations are involved, run BibTeX and the full 3-pass compile.
+3. Check for hard errors and major overfull box warnings.
+4. Verify slide claims derive from the paper.
+
+## Verification Checklist
+
+- [ ] Relevant command(s) executed
+- [ ] No blocking runtime/compile errors
+- [ ] Expected output files created
+- [ ] Paper/slides checked for claim consistency
+- [ ] Results reported to user

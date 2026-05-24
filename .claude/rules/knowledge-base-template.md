@@ -1,56 +1,57 @@
 ---
 paths:
-  - "Slides/**/*.tex"
-  - "Quarto/**/*.qmd"
-  - "scripts/**/*.R"
+  - "docs/deliverables/articles/**/*.tex"
+  - "docs/deliverables/slides/**/*.tex"
+  - "code/**/*.R"
+  - "code/**/*.py"
+  - "Makefile"
 ---
 
-# Course Knowledge Base: [YOUR COURSE NAME]
+# Project Knowledge Base: [YOUR PROJECT NAME]
 
-<!-- Fill in the tables below with YOUR domain-specific content.
-     Claude reads this before creating/modifying any lecture content. -->
+Use this as the project-specific registry for notation, empirical design, data contracts, and paper-output traceability.
 
 ## Notation Registry
 
 | Rule | Convention | Example | Anti-Pattern |
-|------|-----------|---------|-------------|
+|------|------------|---------|--------------|
 | | | | |
 
 ## Symbol Reference
 
-| Symbol | Meaning | Introduced |
-|--------|---------|------------|
+| Symbol | Meaning | Introduced In |
+|--------|---------|---------------|
 | | | |
 
-## Lecture Progression
+## Paper Claim Registry
 
-| # | Title | Core Question | Key Notation | Key Method |
-|---|-------|--------------|-------------|------------|
-| 1 | | | | |
-| 2 | | | | |
+| Claim | Paper Location | Evidence Source | Status |
+|-------|----------------|-----------------|--------|
+| | `docs/deliverables/articles/sections/...` | `results/...` or citation key | [TODO/VERIFIED] |
 
-## Empirical Applications
+## Pipeline Map
 
-| Application | Paper | Dataset | Lecture(s) | Purpose |
-|------------|-------|---------|------------|---------|
-| | | | | |
+| Stage | Folder | Purpose | Main Outputs |
+|-------|--------|---------|--------------|
+| Fetch | `code/00_fetch/` | [Description] | [Files] |
+| Build | `code/01_build/` | [Description] | [Files] |
+| Analyze | `code/02_analyze/` | [Description] | [Files] |
 
-## Design Principles
+## Empirical Design Registry
 
-| Principle | Evidence | Lectures Applied |
-|-----------|----------|-----------------|
+| Design Choice | Rationale | File(s) |
+|---------------|-----------|---------|
 | | | |
 
-## Anti-Patterns (Don't Do This)
+## Known Pitfalls
 
-| Anti-Pattern | What Happened | Correction |
-|-------------|---------------|-----------|
+| Pitfall | Impact | Prevention |
+|---------|--------|------------|
 | | | |
 
-## R Code Pitfalls
+## Tolerance Thresholds
 
-| Bug | Impact | Fix |
-|-----|--------|-----|
-| | | |
-
-<!-- For research projects, add: Estimand Registry, DGP Configs, Tolerance Thresholds -->
+| Quantity | Tolerance | Rationale |
+|----------|-----------|-----------|
+| Point estimates | [e.g., 1e-6] | [Reason] |
+| Standard errors | [e.g., 1e-4] | [Reason] |

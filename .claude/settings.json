@@ -22,6 +22,10 @@
       "Bash(gh pr merge *)",
       "Bash(gh pr create *)",
       "Bash(gh repo *)",
+      "Bash(make *)",
+      "Bash(Rscript *)",
+      "Bash(uv *)",
+      "Bash(python3 *)",
       "Bash(xelatex *)",
       "Bash(TEXINPUTS=*)",
       "Bash(BIBINPUTS=*)",
@@ -29,20 +33,15 @@
       "Bash(bibtex *)",
       "Bash(pdfinfo *)",
       "Bash(pdf2svg *)",
-      "Bash(quarto render *)",
-      "Bash(Rscript *)",
-      "Bash(python3 *)",
-      "Bash(./scripts/sync_to_docs.sh *)",
-      "Bash(./scripts/sync_to_docs.sh)",
       "Bash(chmod *)",
       "Bash(open *)",
       "Bash(xdg-open *)",
       "Bash(ls *)",
       "Bash(wc *)",
       "Bash(sort *)",
-      "Bash(for *)",
-      "Bash(gs *)",
-      "Bash(pdftk *)",
+      "Bash(find *)",
+      "Bash(du *)",
+      "Bash(rg *)",
       "Bash(mkdir *)"
     ]
   },
@@ -127,5 +126,5 @@
       }
     ]
   },
-  "plansDirectory": "quality_reports/plans"
+  "plansDirectory": "docs/work/plans"
 }

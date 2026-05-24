@@ -1,7 +1,8 @@
 ---
 paths:
-  - "Slides/**/*.tex"
-  - "Figures/**/*.tex"
+  - "docs/deliverables/slides/**/*.tex"
+  - "docs/deliverables/articles/**/*.tex"
+  - "docs/deliverables/assets/**/*.tex"
 ---
 
 # TikZ Visual Quality Standards
@@ -52,5 +53,5 @@ paths:
 
 ## Single Source of Truth
 
-**The Beamer `.tex` file is the authoritative source for ALL TikZ diagrams.**
-Edit TikZ in the Beamer file FIRST, then copy verbatim to `extract_tikz.tex`.
+**The deliverable `.tex` file (Beamer deck or article) is the authoritative source for its TikZ diagrams.**
+Edit TikZ in that `.tex` first; never maintain a separate diagram copy that can silently drift.

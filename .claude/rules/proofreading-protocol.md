@@ -1,47 +1,36 @@
 ---
 paths:
-  - "Slides/**/*.tex"
-  - "Quarto/**/*.qmd"
-  - "quality_reports/**"
+  - "docs/deliverables/articles/**/*.tex"
+  - "docs/deliverables/appendices/**/*.tex"
+  - "docs/deliverables/slides/**/*.tex"
+  - "docs/work/reviews/**"
 ---
 
-# Proofreading Agent Protocol (MANDATORY)
+# Proofreading Protocol (Paper, Appendices, Talks)
 
-**Every lecture file MUST be reviewed before any commit or PR.**
+Before commits that modify manuscript, appendix, or talk content, run a proofreading pass.
 
-**CRITICAL RULE: The agent must NEVER apply changes directly. It proposes all changes for review first.**
+## What To Check
 
-## What the Agent Checks
-
-1. **Grammar** -- subject-verb agreement, missing articles, wrong prepositions
-2. **Typos** -- misspellings, search-and-replace corruption, duplicated words
-3. **Overflow** -- overfull hbox (Beamer), content exceeding slide boundaries (Quarto)
-4. **Consistency** -- notation, citation style (`\citet` vs `\citep`, `[@key]`), terminology
-5. **Academic quality** -- informal abbreviations, missing words, awkward phrasing
+1. Grammar and phrasing clarity
+2. Typos and duplicated words
+3. Notation consistency with the canonical paper
+4. Citation style consistency
+5. Style-guide consistency with `.claude/references/personal-style-guide.md`
+6. Obvious overflow risk in dense frames or awkward paper line breaks
 
 ## Three-Phase Workflow
 
-### Phase 1: Review & Propose (NO EDITS)
+### Phase 1: Review & Propose (No direct edits)
 
-Each agent:
-1. Reads the entire file
-2. Produces a **report** with every proposed change:
-   - Location (line number or slide title)
-   - Current text
-   - Proposed fix
-   - Category (grammar / typo / overflow / consistency)
-3. Saves report to `quality_reports/` (e.g., `quality_reports/LectureN_Topic_report.md`)
-4. **Does NOT modify any source files**
+- Produce a report with: location, current text, proposed fix, category.
+- Save report under `docs/work/reviews/`.
 
-### Phase 2: Review & Approve
+### Phase 2: Approve
 
-The user reviews the proposed changes:
-- Accepts all, accepts selectively, or requests modifications
-- **Only after explicit approval** does the agent proceed
+- User approves all or selected fixes.
 
-### Phase 3: Apply Fixes
+### Phase 3: Apply
 
-Apply only approved changes:
-- Use Edit tool; use `replace_all: true` for issues with multiple instances
-- Verify each edit succeeded
-- Report completion summary
+- Apply only approved edits.
+- Re-compile edited files.

@@ -1,9 +1,4 @@
-# CLAUDE.MD -- Academic Project Development with Claude Code
-
-<!-- HOW TO USE: Replace [BRACKETED PLACEHOLDERS] with your project info.
-     Customize Beamer environments and CSS classes for your theme.
-     Keep this file under ~150 lines — Claude loads it every session.
-     See the guide at docs/workflow-guide.html for full documentation. -->
+# CLAUDE.md -- Paper-Centric Empirical Research Template (Make + Beamer Talks)
 
 **Project:** [YOUR PROJECT NAME]
 **Institution:** [YOUR INSTITUTION]
@@ -13,49 +8,92 @@
 
 ## Core Principles
 
-- **Plan first** -- enter plan mode before non-trivial tasks; save plans to `quality_reports/plans/`
-- **Verify after** -- compile/render and confirm output at the end of every task
-- **Single source of truth** -- Beamer `.tex` is authoritative; Quarto `.qmd` derives from it
-- **Quality gates** -- nothing ships below 80/100
-- **[LEARN] tags** -- when corrected, save `[LEARN:category] wrong → right` to MEMORY.md
+- **Plan first** -- for non-trivial work, save plans to `docs/work/plans/`
+- **Verify after** -- run the relevant Make target(s) or LaTeX compile before declaring done
+- **Paper is authoritative** -- `docs/deliverables/articles/main.tex` is the source of truth for the argument, notation, claims, tables, and figures
+- **Slides derive from the paper** -- Beamer decks in `docs/deliverables/slides/` are talks based on the canonical paper, not a parallel source of truth
+- **Reproducibility first** -- `code/` creates data/results; lockfiles pin dependencies; the Makefile defines the host pipeline
+- **Worker/critic separation** -- creative agents draft; critic agents evaluate; creators never self-score
+- **[LEARN] tags** -- save corrections as `[LEARN:category] wrong -> right` in `MEMORY.md`
 
 ---
 
 ## Folder Structure
 
-```
+```text
 [YOUR-PROJECT]/
-├── CLAUDE.MD                    # This file
-├── .claude/                     # Rules, skills, agents, hooks
-├── Bibliography_base.bib        # Centralized bibliography
-├── Figures/                     # Figures and images
-├── Preambles/header.tex         # LaTeX headers
-├── Slides/                      # Beamer .tex files
-├── Quarto/                      # RevealJS .qmd files + theme
-├── docs/                        # GitHub Pages (auto-generated)
-├── scripts/                     # Utility scripts + R code
-├── quality_reports/             # Plans, session logs, merge reports
-├── explorations/                # Research sandbox (see rules)
-├── templates/                   # Session log, quality report templates
-└── master_supporting_docs/      # Papers and existing slides
+├── AGENTS.md
+├── CLAUDE.md
+├── Makefile                # Runs the staged pipeline on the host
+├── code/
+│   ├── 00_fetch/           # Raw data download scripts
+│   ├── 01_build/           # Data construction/prep scripts
+│   ├── 02_analyze/         # Estimation + notebook execution
+│   ├── 03_quality/         # Template quality-check utilities
+│   └── 99_explorations/    # Sandbox for experiments; graduate to staged folders
+├── data/                   # Tracked empty scaffold; add project policy after fork
+│   ├── raw/
+│   ├── clean/
+│   └── tmp/
+├── results/                # Generated tables, figures, model outputs
+└── docs/
+    ├── sources/             # External reference/input documents + references.bib
+    ├── work/                # Process docs created while working
+    │   ├── plans/
+    │   ├── task_requirements/
+    │   ├── session_logs/
+    │   ├── checkpoints/
+    │   ├── reviews/
+    │   ├── merge_reports/
+    │   └── templates/
+    └── deliverables/        # Repo-produced document outputs and document-facing assets
+        ├── articles/        # Canonical paper source; main.tex lives here
+        │   └── sections/
+        ├── slides/          # Beamer talks derived from the paper
+        ├── appendices/
+        ├── preambles/
+        └── assets/
 ```
+
+---
+
+## Naming Conventions
+
+- Stage scripts by execution order:
+  - `code/00_fetch/00_download_xxx.sh`
+  - `code/01_build/00_clean_xxx.R`
+  - `code/02_analyze/01_estimate_xxx.R`
+- Keep names imperative and explicit: `prep_`, `build_`, `estimate_`, `predict_`, `export_`
+- Each script should have a clear file contract: inputs, outputs, and stage responsibility
+- Generated empirical tables and figures belong in `results/`; paper/talk files include them rather than hand-copying results
 
 ---
 
 ## Commands
 
 ```bash
-# LaTeX (3-pass, XeLaTeX only)
-cd Slides && TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
-BIBINPUTS=..:$BIBINPUTS bibtex file
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
+# Dependency setup (if lockfiles are present)
+make setup
 
-# Deploy Quarto to GitHub Pages
-./scripts/sync_to_docs.sh LectureN
+# Data pipeline
+make fetch
+make build
+make analysis
+make all
 
-# Quality score
-python scripts/quality_score.py Quarto/file.qmd
+# Paper compile (host, with TeX installed)
+cd docs/deliverables/articles
+TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
+if grep -q "\\citation" main.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex main; fi
+TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
+TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
+
+# Beamer talk compile (talks derive from the paper)
+cd docs/deliverables/slides
+TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
+if grep -q "\\citation" talk.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex talk; fi
+TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
+TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
 ```
 
 ---
@@ -65,72 +103,28 @@ python scripts/quality_score.py Quarto/file.qmd
 | Score | Gate | Meaning |
 |-------|------|---------|
 | 80 | Commit | Good enough to save |
-| 90 | PR | Ready for deployment |
-| 95 | Excellence | Aspirational |
+| 90 | PR | Ready for review |
+| 95 | Submission | Aspirational paper/submission gate |
+
+Weighted paper quality follows `.claude/rules/quality-gates.md`.
 
 ---
 
-## Skills Quick Reference
+## Paper Style And Preferences
 
-| Command | What It Does |
-|---------|-------------|
-| `/compile-latex [file]` | 3-pass XeLaTeX + bibtex |
-| `/deploy [LectureN]` | Render Quarto + sync to docs/ |
-| `/extract-tikz [LectureN]` | TikZ → PDF → SVG |
-| `/proofread [file]` | Grammar/typo/overflow review |
-| `/visual-audit [file]` | Slide layout audit |
-| `/pedagogy-review [file]` | Narrative, notation, pacing review |
-| `/review-r [file]` | R code quality review |
-| `/qa-quarto [LectureN]` | Adversarial Quarto vs Beamer QA |
-| `/slide-excellence [file]` | Combined multi-agent review |
-| `/translate-to-quarto [file]` | Beamer → Quarto translation |
-| `/validate-bib` | Cross-reference citations |
-| `/devils-advocate` | Challenge slide design |
-| `/create-lecture` | Full lecture creation |
-| `/commit [msg]` | Stage, commit, PR, merge |
-| `/lit-review [topic]` | Literature search + synthesis |
-| `/research-ideation [topic]` | Research questions + strategies |
-| `/interview-me [topic]` | Interactive research interview |
-| `/review-paper [file]` | Manuscript review |
-| `/data-analysis [dataset]` | End-to-end R analysis |
-| `/learn [skill-name]` | Extract discovery into persistent skill |
-| `/context-status` | Show session health + context usage |
-| `/deep-audit` | Repository-wide consistency audit |
-
----
-
-<!-- CUSTOMIZE: Replace the example entries below with your own
-     Beamer environments and Quarto CSS classes. These are examples
-     from the original project — delete them and add yours. -->
-
-## Beamer Custom Environments
-
-| Environment       | Effect        | Use Case       |
-|-------------------|---------------|----------------|
-| `[your-env]`      | [Description] | [When to use]  |
-
-<!-- Example entries (delete and replace with yours):
-| `keybox` | Gold background box | Key points |
-| `highlightbox` | Gold left-accent box | Highlights |
-| `definitionbox[Title]` | Blue-bordered titled box | Formal definitions |
--->
-
-## Quarto CSS Classes
-
-| Class              | Effect        | Use Case       |
-|--------------------|---------------|----------------|
-| `[.your-class]`    | [Description] | [When to use]  |
-
-<!-- Example entries (delete and replace with yours):
-| `.smaller` | 85% font | Dense content slides |
-| `.positive` | Green bold | Good annotations |
--->
+- Field calibration lives in `.claude/references/domain-profile.md`
+- Personal writing preferences live in `.claude/references/personal-style-guide.md`
+- Journal constraints live in `.claude/references/journal-profiles.md`
+- Shared LaTeX config lives in `docs/deliverables/preambles/`
 
 ---
 
 ## Current Project State
 
-| Lecture | Beamer | Quarto | Key Content |
-|---------|--------|--------|-------------|
-| 1: [Topic] | `Lecture01_Topic.tex` | `Lecture1_Topic.qmd` | [Brief description] |
-| 2: [Topic] | `Lecture02_Topic.tex` | -- | [Brief description] |
+| Module | Path | Status | Notes |
+|--------|------|--------|-------|
+| Paper | `docs/deliverables/articles/main.tex` | [TODO/ACTIVE] | [Research question + manuscript scope] |
+| Fetch | `code/00_fetch/` | [TODO/ACTIVE] | [Data sources] |
+| Build | `code/01_build/` | [TODO/ACTIVE] | [Prep pipeline] |
+| Analyze | `code/02_analyze/` | [TODO/ACTIVE] | [Models/notebooks/results] |
+| Slides | `docs/deliverables/slides/` | [TODO/ACTIVE] | [Derivative Beamer talk scope] |

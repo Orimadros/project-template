@@ -34,13 +34,13 @@ cat ~/.claude/sessions/*/context-monitor-cache.json 2>/dev/null | head -20
 ### Step 2: Find Active Plan
 
 ```bash
-ls -lt quality_reports/plans/*.md 2>/dev/null | head -3
+ls -lt docs/work/plans/*.md 2>/dev/null | head -3
 ```
 
 ### Step 3: Find Session Log
 
 ```bash
-ls -lt quality_reports/session_logs/*.md 2>/dev/null | head -1
+ls -lt docs/work/session_logs/*.md 2>/dev/null | head -1
 ```
 
 ### Step 4: Report Status
@@ -54,12 +54,12 @@ Context Usage:  ~XX% (estimated)
 Auto-compact:   [approaching | not imminent]
 
 📋 Active Plan
-File:   quality_reports/plans/YYYY-MM-DD_description.md
+File:   docs/work/plans/YYYY-MM-DD_description.md
 Status: [draft | approved | in_progress | completed]
 Task:   [current unchecked task or "none"]
 
 📝 Session Log
-File:   quality_reports/session_logs/YYYY-MM-DD_description.md
+File:   docs/work/session_logs/YYYY-MM-DD_description.md
 
 ✓ Preservation Check
   • Pre-compact hook: [configured | missing]

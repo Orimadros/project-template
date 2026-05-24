@@ -1,8 +1,7 @@
 ---
 paths:
   - "**/*.R"
-  - "Figures/**/*.R"
-  - "scripts/**/*.R"
+  - "code/**/*.R"
 ---
 
 # R Code Standards
@@ -28,7 +27,7 @@ paths:
 ## 3. Domain Correctness
 
 <!-- Customize for your field's known pitfalls -->
-- Verify estimator implementations match slide formulas
+- Verify estimator implementations match paper equations and claims
 - Check known package bugs (document below in Common Pitfalls)
 
 ## 4. Visual Identity
@@ -53,14 +52,14 @@ theme_custom <- function(base_size = 14) {
 }
 ```
 
-### Figure Dimensions for Beamer
+### Figure Dimensions For Paper And Talks
 ```r
 ggsave(filepath, width = 12, height = 5, bg = "transparent")
 ```
 
 ## 5. RDS Data Pattern
 
-**Heavy computations saved as RDS; slide rendering loads pre-computed data.**
+**Heavy computations saved as RDS; paper/talk rendering loads pre-computed data.**
 
 ```r
 saveRDS(result, file.path(out_dir, "descriptive_name.rds"))
@@ -71,7 +70,7 @@ saveRDS(result, file.path(out_dir, "descriptive_name.rds"))
 <!-- Add your field-specific pitfalls here -->
 | Pitfall | Impact | Prevention |
 |---------|--------|------------|
-| Missing `bg = "transparent"` | White boxes on slides | Always include in ggsave() |
+| Missing `bg = "transparent"` | White boxes in talks | Use transparent backgrounds when figures are layered on slides |
 | Hardcoded paths | Breaks on other machines | Use relative paths |
 
 ## 7. Line Length & Mathematical Exceptions

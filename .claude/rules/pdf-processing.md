@@ -1,6 +1,6 @@
 ---
 paths:
-  - "master_supporting_docs/**"
+  - "docs/sources/**"
 ---
 
 # Robust PDF Processing
@@ -8,7 +8,7 @@ paths:
 ## The Safe Processing Workflow
 
 **Step 1: Receive PDF Upload**
-- User uploads PDF to `master_supporting_docs/supporting_papers/` or `supporting_slides/`
+- User uploads PDF or other source material to `docs/sources/`
 - Claude DOES NOT attempt to read it directly
 
 **Step 2: Check PDF Properties**
@@ -39,7 +39,7 @@ done
 
 **Step 5: Selective Deep Reading**
 - After scanning all chunks, identify the most relevant sections
-- Only read those sections in detail for slide development
+- Only read those sections in detail for the deliverable you're building (slides or paper)
 - Skip appendices, references, or less relevant sections unless needed
 
 ## Error Handling Protocol
@@ -57,4 +57,3 @@ done
 **If memory/token issues persist:**
 1. Process only 2-3 chunks per session
 2. Focus on specific sections user identifies as most important
-

@@ -1,0 +1,33 @@
+\documentclass[12pt]{article}
+
+\IfFileExists{../preambles/article-preamble.tex}{\input{../preambles/article-preamble.tex}}{}
+
+\title{[Paper Title]}
+\author{[Author Name]\\[Institution]}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+
+\noindent\textbf{Keywords:} [keyword 1]; [keyword 2]; [keyword 3]\\
+\textbf{JEL Codes:} [JEL1], [JEL2]
+
+\clearpage
+
+\input{sections/01_introduction}
+\input{sections/02_background}
+\input{sections/03_data}
+\input{sections/04_empirical_strategy}
+\input{sections/05_results}
+\input{sections/06_conclusion}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

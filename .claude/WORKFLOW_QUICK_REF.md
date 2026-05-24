@@ -1,86 +1,49 @@
 # Workflow Quick Reference
 
-**Model:** Contractor (you direct, Claude orchestrates)
+**Mode:** Paper-centric empirical research contractor (plan -> implement -> verify -> review)
 
----
+## Loop
 
-## The Loop
-
-```
-Your instruction
-    ↓
-[PLAN] (if multi-file or unclear) → Show plan → Your approval
-    ↓
-[EXECUTE] Implement, verify, done
-    ↓
-[REPORT] Summary + what's ready
-    ↓
-Repeat
+```text
+Instruction
+  -> Plan (if multi-step)
+  -> Implement in code/ or docs/deliverables/articles/
+  -> Verify (make target / paper compile / talk compile)
+  -> Critic review
+  -> Report
 ```
 
----
+## Core Entry Points
 
-## I Ask You When
+- Paper: `docs/deliverables/articles/main.tex`
+- Paper sections: `docs/deliverables/articles/sections/`
+- Sources and bibliography: `docs/sources/`
+- Pipeline: `make setup`, `make fetch`, `make build`, `make analysis`, `make all`
+- Reviews: `docs/work/reviews/`
+- Checkpoints: `docs/work/checkpoints/`
 
-- **Design forks:** "Option A (fast) vs. Option B (robust). Which?"
-- **Code ambiguity:** "Spec unclear on X. Assume Y?"
-- **Replication edge case:** "Just missed tolerance. Investigate?"
-- **Scope question:** "Also refactor Y while here, or focus on X?"
-
----
-
-## I Just Execute When
-
-- Code fix is obvious (bug, pattern application)
-- Verification (tolerance checks, tests, compilation)
-- Documentation (logs, commits)
-- Plotting (per established standards)
-- Deployment (after you approve, I ship automatically)
-
----
-
-## Quality Gates (No Exceptions)
+## Quality Gates
 
 | Score | Action |
 |-------|--------|
 | >= 80 | Ready to commit |
-| < 80  | Fix blocking issues |
+| >= 90 | Ready for review/PR |
+| >= 95 | Submission/excellence candidate |
+| < 80 | Fix blockers first |
 
----
+## Non-Negotiables
 
-## Non-Negotiables (Customize These)
+- The paper `main.tex` is the source of truth for the research argument.
+- Talks in `docs/deliverables/slides/` derive from the paper.
+- Scripts are staged: `code/00_fetch` -> `01_build` -> `02_analyze`.
+- Raw data in `data/raw/` is immutable by default.
+- Generated files belong in `data/clean/`, `data/tmp/`, and `results/`.
+- Worker agents create; critic agents evaluate; creators never self-score.
+- Always verify after edits.
 
-<!-- Replace with YOUR project's locked-in preferences -->
+## Session Logging
 
-- [YOUR PATH CONVENTION] (e.g., `here::here()` for R, relative paths for LaTeX)
-- [YOUR SEED CONVENTION] (e.g., `set.seed()` once at top for stochastic code)
-- [YOUR FIGURE STANDARDS] (e.g., white bg, 300 DPI, custom theme)
-- [YOUR COLOR PALETTE] (e.g., institutional colors)
-- [YOUR TOLERANCE THRESHOLDS] (e.g., 1e-6 for point estimates)
-
----
-
-## Preferences
-
-<!-- Fill in as you discover your working style -->
-
-**Visual:** [How you want figures/plots handled]
-**Reporting:** [Concise bullets? Detailed prose? Details on request?]
-**Session logs:** Always (post-plan, incremental, end-of-session)
-**Replication:** [How strict? Flag near-misses?]
-
----
-
-## Exploration Mode
-
-For experimental work, use the **Fast-Track** workflow:
-- Work in `explorations/` folder
-- 60/100 quality threshold (vs. 80/100 for production)
-- No plan needed — just a research value check (2 min)
-- See `.claude/rules/exploration-fast-track.md`
-
----
-
-## Next Step
-
-You provide task → I plan (if needed) → Your approval → Execute → Done.
+Update `docs/work/session_logs/`:
+1. right after plan approval,
+2. during key decisions,
+3. before session close.

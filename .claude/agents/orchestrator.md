@@ -22,4 +22,4 @@ You are the project orchestrator.
 - Strategy: strategist -> strategist-critic -> methods-referee if causal claims are central.
 - Analysis: coder -> coder-critic -> verifier.
 - Paper: writer -> writer-critic -> domain-referee/methods-referee as needed.
-- Talk: storyteller -> storyteller-critic -> slide/pedagogy review.
+- Talk: read slide-writing principles -> plan Big 5/opening/graphics standard -> storyteller -> storyteller-critic -> slide/pedagogy review -> compile.

@@ -57,6 +57,9 @@ theme_custom <- function(base_size = 14) {
 ggsave(filepath, width = 12, height = 5, bg = "transparent")
 ```
 
+Talk-facing figures should use readable labels and colors that harmonize with `docs/deliverables/preambles/beamer-preamble.tex`.
+For presentation exports, also prefer direct labels over distant legends when practical, pair color with line type/shape/position when distinctions are load-bearing, keep grids and borders light, and include units, transformations, sample restrictions, and uncertainty when they affect the slide claim.
+
 ## 5. RDS Data Pattern
 
 **Heavy computations saved as RDS; paper/talk rendering loads pre-computed data.**
@@ -98,7 +101,7 @@ saveRDS(result, file.path(out_dir, "descriptive_name.rds"))
 [ ] set.seed() once at top
 [ ] All paths relative
 [ ] Functions documented (Roxygen)
-[ ] Figures: transparent bg, explicit dimensions
+[ ] Figures: transparent bg, explicit dimensions, seminar-room labels, non-hue encodings, and low-clutter axes
 [ ] RDS: every computed object saved
 [ ] Comments explain WHY not WHAT
 ```

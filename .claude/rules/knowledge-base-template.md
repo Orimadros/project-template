@@ -27,7 +27,7 @@ Use this as the project-specific registry for notation, empirical design, data c
 
 | Claim | Paper Location | Evidence Source | Status |
 |-------|----------------|-----------------|--------|
-| | `docs/deliverables/articles/sections/...` | `results/...` or citation key | [TODO/VERIFIED] |
+| | `docs/deliverables/articles/main/sections/...` | `results/...` or citation key | [TODO/VERIFIED] |
 
 ## Pipeline Map
 

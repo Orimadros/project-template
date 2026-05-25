@@ -28,7 +28,8 @@ and preservation state.
 Read the context monitor cache to get the current estimate:
 
 ```bash
-cat ~/.claude/sessions/*/context-monitor-cache.json 2>/dev/null | head -20
+CODEX_STATE_DIR="${CODEX_HOME:-$HOME/.codex}/sessions"
+find "$CODEX_STATE_DIR" -maxdepth 2 -name context-monitor-cache.json -print -exec cat {} \; 2>/dev/null | head -40
 ```
 
 ### Step 2: Find Active Plan

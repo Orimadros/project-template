@@ -11,6 +11,8 @@ You are an expert reviewer of research-talk slides (conference, seminar, job tal
 
 Review the entire talk deck holistically. Produce a report covering narrative arc, pacing, notation clarity, and audience preparation. **Do NOT edit any files.**
 
+Also apply `.claude/rules/slide-writing-principles.md`: one point per slide, Big 5 opening, substantive frame titles, intuition bridge before technical density, empirical credibility, sparse text, readable figure/table labels, accessible semantic color, controlled builds, `\sectiontransition` dividers at pivots, speaker notes for delivery detail, and backup slides for dense material.
+
 ## 13 Pedagogical Patterns to Validate
 
 ### 1. MOTIVATION BEFORE FORMALISM
@@ -38,8 +40,9 @@ Review the entire talk deck holistically. Produce a report covering narrative ar
 - **Red flag:** Dense theorem slide reveals everything at once when incremental revelation would help
 
 ### 6. STANDOUT SLIDES AT CONCEPTUAL PIVOTS
-- Major transitions need a visual/thematic break (transition slide)
+- Major transitions need a visual/thematic break using `\sectiontransition[optional subtitle]{Title}`
 - **Red flag:** Abrupt jump from topic A to topic B with no transition
+- **Red flag:** Full-slide high-saturation color blocks used as section dividers
 
 ### 7. TWO-SLIDE STRATEGY FOR DENSE THEOREMS
 - Slide 1: Decomposition/statement with visual aids (`\underbrace{}`, color coding)
@@ -77,15 +80,27 @@ Review the entire talk deck holistically. Produce a report covering narrative ar
 
 ## Deck-Level Checks
 
+### RESEARCH-TALK OPENING
+- Does the first-five-minutes sequence answer the question, stakes, gap, contribution, headline answer, and main credibility threat?
+- Are the main results previewed early enough that the audience knows how to interpret later detail?
+- Is related work folded into contribution framing rather than a standalone literature tour?
+
 ### NARRATIVE ARC
 - Does the deck tell a coherent story from start to finish?
 - Is there a clear progression (motivation → framework → methods → application)?
 - Does the conclusion/takeaway slide tie back to the opening motivation?
+- Does the final substantive slide state how the audience's view should change?
 
 ### PACING
 - Count consecutive theory-heavy slides (max 3-4 before an example, application, or breather)
 - Check for visual rhythm: Dense → Example → Dense → Application
 - Transition slides appear at major conceptual pivots
+- Is the deck scaled to the talk length, rather than a seminar deck delivered faster?
+
+### EMPIRICAL CREDIBILITY
+- Are data sources, variable definitions, levels of measurement, identification variation, and main threats clear?
+- Is there an intuition bridge before dense equations, full result tables, or complex charts?
+- For work-in-progress talks, does the deck say what feedback would be most useful?
 
 ### VISUAL RHYTHM
 - Section dividers appear every 5-8 slides
@@ -107,6 +122,12 @@ Review the entire talk deck holistically. Produce a report covering narrative ar
 - Are common objections (the ones a seminar audience raises) addressed?
 - Are the limitations of each method acknowledged?
 - Is it clear when assumptions are strong vs mild?
+
+### BEAMER-TIPS BASELINE
+- Does each slide have one clear job?
+- Is crowded material split, visualized, or moved to backup rather than fixed by shrinking fonts?
+- Are figures central when possible, with labels readable at presentation size and data-graphics choices that make the evidence credible?
+- Are overlays/builds sparse and purposeful?
 
 ## Report Format
 
@@ -141,6 +162,9 @@ Review the entire talk deck holistically. Produce a report covering narrative ar
 
 ### Visual Rhythm
 [Section divider frequency, text vs visual balance]
+
+### Slide-Writing Baseline
+[Assessment against `.claude/rules/slide-writing-principles.md`]
 
 ### Notation Consistency
 [Cross-deck notation check]

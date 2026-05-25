@@ -15,15 +15,16 @@ Use this for structured review. Reviews are read-only unless the user explicitly
 - `peer`: domain-referee + methods-referee + editor decision.
 - `code`: coder-critic + verifier.
 - `literature`: librarian-critic.
-- `talk`: storyteller-critic plus slide/pedagogy reviewers.
+- `talk`: storyteller-critic plus slide/pedagogy reviewers, using `.claude/rules/slide-writing-principles.md` for opening architecture, empirical graphics credibility, accessibility, pacing, and backup placement.
 
 ## Workflow
 
-1. Resolve the target. Default paper target is `docs/deliverables/articles/main.tex`.
+1. Resolve the target. Default paper target is `docs/deliverables/articles/main/main.tex`.
 2. Load domain and style references where relevant.
-3. Run the appropriate critic/referee agents.
-4. Save reports to `docs/work/reviews/`.
-5. If review creates a non-trivial fix sequence, write a plan in `docs/work/plans/`.
+3. For talks, load the slide-writing principles before running critics.
+4. Run the appropriate critic/referee agents.
+5. Save reports to `docs/work/reviews/`.
+6. If review creates a non-trivial fix sequence, write a plan in `docs/work/plans/`.
 
 ## Output
 

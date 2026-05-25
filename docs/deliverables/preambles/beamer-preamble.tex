@@ -1,0 +1,110 @@
+% Shared Beamer preamble following Paul Goldsmith-Pinkham's beamer-tips.
+% Source: https://github.com/paulgp/beamer-tips/blob/master/slides.tex
+
+\usepackage{helvet}
+\usepackage[default]{lato}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc,arrows,arrows.meta,decorations.markings,shapes.misc,matrix,shapes,fit,tikzmark}
+
+\newcolumntype{d}[0]{D{.}{.}{5}}
+\sisetup{
+  detect-all,
+  group-digits=false,
+  input-symbols = {()},
+  table-number-alignment = center,
+  table-text-alignment = center
+}
+\newcolumntype{N}[1]{S[table-format=#1]}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Color-blind-conscious accents from the beamer-tips deck.
+\definecolor{slideblue}{RGB}{0,114,178}
+\definecolor{slidered}{RGB}{213,94,0}
+\definecolor{slideyellow}{RGB}{240,228,66}
+\definecolor{slidegreen}{RGB}{0,158,115}
+\definecolor{slidebg}{RGB}{255,253,218}
+\definecolor{slideink}{RGB}{33,37,41}
+\definecolor{slidemuted}{RGB}{95,99,104}
+\definecolor{slidetransitionbg}{RGB}{250,250,247}
+
+\hypersetup{
+  colorlinks=false,
+  linkbordercolor={white},
+  linkcolor=slideblue
+}
+
+% Uncomment for an off-white background, and match/transparent-export figures.
+% \setbeamercolor{background canvas}{bg=slidebg}
+
+\setbeamercolor{frametitle}{fg=slideblue}
+\setbeamercolor{title}{fg=black}
+\setbeamercolor{itemize item}{fg=slideblue}
+\setbeamercolor{itemize subitem}{fg=slideblue}
+\setbeamercolor{enumerate item}{fg=slideblue}
+\setbeamercolor{enumerate subitem}{fg=slideblue}
+\setbeamercolor{button}{bg=slidebg,fg=slideblue}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}{-}
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+\newenvironment{wideitemize}{%
+  \itemize\addtolength{\itemsep}{10pt}%
+}{%
+  \enditemize
+}
+
+% Small, muted reference for the end of a bullet, so the claim leads and the
+% citation recedes. Use only for trailing parenthetical references, e.g.
+%   \item Literature is unclear on these programs \smallcitation{(Smith 2008; Jones 2010)}
+% Not for load-bearing inline citations, e.g. "the Rozendaal (2008) procedure".
+% Styles its argument only; supply the parentheses or \citep{...} yourself.
+\newcommand{\smallcitation}[1]{{\footnotesize\color{slidemuted}#1}}
+
+\newenvironment{transitionframe}{%
+  \begingroup
+  \setbeamercolor{background canvas}{bg=slidetransitionbg}%
+  \setbeamertemplate{footline}{}%
+  \begin{frame}[plain,noframenumbering]
+}{%
+  \end{frame}
+  \endgroup
+}
+
+\newcommand{\transitiontitle}[2][]{%
+  \vspace*{0.19\paperheight}%
+  \hspace*{0.055\paperwidth}%
+  \begin{minipage}{0.78\paperwidth}
+    {\color{slidegreen}\rule{0.17\paperwidth}{1.2pt}}\par
+    \vspace{1.2em}
+    {\color{slideink}\fontsize{25}{30}\selectfont\bfseries #2\par}
+    \if\relax\detokenize{#1}\relax
+    \else
+      \vspace{0.7em}
+      {\color{slidemuted}\fontsize{13}{17}\selectfont #1\par}
+    \fi
+  \end{minipage}%
+  \vfill
+}
+
+\newcommand{\sectiontransition}[2][]{%
+  \begin{transitionframe}
+    \transitiontitle[#1]{#2}
+  \end{transitionframe}
+}
+
+\newcounter{framenumberbeforeappendix}
+\newcommand{\talkbackupbegin}{%
+  \setcounter{framenumberbeforeappendix}{\value{framenumber}}%
+}
+\newcommand{\talkbackupend}{%
+  \addtocounter{framenumberbeforeappendix}{-\value{framenumber}}%
+  \addtocounter{framenumber}{\value{framenumberbeforeappendix}}%
+}

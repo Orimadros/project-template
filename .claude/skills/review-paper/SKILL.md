@@ -11,7 +11,7 @@ Produce a thorough, constructive review of an academic manuscript.
 
 ## Target Resolution
 
-Default to `docs/deliverables/articles/main.tex`. If `$ARGUMENTS` is provided, check:
+Default to `docs/deliverables/articles/main/main.tex`. If `$ARGUMENTS` is provided, check:
 
 - direct path from `$ARGUMENTS`
 - `docs/sources/$ARGUMENTS`

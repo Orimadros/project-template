@@ -1,39 +1,30 @@
 ---
 name: compile-latex
 description: Compile the canonical paper or a derivative Beamer talk with XeLaTeX and BibTeX.
-argument-hint: "[main|talk filename without .tex|path]"
+argument-hint: "[articles|slides|all|optional document path]"
 allowed-tools: ["Read", "Bash", "Glob"]
 ---
 
 # Compile LaTeX
 
-Compile the canonical article or a Beamer talk using XeLaTeX with citation resolution when needed.
+Compile root article and Beamer documents using the project Makefile, which runs XeLaTeX and BibTeX when needed.
 
 ## Target Resolution
 
-- Default paper target: `docs/deliverables/articles/main.tex`
-- Article targets live in `docs/deliverables/articles/`
-- Beamer targets live in `docs/deliverables/slides/`
+- Default paper target: `docs/deliverables/articles/main/main.tex`
+- Article root documents live one per folder: `docs/deliverables/articles/<name>/<name>.tex`
+- Beamer root documents live one per folder: `docs/deliverables/slides/<name>/<name>.tex`
+- Supporting fragments, such as `sections/*.tex`, live inside the owning document folder and are not compiled directly.
 
-## Paper Command
-
-```bash
-cd docs/deliverables/articles
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-if grep -q "\\citation" main.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex main; fi
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-```
-
-## Beamer Talk Command
+## Commands
 
 ```bash
-cd docs/deliverables/slides
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode $ARGUMENTS.tex
-if grep -q "\\citation" $ARGUMENTS.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex $ARGUMENTS; fi
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode $ARGUMENTS.tex
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode $ARGUMENTS.tex
+make articles   # every root article .tex
+make slides     # every root slide .tex
+make latex      # articles + slides
 ```
+
+Use `make latex` when `$ARGUMENTS` is empty or `all`. Use `make articles` for paper-only work and `make slides` for talk-only work.
 
 ## Checks
 

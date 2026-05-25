@@ -36,6 +36,10 @@ You are the **devil's advocate** for TikZ visual quality. The diagram author wil
 - **Solid vs. dashed consistency**: observed=solid, counterfactual=dashed — any violations?
 - **Filled vs. hollow dots**: observed=filled, counterfactual=hollow — any violations?
 - **Color meaning**: Is each color used consistently with the project palette?
+- **Beamer palette**: For talks, does the diagram use or harmonize with `slideblue`, `slidered`, `slidegreen`, and `slideyellow` from `docs/deliverables/preambles/beamer-preamble.tex`?
+- **Hue independence**: Are load-bearing distinctions still clear through label, line style, marker shape, position, or annotation if color is weak or grayscale?
+- **Direct labels**: Are key series, groups, or features labeled near the object when that would reduce legend lookup?
+- **Data-graphics integrity**: Are units, transformations, baselines, and uncertainty visible when they affect the claim?
 - **Line weights**: Are similar elements drawn with the same weight?
 
 ### Spacing and Proportion
@@ -79,7 +83,7 @@ Provide a **verdict**:
 
 ## Reference
 
-Read `.claude/rules/tikz-visual-quality.md` for the full specification of:
+Read `.claude/rules/tikz-visual-quality.md` and `.claude/rules/slide-writing-principles.md` for:
 - Standard coordinates and scales
 - Color palette definitions
 - Label placement conventions

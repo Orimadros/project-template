@@ -18,6 +18,8 @@ paths:
 - Figures should communicate one idea clearly.
 - Generated empirical figures should land in `results/figures/` or another explicit `results/` subfolder.
 - Document-facing assets that are not generated analysis outputs may live in `docs/deliverables/assets/`.
+- Talk-facing figures need labels and annotations large enough for presentation, with transparent or matched backgrounds.
+- Talk-facing empirical figures should use direct labels when practical, low-clutter axes, appropriate chart types and baselines, non-hue encodings, and explicit units/transformations/uncertainty when those affect interpretation.
 
 ## Paper Text
 
@@ -31,3 +33,4 @@ paths:
 - Talks are derivative: they simplify and sequence the paper, but should not introduce independent claims.
 - Prefer figures and verbal interpretation over dense regression tables.
 - Keep notation aligned with the paper.
+- Follow `.claude/rules/slide-writing-principles.md` for Beamer writing: 16:9, Big 5 opening, substantive titles, intuition bridge, empirical credibility, readable figures/tables, controlled accessible color, and backup slides for dense detail.

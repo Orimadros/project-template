@@ -1,0 +1,90 @@
+{
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.codex/hooks/notify.sh\"",
+            "timeout": 5,
+            "statusMessage": "Sending approval notification"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.codex/hooks/protect-files.sh\"",
+            "timeout": 5,
+            "statusMessage": "Checking protected files"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/context-monitor.py\"",
+            "timeout": 5,
+            "statusMessage": "Checking context budget"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/verify-reminder.py\"",
+            "timeout": 5,
+            "statusMessage": "Checking verification reminders"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/pre-compact.py\"",
+            "timeout": 10,
+            "statusMessage": "Saving pre-compact state"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/post-compact-restore.py\"",
+            "timeout": 5,
+            "statusMessage": "Restoring compacted context"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/log-reminder.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking session log"
+          }
+        ]
+      }
+    ]
+  }
+}

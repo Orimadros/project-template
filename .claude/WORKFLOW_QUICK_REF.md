@@ -8,17 +8,19 @@
 Instruction
   -> Plan (if multi-step)
   -> Implement in code/ or docs/deliverables/articles/
-  -> Verify (make target / paper compile / talk compile)
+  -> Verify (make target / make articles / make slides / make latex)
   -> Critic review
   -> Report
 ```
 
 ## Core Entry Points
 
-- Paper: `docs/deliverables/articles/main.tex`
-- Paper sections: `docs/deliverables/articles/sections/`
+- Paper: `docs/deliverables/articles/main/main.tex`
+- Paper sections: `docs/deliverables/articles/main/sections/`
+- Root slide decks: `docs/deliverables/slides/<deck>/<deck>.tex`
 - Sources and bibliography: `docs/sources/`
 - Pipeline: `make setup`, `make fetch`, `make build`, `make analysis`, `make all`
+- Documents: `make articles`, `make slides`, `make latex`
 - Reviews: `docs/work/reviews/`
 - Checkpoints: `docs/work/checkpoints/`
 
@@ -33,8 +35,9 @@ Instruction
 
 ## Non-Negotiables
 
-- The paper `main.tex` is the source of truth for the research argument.
-- Talks in `docs/deliverables/slides/` derive from the paper.
+- The paper `docs/deliverables/articles/main/main.tex` is the source of truth for the research argument.
+- Talks in `docs/deliverables/slides/<deck>/<deck>.tex` derive from the paper.
+- Slide writing follows `.claude/rules/slide-writing-principles.md`: sparse, visual, readable, color-conscious, and backup-heavy for dense detail.
 - Scripts are staged: `code/00_fetch` -> `01_build` -> `02_analyze`.
 - Raw data in `data/raw/` is immutable by default.
 - Generated files belong in `data/clean/`, `data/tmp/`, and `results/`.

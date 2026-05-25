@@ -17,7 +17,8 @@ Critically examine a talk deck or paper and challenge its design with 5-7 specif
 
 1. **Read the target file** (the deck or paper being challenged)
 2. **Read the knowledge base** in `.claude/rules/` for notation conventions and narrative arc
-3. If applicable, **read related deliverables** for continuity
+3. For decks, **read `.claude/rules/slide-writing-principles.md`** and challenge against that standard
+4. If applicable, **read related deliverables** for continuity
 
 ---
 
@@ -45,6 +46,15 @@ Generate 5-7 challenges from these categories:
 
 ### 7. Standalone / Publication Challenges
 > "If this becomes a paper section or chapter, does it stand on its own?"
+
+### 8. Beamer-Tips Challenges
+> "Could this slide make one point more clearly with less text, a central graphic, or a backup slide?"
+
+### 9. Seminar Opening Challenges
+> "Does the opening answer the Big 5 quickly enough, or are we making the audience wait for the question, contribution, answer, or main threat?"
+
+### 10. Evidence Display Challenges
+> "Would the key result be more credible with a cleaner chart type, direct labels, fewer digits, or a clearer statement of units, variation, and uncertainty?"
 
 ---
 
@@ -79,3 +89,4 @@ Generate 5-7 challenges from these categories:
 - **Be honest:** If the deck or paper is good, say so
 - **Prioritize:** Notation conflicts and argument gaps > missed metaphors
 - **Think like the audience / a referee:** Where do they get lost or push back?
+- **For decks:** Apply the slide-writing principles: Big 5 opening, substantive titles, intuition bridge, sparse text, credible data graphics, accessible color, controlled builds, final takeaway, and backup slides for dense material

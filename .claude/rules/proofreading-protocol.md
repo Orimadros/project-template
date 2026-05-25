@@ -17,7 +17,7 @@ Before commits that modify manuscript, appendix, or talk content, run a proofrea
 3. Notation consistency with the canonical paper
 4. Citation style consistency
 5. Style-guide consistency with `.claude/references/personal-style-guide.md`
-6. Obvious overflow risk in dense frames or awkward paper line breaks
+6. Obvious overflow risk in dense frames, generic slide titles, slide text that should move to notes/backup, final takeaway gaps, or awkward paper line breaks
 
 ## Three-Phase Workflow
 

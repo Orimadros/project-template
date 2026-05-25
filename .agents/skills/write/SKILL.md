@@ -13,8 +13,8 @@ Use this for paper drafting and revision.
 
 Before drafting, read:
 
-- `docs/deliverables/articles/main.tex`
-- relevant files in `docs/deliverables/articles/sections/`
+- `docs/deliverables/articles/main/main.tex`
+- relevant files in `docs/deliverables/articles/main/sections/`
 - `.claude/references/domain-profile.md`
 - `.claude/references/personal-style-guide.md`
 - `docs/sources/references.bib`

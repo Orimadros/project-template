@@ -17,8 +17,8 @@ data/raw/*                                      immutable project inputs
 code/00_fetch/*                                 retrieval scripts
 code/01_build/*                                 construction/transformation scripts
 code/02_analyze/*                               estimation/report scripts
-docs/deliverables/articles/main.tex             canonical paper source
-docs/deliverables/articles/sections/*.tex       canonical paper sections
+docs/deliverables/articles/main/main.tex        canonical paper source
+docs/deliverables/articles/main/sections/*.tex  canonical paper sections
 docs/sources/references.bib                     canonical bibliography
 ```
 
@@ -30,7 +30,7 @@ The paper is authoritative for the research argument, notation, empirical claims
 data/clean/*
 data/tmp/*
 results/*
-docs/deliverables/slides/*.tex                  derivative talk material
+docs/deliverables/slides/*/*.tex               derivative talk material
 compiled PDFs
 ```
 
@@ -41,7 +41,9 @@ compiled PDFs
 - Keep raw data immutable unless the user explicitly requests replacement.
 - If a derived output looks wrong, fix upstream code, then rebuild.
 - If a slide contradicts the paper, update the slide or explicitly revise the paper first.
+- If a slide is hard to read, fix the Beamer source according to `.claude/rules/slide-writing-principles.md`; do not create a parallel presentation artifact.
 - Every numerical claim in the paper should be traceable to a script and generated output.
+- Keep root article and slide documents one per folder: `articles/<name>/<name>.tex` and `slides/<name>/<name>.tex`.
 
 ## Verification Checklist
 

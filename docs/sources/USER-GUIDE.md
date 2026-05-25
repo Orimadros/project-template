@@ -1,6 +1,6 @@
 # USER GUIDE - Running a Paper-Centric Empirical Project
 
-**What this is:** a practical guide to using this repository as a paper-first empirical research scaffold. The canonical manuscript lives at `docs/deliverables/articles/main.tex`; code generates data/results; talks and appendices derive from the paper.
+**What this is:** a practical guide to using this repository as a paper-first empirical research scaffold. The canonical manuscript lives at `docs/deliverables/articles/main/main.tex`; code generates data/results; talks and appendices derive from the paper.
 
 **Template note:** placeholders like `[YOUR PROJECT NAME]` are intentional. Fork the repo for a project, fill in the project-specific files, and keep process artifacts in `docs/work/`.
 
@@ -12,8 +12,8 @@ _Last updated: 2026-05-23_
 
 | Layer | Purpose | Where |
 |-------|---------|-------|
-| Paper | Canonical source of truth for argument, notation, claims, tables, figures | `docs/deliverables/articles/main.tex` |
-| Paper sections | Modular manuscript text | `docs/deliverables/articles/sections/` |
+| Paper | Canonical source of truth for argument, notation, claims, tables, figures | `docs/deliverables/articles/main/main.tex` |
+| Paper sections | Modular manuscript text | `docs/deliverables/articles/main/sections/` |
 | Talks | Beamer decks derived from the paper | `docs/deliverables/slides/` |
 | Sources | External papers, reports, reference material, bibliography | `docs/sources/` |
 | Staged pipeline | Fetch, build, analyze, quality utilities | `code/00_fetch` ... `code/03_quality` |
@@ -22,6 +22,8 @@ _Last updated: 2026-05-23_
 | Results | Generated tables, figures, and model outputs | `results/` |
 | Work records | Plans, task requirements, session logs, checkpoints, reviews | `docs/work/` |
 | Agent calibration | Domain, journal, and personal style preferences | `.claude/references/` |
+| Codex customization | Repo skills, project agents, and project hooks | `.agents/skills/`, `.codex/` |
+| Claude Code customization | Claude agents, skills, hooks, settings, rules, references | `.claude/` |
 
 The defining idea: **the paper is authoritative; code is authoritative for generated evidence; slides and appendices derive from them.**
 
@@ -42,7 +44,7 @@ Then customize:
 - `.claude/references/domain-profile.md`
 - `.claude/references/personal-style-guide.md`
 - `.claude/references/journal-profiles.md`
-- `docs/deliverables/articles/main.tex`
+- `docs/deliverables/articles/main/main.tex`
 - `Makefile`, if your project needs a custom dependency graph
 
 ---
@@ -88,14 +90,22 @@ Use `/strategize` for empirical design. The output should clarify the estimand, 
 
 ### E. Write The Paper
 
-- Main file: `docs/deliverables/articles/main.tex`
-- Sections: `docs/deliverables/articles/sections/`
+- Main file: `docs/deliverables/articles/main/main.tex`
+- Sections: `docs/deliverables/articles/main/sections/`
 - Shared article style: `docs/deliverables/preambles/article-preamble.tex`
+- Root article and slide documents live one per folder: `articles/<name>/<name>.tex` and `slides/<name>/<name>.tex`
+- Use `make latex` to compile every root article and slide document
 - Use `/write` for drafting and `/review paper` or `/review-paper` for manuscript review
 
 ### F. Build Talks
 
 - Beamer decks live in `docs/deliverables/slides/`
+- Slide writing follows `.claude/rules/slide-writing-principles.md`, adapted from Paul Goldsmith-Pinkham's Beamer tips
+- New talks should use `docs/deliverables/preambles/beamer-preamble.tex` unless the project has a stronger local theme
+- Section divider slides should use `\sectiontransition[optional subtitle]{Title}` from the shared preamble
+- When asking for a talk, provide audience, duration, talk type/status, and goal when you know them
+- Agents should plan the Big 5 opening, intuition bridge, empirical credibility sequence, talk-length budget, and backup material before drafting
+- Empirical slides should use low-clutter data graphics, direct labels where useful, explicit units/transformations/uncertainty, accessible non-hue-only encodings, and compact `booktabs`/`siunitx` tables
 - Use `/talk` to derive talks from the paper
 - Use `/slide-excellence`, `/visual-audit`, `/pedagogy-review`, and `/proofread` for talk review
 
@@ -110,21 +120,13 @@ Use `/revise` after reviews. Classify comments as `NEW ANALYSIS`, `CLARIFICATION
 ### Paper
 
 ```bash
-cd docs/deliverables/articles
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-if grep -q "\\citation" main.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex main; fi
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
+make articles
 ```
 
 ### Beamer Talk
 
 ```bash
-cd docs/deliverables/slides
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
-if grep -q "\\citation" talk.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex talk; fi
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
+make slides
 ```
 
 Use `/compile-latex` for the guided version.
@@ -135,6 +137,13 @@ Use `/compile-latex` for the guided version.
 
 This repo uses a selective clo-author-style worker/critic system.
 
+Codex and Claude use different discovery conventions:
+
+- Codex reads `AGENTS.md` for project instructions, `.agents/skills/*/SKILL.md` for repo skills, `.codex/agents/*.toml` for project custom agents, and `.codex/hooks.json` for project hooks after the project `.codex/` layer is trusted.
+- Claude Code reads the parallel `.claude/` setup: `.claude/agents/*.md`, `.claude/skills/*/SKILL.md`, `.claude/settings.json`, and `.claude/hooks/`.
+- Shared research rules and references intentionally stay in `.claude/rules/` and `.claude/references/`; Codex is pointed to them from `AGENTS.md` and from the Codex skills/agents.
+- Do not create `.codex/skills/`; repo-scoped Codex skills belong in `.agents/skills/`.
+
 | Worker | Critic | Purpose |
 |--------|--------|---------|
 | `librarian` | `librarian-critic` | literature and citation fidelity |
@@ -142,7 +151,7 @@ This repo uses a selective clo-author-style worker/critic system.
 | `strategist` | `strategist-critic` | design and identification |
 | `coder` | `coder-critic` | reproducible implementation |
 | `writer` | `writer-critic` | paper drafting and claim discipline |
-| `storyteller` | `storyteller-critic` | talks derived from the paper |
+| `storyteller` | `storyteller-critic` | talks derived from the paper and slide-writing principles |
 
 Standalone agents include `data-engineer`, `domain-referee`, `methods-referee`, `editor`, `orchestrator`, and `verifier`.
 
@@ -173,7 +182,7 @@ Weighted paper components:
 The authoritative rubric lives in `.claude/rules/quality-gates.md`. Quick checks can be run with:
 
 ```bash
-python3 code/03_quality/quality_score.py docs/deliverables/articles/main.tex
+python3 code/03_quality/quality_score.py docs/deliverables/articles/main/main.tex
 ```
 
 ---
@@ -184,8 +193,8 @@ Authoritative:
 
 - `data/raw/*`
 - `code/**`
-- `docs/deliverables/articles/main.tex`
-- `docs/deliverables/articles/sections/*.tex`
+- `docs/deliverables/articles/main/main.tex`
+- `docs/deliverables/articles/main/sections/*.tex`
 - `docs/sources/references.bib`
 
 Derived:
@@ -231,4 +240,4 @@ Clear project-specific artifacts before using the template again:
 - paper/slides/appendix contents under `docs/deliverables/`
 - project-specific `[LEARN]` entries in `MEMORY.md`
 
-Keep the scaffold, rules, skills, agents, hooks, `Makefile`, and folder structure.
+Keep the scaffold, rules, skills, agents, hooks, `Makefile`, and folder structure. For Codex template portability, commit `.agents/skills/`, `.codex/agents/`, `.codex/hooks.json`, and `.codex/hooks/` when they contain only repo-portable scripts and no local auth or secrets.

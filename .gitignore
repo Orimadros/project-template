@@ -1,3 +1,22 @@
-# Intentionally empty for this template.
 # The repository tracks the full scaffold, including data/ placeholders and results/ placeholders.
-# Add project-specific ignore rules only after forking for a concrete research project.
+# Add project-specific data/result ignore rules only after forking for a concrete research project.
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# LaTeX build outputs stay next to their root .tex document.
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+docs/deliverables/**/*.pdf

@@ -23,7 +23,12 @@ paths:
 - **Solid dots/lines** = observed outcomes, realized paths
 - **Hollow circles/dashed lines** = counterfactual outcomes, unrealized paths
 - Use consistent colors for semantic meaning (positive, negative, neutral)
+- For Beamer talks, prefer the color-blind-conscious palette in `docs/deliverables/preambles/beamer-preamble.tex`
 - Define colors in your Beamer theme for reuse
+- Do not rely on hue alone for load-bearing distinctions; pair color with labels, line style, marker shape, position, or annotation.
+- Use direct labels near plotted objects when they reduce legend lookup.
+- Keep gridlines, borders, and decorative marks light enough that data and annotations dominate.
+- Show units, transformations, and baselines when they affect the claim.
 
 ### Line Weights
 - Axes: `thick`
@@ -37,6 +42,7 @@ paths:
 - Dot radius: `4pt` for data points
 - Minimum 0.2 units between any label and nearest graphical element
 - Axes extend beyond all data points
+- Labels must be legible at seminar-room size; do not shrink labels to fit a crowded diagram
 
 ## Checklist
 
@@ -46,8 +52,10 @@ paths:
 [ ] Consistent dot style (solid=observed, hollow=counterfactual)
 [ ] Consistent line style (solid=observed, dashed=counterfactual)
 [ ] Color semantics correct
+[ ] Load-bearing distinctions survive grayscale or weak projector conditions
 [ ] Arrow annotations point FROM label TO feature
 [ ] Axes extend beyond all data points
+[ ] Units, transformations, or baselines are explicit when needed
 [ ] Labels legible at presentation size
 ```
 

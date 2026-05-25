@@ -1,0 +1,8 @@
+- https://www.edwardtufte.com/tufte/books_vdqi
+- https://www.aeaweb.org/articles?id=10.1257/jep.28.1.209
+- https://www.kimjruhl.com/presentation-notes
+- https://www.columbia.edu/~drd28/SuccessfulPaperSeminar.pdf
+- https://shapiro.scholars.harvard.edu/sites/g/files/omnuum7731/files/shapiro/files/applied_micro_slides.pdf
+- https://marcfbellemare.com/wordpress/10053
+- https://econ.lse.ac.uk/staff/spischke/phds/The%20Big%205.pdf
+- https://personal.lse.ac.uk/fischerg/Assets/EC501PresentationGuidelines.pdf

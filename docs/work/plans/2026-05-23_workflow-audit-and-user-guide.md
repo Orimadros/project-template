@@ -4,7 +4,7 @@ This historical plan was replaced by the current paper-centric template architec
 
 Current active architecture:
 
-- canonical paper: `docs/deliverables/articles/main.tex`
+- canonical paper: `docs/deliverables/articles/main/main.tex`
 - staged code: `code/00_fetch`, `code/01_build`, `code/02_analyze`
 - generated outputs: `results/`
 - work records: `docs/work/`

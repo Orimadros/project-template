@@ -16,7 +16,7 @@ Use this workflow for reproducible analysis under the staged project structure.
 - Save generated artifacts to `data/clean/`, `data/tmp/`, or `results/`.
 - Use `saveRDS()` for heavy computed objects.
 - Use relative paths only.
-- Treat `docs/deliverables/articles/main.tex` as the canonical consumer of results.
+- Treat `docs/deliverables/articles/main/main.tex` as the canonical consumer of results.
 
 ## Phases
 

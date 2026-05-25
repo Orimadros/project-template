@@ -14,27 +14,19 @@ Use this for quick maintenance commands.
 ### Compile paper
 
 ```bash
-cd docs/deliverables/articles
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-if grep -q "\\citation" main.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex main; fi
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
+make articles
 ```
 
 ### Compile talk
 
 ```bash
-cd docs/deliverables/slides
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
-if grep -q "\\citation" talk.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex talk; fi
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
+make slides
 ```
 
 ### Score a file
 
 ```bash
-python3 code/03_quality/quality_score.py docs/deliverables/articles/main.tex
+python3 code/03_quality/quality_score.py docs/deliverables/articles/main/main.tex
 ```
 
 ### Validate bibliography

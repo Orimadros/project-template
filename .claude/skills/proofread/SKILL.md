@@ -10,7 +10,7 @@ allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
 ## Steps
 
 1. Identify files:
-   - If `$ARGUMENTS` is `paper` or empty, review `docs/deliverables/articles/main.tex` and section files.
+   - If `$ARGUMENTS` is `paper` or empty, review `docs/deliverables/articles/main/main.tex` and section files.
    - If `$ARGUMENTS` is a filename, review only that file.
    - If `$ARGUMENTS` is `all`, review `.tex` files in `docs/deliverables/articles/`, `docs/deliverables/appendices/`, and `docs/deliverables/slides/`.
 
@@ -21,6 +21,7 @@ allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
    - Style-guide consistency with `.claude/references/personal-style-guide.md`
    - Overlong lines and awkward spacing in papers
    - Overflow risk in dense Beamer frames
+   - Slide-writing issues in Beamer decks: overlong on-slide text, generic frame titles, tiny labels, script text that should move to notes, dense detail that should move to backup, and final slides that fail to state a substantive takeaway
 
 3. Produce a report with:
    - location

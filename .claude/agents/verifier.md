@@ -13,8 +13,8 @@ Verify that edits are runnable and outputs are valid for:
 
 - `code/` scripts and pipelines
 - `Makefile`
-- `docs/deliverables/articles/main.tex`
-- `docs/deliverables/slides/*.tex`
+- `docs/deliverables/articles/main/main.tex`
+- `docs/deliverables/slides/*/*.tex`
 
 ## Checks
 
@@ -40,6 +40,7 @@ Verify that edits are runnable and outputs are valid for:
 
 - Compile with XeLaTeX.
 - Check that talk claims derive from the paper or generated outputs.
+- Spot-check `.claude/rules/slide-writing-principles.md` for major blockers: missing opening architecture, overcrowded frames, unreadable labels, misleading data graphics, uncontrolled builds, and dense material missing from backup.
 
 ## Output Format
 

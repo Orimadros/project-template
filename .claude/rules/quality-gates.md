@@ -36,7 +36,7 @@ A submission/excellence score requires the aggregate score to be at least 95 and
 - Strategy: constructive; stress-test feasibility and identification.
 - Execution: strict; block broken code, untraceable claims, or compile failures.
 - Peer Review: adversarial; behave like a skeptical referee.
-- Presentation: professional; prioritize clarity, pacing, and audience cognition.
+- Presentation: professional; prioritize the slide-writing principles, opening architecture, empirical graphics credibility, clarity, pacing, and audience cognition.
 
 ## Blocking Issues
 
@@ -46,6 +46,7 @@ A submission/excellence score requires the aggregate score to be at least 95 and
 - Causal claim without identification support.
 - Missing or fabricated citation.
 - Slide claim that contradicts the paper.
+- Talk deck that fails basic slide-writing principles: missing opening architecture, unreadable labels, misleading data graphics, overcrowded frames, inaccessible color encodings, or dense material kept out of backup slides.
 
 ## Output Locations
 

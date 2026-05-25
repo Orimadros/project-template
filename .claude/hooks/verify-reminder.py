@@ -19,7 +19,7 @@ GREEN = "\033[0;32m"
 NC = "\033[0m"
 
 VERIFY_EXTENSIONS = {
-    ".tex": "compile the paper or Beamer talk with XeLaTeX",
+    ".tex": "run make articles, make slides, or make latex as appropriate",
     ".R": "run stage script or make target",
     ".py": "execute script/notebook pipeline target",
     ".ipynb": "execute notebook via make analysis"

@@ -5,11 +5,12 @@ This is my personal research project template. It is based on Pedro Sant'Anna's 
 The template is designed for empirical paper projects using staged code, host-native Make targets, and a paper-first Claude/Codex workflow.
 
 This version includes:
-- a canonical paper at `docs/deliverables/articles/main.tex`
+- a canonical paper at `docs/deliverables/articles/main/main.tex`
 - staged code folders (`code/00_fetch`, `code/01_build`, `code/02_analyze`)
 - explicit host-native file-based pipelines via `make`
 - lockfile-based dependency setup when available
 - Beamer only for presentations, with talks derived from the paper
+- slide-writing standards adapted from Paul Goldsmith-Pinkham's Beamer tips
 - selective clo-author-style worker/critic agents and paper quality gates
 - tracked placeholder folders, including `data/` and `results/`; add project-specific ignore rules only after forking if desired
 
@@ -21,6 +22,9 @@ This version includes:
 .
 ├── AGENTS.md
 ├── CLAUDE.md
+├── .agents/                # Codex repo skills
+├── .codex/                 # Codex project agents and hooks
+├── .claude/                # Claude Code agents, skills, hooks, rules, references
 ├── Makefile
 ├── code/
 │   ├── 00_fetch/
@@ -44,8 +48,10 @@ This version includes:
 ## Workflow Philosophy
 
 ### 1. The paper is the source of truth
-- The canonical manuscript is `docs/deliverables/articles/main.tex`.
-- Section files live in `docs/deliverables/articles/sections/`.
+- The canonical manuscript is `docs/deliverables/articles/main/main.tex`.
+- Section files live in `docs/deliverables/articles/main/sections/`.
+- Root article and slide documents live one per folder: `articles/<name>/<name>.tex` and `slides/<name>/<name>.tex`.
+- `make latex` compiles every root `.tex` document under `articles/` and `slides/`.
 - Slides and appendices derive from the paper's argument, notation, claims, tables, and figures.
 
 ### 2. Scripts are staged and explicit
@@ -68,6 +74,20 @@ This version includes:
 - Critic agents review but do not create
 - Quality gates use weighted paper components, with identification and paper quality carrying the most weight
 
+### 6. Talks are simple, visual, and paper-derived
+- Beamer talks follow `.claude/rules/slide-writing-principles.md`.
+- New decks should use `docs/deliverables/preambles/beamer-preamble.tex` for 16:9 defaults, spacing helpers, color-blind-conscious accents, `\sectiontransition` dividers, and backup-slide helpers.
+- A good talk request should include audience, duration, talk type/status, and goal; the agents then plan the Big 5 opening, intuition bridge, empirical credibility sequence, and review loop.
+- Slides make one point at a time, with substantive frame titles, low-clutter data graphics, compact `booktabs`/`siunitx` tables, and non-hue-only encodings; dense tables, proofs, and robustness detail move to linked backup slides.
+
+### 7. Agent customization is tool-native
+- Codex intentionally uses both `.codex/` and `.agents/`. This differs from Claude Code, which puts agents, skills, hooks, and settings under `.claude/`.
+- For Codex, `.codex/` is for project agents, hooks, and optional portable config: `.codex/agents/*.toml`, `.codex/hooks.json`, and `.codex/hooks/`.
+- For Codex, `.agents/skills/` is the repo skill location: `.agents/skills/<skill-name>/SKILL.md`. Do not move these to `.codex/skills/`.
+- Codex reads project instructions from `AGENTS.md`, repo skills from `.agents/skills/`, custom agents from `.codex/agents/*.toml`, and project hooks from `.codex/hooks.json` after the project `.codex/` layer is trusted.
+- Claude Code keeps its parallel setup in `.claude/`: agents, skills, hooks, settings, rules, and references.
+- Shared research calibration lives once in `.claude/rules/` and `.claude/references/`; Codex instructions point there instead of mirroring those files.
+
 ---
 
 ## Quick Start
@@ -85,7 +105,10 @@ Then customize:
 - `.claude/references/domain-profile.md`
 - `.claude/references/personal-style-guide.md`
 - `.claude/references/journal-profiles.md`
-- `docs/deliverables/articles/main.tex`
+- `.claude/rules/slide-writing-principles.md`
+- `.agents/skills/` for Codex repo skills, if the project needs new workflows
+- `.codex/agents/` for Codex project agents, if the project needs role changes
+- `docs/deliverables/articles/main/main.tex`
 - `Makefile` target/output names, if your project needs a custom dependency graph
 
 ---
@@ -98,6 +121,9 @@ Default template targets include:
 - `setup`: restore lockfile dependencies if present
 - `fetch`, `build`, `analysis`: staged project tasks
 - `all`: run the full host-native pipeline
+- `articles`: compile every root `.tex` document in `docs/deliverables/articles/`
+- `slides`: compile every root `.tex` document in `docs/deliverables/slides/`
+- `latex`: compile all article and slide documents
 - `clean`: remove generated artifacts
 
 ---
@@ -105,21 +131,13 @@ Default template targets include:
 ## Paper Compile Reference
 
 ```bash
-cd docs/deliverables/articles
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-if grep -q "\\citation" main.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex main; fi
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
+make articles
 ```
 
 ## Beamer Talk Compile Reference
 
 ```bash
-cd docs/deliverables/slides
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
-if grep -q "\\citation" talk.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex talk; fi
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
+make slides
 ```
 
 ---

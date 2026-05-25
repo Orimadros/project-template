@@ -38,7 +38,8 @@ These are non-negotiable checks for paper-centric empirical work.
 - Slides derive from the paper's argument and notation.
 - Every slide-level empirical claim must be traceable to the paper or generated outputs.
 - Beamer is the only presentation format unless the user explicitly requests otherwise.
-- No `\pause`; use separate frames or visual emphasis for progressive disclosure.
+- Follow `.claude/rules/slide-writing-principles.md`: one point per slide, Big 5 opening, substantive frame titles, empirical credibility, readable data graphics, accessible color, and dense material in backup.
+- Do not use casual `\pause`; controlled overlays are allowed only when they clarify a figure/table build.
 
 ## Traceability Invariant
 

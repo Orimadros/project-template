@@ -11,8 +11,8 @@ You are the paper writer.
 
 Before drafting substantive prose, read:
 
-- `docs/deliverables/articles/main.tex`
-- relevant files in `docs/deliverables/articles/sections/`
+- `docs/deliverables/articles/main/main.tex`
+- relevant files in `docs/deliverables/articles/main/sections/`
 - `.claude/references/domain-profile.md`
 - `.claude/references/personal-style-guide.md`
 - `docs/sources/references.bib`

@@ -10,7 +10,7 @@
 
 - **Plan first** -- for non-trivial work, save plans to `docs/work/plans/`
 - **Verify after** -- run the relevant Make target(s) or LaTeX compile before declaring done
-- **Paper is authoritative** -- `docs/deliverables/articles/main.tex` is the source of truth for the argument, notation, claims, tables, and figures
+- **Paper is authoritative** -- `docs/deliverables/articles/main/main.tex` is the source of truth for the argument, notation, claims, tables, and figures
 - **Slides derive from the paper** -- Beamer decks in `docs/deliverables/slides/` are talks based on the canonical paper, not a parallel source of truth
 - **Reproducibility first** -- `code/` creates data/results; lockfiles pin dependencies; the Makefile defines the host pipeline
 - **Worker/critic separation** -- creative agents draft; critic agents evaluate; creators never self-score
@@ -24,6 +24,18 @@
 [YOUR-PROJECT]/
 ├── AGENTS.md
 ├── CLAUDE.md
+├── .agents/
+│   └── skills/             # Codex repo skills: one SKILL.md per skill
+├── .codex/
+│   ├── agents/             # Codex project custom agents: one TOML file per agent
+│   ├── hooks/              # Codex hook scripts
+│   └── hooks.json          # Codex project hook wiring; requires trust in Codex
+├── .claude/
+│   ├── agents/             # Claude Code subagents
+│   ├── skills/             # Claude Code skills
+│   ├── hooks/              # Claude Code hook scripts
+│   ├── references/         # Shared domain/style/journal calibration
+│   └── rules/              # Shared workflow and quality rules
 ├── Makefile                # Runs the staged pipeline on the host
 ├── code/
 │   ├── 00_fetch/           # Raw data download scripts
@@ -47,9 +59,9 @@
     │   ├── merge_reports/
     │   └── templates/
     └── deliverables/        # Repo-produced document outputs and document-facing assets
-        ├── articles/        # Canonical paper source; main.tex lives here
-        │   └── sections/
-        ├── slides/          # Beamer talks derived from the paper
+        ├── articles/        # One folder per article document
+        │   └── main/        # main/main.tex plus sections/ and compile outputs
+        ├── slides/          # One folder per Beamer deck
         ├── appendices/
         ├── preambles/
         └── assets/
@@ -81,19 +93,10 @@ make build
 make analysis
 make all
 
-# Paper compile (host, with TeX installed)
-cd docs/deliverables/articles
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-if grep -q "\\citation" main.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex main; fi
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-TEXINPUTS=../preambles:./sections:$TEXINPUTS xelatex -interaction=nonstopmode main.tex
-
-# Beamer talk compile (talks derive from the paper)
-cd docs/deliverables/slides
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
-if grep -q "\\citation" talk.aux; then BIBINPUTS=../../sources:$BIBINPUTS bibtex talk; fi
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
-TEXINPUTS=../preambles:$TEXINPUTS xelatex -interaction=nonstopmode talk.tex
+# LaTeX documents (host, with TeX installed)
+make articles   # compile every root .tex document under docs/deliverables/articles/
+make slides     # compile every root .tex document under docs/deliverables/slides/
+make latex      # compile both articles and slides
 ```
 
 ---
@@ -110,6 +113,18 @@ Weighted paper quality follows `.claude/rules/quality-gates.md`.
 
 ---
 
+## Codex Project Customization
+
+- Codex project instructions come from `AGENTS.md`; keep this file small and route to detailed references instead of duplicating them.
+- Codex custom agents live in `.codex/agents/*.toml`. Each file defines one project-scoped custom agent with `name`, `description`, and `developer_instructions`.
+- Codex project skills live in `.agents/skills/*/SKILL.md`. Do not create `.codex/skills/`; Codex does not use that as the repo skill location.
+- Codex hooks live in `.codex/hooks.json` and `.codex/hooks/`. Project-local hooks only run after the project `.codex/` layer is trusted in Codex. Hook commands must resolve scripts from the git root with `$(git rev-parse --show-toplevel)` and must not contain machine-specific absolute paths.
+- Codex has no Claude-style `Notification` hook event. Use Codex hook events from the official set, especially `PermissionRequest`, `PreToolUse`, `PostToolUse`, `PreCompact`, `SessionStart`, and `Stop`.
+- Shared calibration remains in `.claude/rules/` and `.claude/references/` so Claude and Codex use the same source of truth. Codex agents and skills should read those files when relevant rather than mirroring them.
+- Do not commit local Codex secrets or auth. This template may commit `.codex/agents/`, `.codex/hooks.json`, and `.codex/hooks/`, but should not include a project `.codex/config.toml` unless it contains only non-secret project defaults.
+
+---
+
 ## Paper Style And Preferences
 
 - Field calibration lives in `.claude/references/domain-profile.md`
@@ -117,13 +132,26 @@ Weighted paper quality follows `.claude/rules/quality-gates.md`.
 - Journal constraints live in `.claude/references/journal-profiles.md`
 - Shared LaTeX config lives in `docs/deliverables/preambles/`
 
+## Slide Writing Principles
+
+- Beamer talks follow `.claude/rules/slide-writing-principles.md`, adapted from Paul Goldsmith-Pinkham's Beamer tips.
+- Default new talks should use 16:9 Beamer, `docs/deliverables/preambles/beamer-preamble.tex`, generous spacing, sparse text, substantive frame titles, and color-blind-conscious accents.
+- A good Beamer request should provide audience, duration, talk type/status, and goal; agents then choose the right talk/review skills.
+- Research-talk openings should answer the Big 5 early: question, stakes, gap, contribution, headline answer, and main credibility threat.
+- Empirical slides should make data sources, variable levels, identification variation, units, transformations, uncertainty, and threats visible when they affect credibility.
+- Section dividers should use `\sectiontransition[optional subtitle]{Title}` from the shared Beamer preamble, not hand-rolled full-slide color blocks.
+- Each slide should make one point clearly; dense proofs, full tables, and robustness detail belong in backup slides with links.
+- Do not shrink fonts to fit crowded slides; split the slide, use a clearer visual, or move detail to backup.
+- Use low-clutter, directly labeled figures and compact `booktabs`/`siunitx` tables; do not rely on hue alone for load-bearing distinctions.
+- Avoid casual `\pause`; controlled builds are acceptable only when they clarify a figure/table reveal.
+
 ---
 
 ## Current Project State
 
 | Module | Path | Status | Notes |
 |--------|------|--------|-------|
-| Paper | `docs/deliverables/articles/main.tex` | [TODO/ACTIVE] | [Research question + manuscript scope] |
+| Paper | `docs/deliverables/articles/main/main.tex` | [TODO/ACTIVE] | [Research question + manuscript scope] |
 | Fetch | `code/00_fetch/` | [TODO/ACTIVE] | [Data sources] |
 | Build | `code/01_build/` | [TODO/ACTIVE] | [Prep pipeline] |
 | Analyze | `code/02_analyze/` | [TODO/ACTIVE] | [Models/notebooks/results] |

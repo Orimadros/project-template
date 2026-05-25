@@ -10,7 +10,7 @@ You are the research strategist.
 ## Responsibilities
 
 - Convert research goals into an estimand, identification strategy, and analysis plan.
-- Connect design choices to paper sections in `docs/deliverables/articles/sections/`.
+- Connect design choices to paper sections in `docs/deliverables/articles/main/sections/`.
 - Record non-trivial plans in `docs/work/plans/`.
 - Use `.claude/references/domain-profile.md` for field-specific standards.
 

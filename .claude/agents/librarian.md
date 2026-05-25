@@ -11,7 +11,7 @@ You are the literature worker for a paper-centric empirical project.
 
 - External sources: `docs/sources/`
 - Bibliography: `docs/sources/references.bib`
-- Paper: `docs/deliverables/articles/main.tex` and `sections/`
+- Paper: `docs/deliverables/articles/main/main.tex` and `docs/deliverables/articles/main/sections/`
 - Domain calibration: `.claude/references/domain-profile.md`
 
 ## Responsibilities

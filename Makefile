@@ -2,8 +2,9 @@ SHELL := /bin/bash
 
 R_SCRIPT ?= Rscript
 PYTHON_RUN ?= uv run
+LATEX ?= xelatex
 
-.PHONY: help setup setup-python setup-r fetch build analysis all clean
+.PHONY: help setup setup-python setup-r fetch build analysis latex articles slides compile-tex _compile-tex clean
 
 help:
 	@echo "Project workflow targets (run on host):"
@@ -11,6 +12,9 @@ help:
 	@echo "  make fetch      Run shell scripts in code/00_fetch/"
 	@echo "  make build      Run R scripts in code/01_build/"
 	@echo "  make analysis   Run R scripts + notebooks in code/02_analyze/"
+	@echo "  make latex      Compile every root .tex document in articles/ and slides/"
+	@echo "  make articles   Compile every root .tex document in docs/deliverables/articles/"
+	@echo "  make slides     Compile every root .tex document in docs/deliverables/slides/"
 	@echo "  make all        setup -> fetch -> build -> analysis"
 	@echo "  make clean      Delete generated files in data/clean, data/tmp, results"
 
@@ -74,6 +78,50 @@ analysis:
 	fi
 
 all: setup fetch build analysis
+
+latex: articles slides
+
+compile-tex: latex
+
+articles:
+	@$(MAKE) _compile-tex TEX_ROOT=docs/deliverables/articles
+
+slides:
+	@$(MAKE) _compile-tex TEX_ROOT=docs/deliverables/slides
+
+_compile-tex:
+	@if [ ! -d "$(TEX_ROOT)" ]; then \
+		echo "[latex] $(TEX_ROOT) not found -> skipping"; \
+		exit 0; \
+	fi; \
+	docs="$$(find "$(TEX_ROOT)" -name '*.tex' -type f -print | sort | while read -r tex; do \
+		if grep -q '^[[:space:]]*\\documentclass' "$$tex"; then \
+			echo "$$tex"; \
+		fi; \
+	done)"; \
+	if [ -z "$$docs" ]; then \
+		echo "[latex] no root .tex documents found under $(TEX_ROOT)"; \
+		exit 0; \
+	fi; \
+	preamble_dir="$$(pwd)/docs/deliverables/preambles"; \
+	bib_dir="$$(pwd)/docs/sources"; \
+	status=0; \
+	while IFS= read -r tex; do \
+		dir="$$(dirname "$$tex")"; \
+		file="$$(basename "$$tex")"; \
+		base="$${file%.tex}"; \
+		echo "[latex] compiling $$tex"; \
+		( cd "$$dir" && \
+		  TEXINPUTS=".:$$preamble_dir:./sections:$${TEXINPUTS:-}" $(LATEX) -interaction=nonstopmode "$$file" && \
+		  if [ -f "$$base.aux" ] && grep -q "\\\\citation" "$$base.aux"; then \
+		    BIBINPUTS="$$bib_dir:$${BIBINPUTS:-}" bibtex "$$base"; \
+		  fi && \
+		  TEXINPUTS=".:$$preamble_dir:./sections:$${TEXINPUTS:-}" $(LATEX) -interaction=nonstopmode "$$file" && \
+		  TEXINPUTS=".:$$preamble_dir:./sections:$${TEXINPUTS:-}" $(LATEX) -interaction=nonstopmode "$$file" ); \
+		rc=$$?; \
+		if [ "$$rc" -ne 0 ]; then status=$$rc; fi; \
+	done <<< "$$docs"; \
+	exit "$$status"
 
 clean:
 	@echo "[clean] removing generated artifacts from data/clean, data/tmp, and results"

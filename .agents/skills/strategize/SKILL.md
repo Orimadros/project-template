@@ -12,8 +12,8 @@ Use this for research design decisions before code or paper drafting.
 ## Required Context
 
 - `.claude/references/domain-profile.md`
-- `docs/deliverables/articles/main.tex`
-- `docs/deliverables/articles/sections/`
+- `docs/deliverables/articles/main/main.tex`
+- `docs/deliverables/articles/main/sections/`
 - `docs/work/plans/`
 - relevant source documents in `docs/sources/`
 

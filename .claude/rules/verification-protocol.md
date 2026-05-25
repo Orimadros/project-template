@@ -29,19 +29,20 @@ Every substantive task must end with a runnable verification step.
 2. Ensure execution completes without errors.
 3. Confirm generated outputs are written to expected locations.
 
-## For The Paper (`docs/deliverables/articles/main.tex`)
+## For The Paper (`docs/deliverables/articles/main/main.tex`)
 
-1. Compile with XeLaTeX.
+1. Run `make articles`.
 2. If citations are involved, run BibTeX and the full 3-pass compile.
 3. Check for hard errors, undefined citations/references, and major overfull boxes.
 4. Verify generated numbers/tables/figures trace back to `results/`.
 
-## For Beamer Talks (`docs/deliverables/slides/*.tex`)
+## For Beamer Talks (`docs/deliverables/slides/*/*.tex`)
 
-1. Compile with XeLaTeX.
+1. Run `make slides`.
 2. If citations are involved, run BibTeX and the full 3-pass compile.
 3. Check for hard errors and major overfull box warnings.
 4. Verify slide claims derive from the paper.
+5. Spot-check against `.claude/rules/slide-writing-principles.md` for Big 5 opening, substantive titles, empirical credibility, data-graphics integrity, accessible color, density, and backup placement.
 
 ## Verification Checklist
 

@@ -24,7 +24,7 @@ This template uses a selective clo-author-style multi-agent system.
 | strategist | strategist-critic | Research design and identification |
 | coder | coder-critic | Reproducible analysis implementation |
 | writer | writer-critic | Paper drafting and claim discipline |
-| storyteller | storyteller-critic | Beamer talks derived from the paper |
+| storyteller | storyteller-critic | Beamer talks derived from the paper and slide-writing principles |
 
 ## Standalone Roles
 

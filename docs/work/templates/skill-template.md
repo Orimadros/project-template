@@ -7,7 +7,7 @@
 ## When to Create a Custom Skill
 
 Create a skill when you find yourself:
-- Repeatedly explaining the same 3+ step workflow to Claude
+- Repeatedly explaining the same 3+ step workflow to Claude or Codex
 - Needing domain-specific quality checks (citation style, notation consistency, lab protocols)
 - Enforcing field-specific output formats (thesis structure, journal templates, lab notebooks)
 - Coordinating multi-tool workflows (Figma → R → LaTeX, data → analysis → manuscript)
@@ -21,7 +21,8 @@ Create a skill when you find yourself:
 
 ## Template Structure
 
-Copy the structure below to `.claude/skills/[your-skill-name]/SKILL.md`:
+For Claude Code, copy the structure below to `.claude/skills/[your-skill-name]/SKILL.md`.
+For Codex repo skills, copy the same `SKILL.md` shape to `.agents/skills/[your-skill-name]/SKILL.md`; do not put repo skills under `.codex/skills/`.
 
 ```markdown
 ---
@@ -81,14 +82,14 @@ Step 3: [Final action and verification]
 
 ## Advanced Frontmatter Fields
 
-Beyond the basic fields shown above, skills support additional YAML frontmatter for fine-grained control:
+Beyond the basic fields shown above, Claude Code skills support additional YAML frontmatter for fine-grained control. Codex skills rely primarily on `name`, `description`, the `SKILL.md` instructions, and optional `scripts/`, `references/`, and `assets/` folders.
 
 | Field | Purpose | Example |
 |-------|---------|---------|
 | `effort` | Override reasoning effort level | `high` (for review skills), `low` (for formatting) |
 | `context` | Set to `fork` to run in an isolated subagent context | Protects main conversation from verbose output |
 | `agent` | Link to an agent definition in `.claude/agents/` | `proofreader` |
-| `hooks` | Skill-specific hooks (same syntax as settings.json) | Custom pre/post actions |
+| `hooks` | Claude-only skill-specific hooks (same syntax as settings.json) | Custom pre/post actions |
 | `model` | Force a specific model | `haiku` (cheaper), `opus` (smarter) |
 | `disable-model-invocation` | Prevent Claude from auto-triggering | `true` (only invoked via `/skill-name`) |
 
@@ -150,7 +151,7 @@ description: Reviews econometric specifications for common errors. Use when user
 
 ### Example 1: Citation Cross-Reference Checker
 
-**File:** `.claude/skills/validate-citations/SKILL.md`
+**File:** `.claude/skills/validate-citations/SKILL.md` or `.agents/skills/validate-citations/SKILL.md` for Codex
 
 ```markdown
 ---

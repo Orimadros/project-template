@@ -77,6 +77,7 @@
   - `code/02_analyze/01_estimate_xxx.R`
 - Keep names imperative and explicit: `prep_`, `build_`, `estimate_`, `predict_`, `export_`
 - Each script should have a clear file contract: inputs, outputs, and stage responsibility
+- Scripts should be readable to someone not yet familiar with the project: start with a concise purpose/data-flow description, use descriptive variable names, and organize repeated or multi-step logic into clearly named functions so the main script reads like an intuitive chain of steps
 - Generated empirical tables and figures belong in `results/`; paper/talk files include them rather than hand-copying results
 
 ---

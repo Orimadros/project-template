@@ -54,3 +54,62 @@ Add a `\smallcitation{}` command to the shared Beamer preamble that renders cita
 ---
 **Codex context compaction (manual) at 14:46**
 Check git status and docs/work/plans/ for current state.
+
+---
+**Session update at 2026-05-25**
+
+## Recent Progress
+
+- Audited Codex project customization against the real Codex conventions and committed the portable project setup:
+  - Codex instructions remain in `AGENTS.md`.
+  - Codex project agents live in `.codex/agents/*.toml`.
+  - Codex hooks live in `.codex/hooks.json` plus `.codex/hooks/`, with portable git-root script resolution.
+  - Codex repo skills live in `.agents/skills/*/SKILL.md`; `.codex/skills/` is intentionally not used.
+- Reworked the LaTeX deliverable layout so root article and slide documents live one per folder, with the canonical article now at `docs/deliverables/articles/main/main.tex`.
+- Added Makefile support for `make articles`, `make slides`, and `make latex`, compiling root `.tex` documents under article/slide folders.
+- Added and refined the shared Beamer preamble:
+  - `\smallcitation{...}` for muted trailing references.
+  - `\sectiontransition[optional subtitle]{Title}` for quiet transition slides.
+  - `siunitx` support plus slide-table column helpers.
+- Created slide-writing source reports from the 8 resources in `docs/sources/slide-writing/SLIDE-REFERENCES.md`.
+- Created `docs/sources/slide-writing/FINAL-SUGGESTIONS.md` and incorporated the approved recommendations into the framework.
+- Refactored `.claude/rules/slide-writing-principles.md` as the central rule for:
+  - Big 5 / first-five-minutes opening.
+  - substantive frame titles.
+  - intuition bridge before technical density.
+  - empirical credibility and threat framing.
+  - data-graphics integrity.
+  - table legibility and `siunitx`.
+  - non-hue accessibility.
+  - final belief-change takeaway.
+  - delivery robustness.
+- Propagated the updated slide standard through mirrored Claude/Codex skills and agents, including `talk`, `slide-excellence`, `visual-audit`, `pedagogy-review`, `devils-advocate`, `storyteller`, `storyteller-critic`, `slide-auditor`, `pedagogy-reviewer`, `proofreader`, `verifier`, `tikz-reviewer`, and `orchestrator`.
+- Updated user-facing docs (`AGENTS.md`, `CLAUDE.md`, `README.md`, `docs/sources/USER-GUIDE.md`) so users know to provide audience, duration, talk type/status, and goal for Beamer requests.
+
+## Decisions
+
+- The central slide-writing source of truth is `.claude/rules/slide-writing-principles.md`; agents and skills should read that rule rather than `FINAL-SUGGESTIONS.md` during normal work.
+- `FINAL-SUGGESTIONS.md` remains as provenance for the source-backed synthesis.
+- Big 5 is a standard for opening clarity, not a requirement for exactly five separate slides.
+- Talk-length budgeting is an upper-bound/planning heuristic, not a rigid one-slide-per-minute rule.
+- Beamer links and backup navigation are allowed, but the main talk should not depend on mouse access or live interaction.
+- `.codex/config.toml` remains untracked/out of the template; committed `.codex/` content contains agents, hooks, and docs only.
+
+## Verification Status
+
+- `git diff --check`: PASS.
+- Codex agent TOML parse over 24 `.codex/agents/*.toml`: PASS.
+- `.codex/hooks.json` JSON parse: PASS.
+- Hook Python compile and shell syntax checks: PASS.
+- `make articles`: PASS.
+- `make slides`: PASS, with no root slide decks currently present.
+- `make latex`: PASS.
+- Temporary Beamer smoke deck using `siunitx`, `\smallcitation`, and `\sectiontransition`: PASS.
+- Mirrored updated `.agents/skills/*` and `.claude/skills/*` skill pairs: PASS for the edited pairs.
+
+## Git Status
+
+- Created branch `codex/slide-framework-template-updates`.
+- Committed as `32044c5 Update Codex template and Beamer slide framework`.
+- Pushed branch to `origin/codex/slide-framework-template-updates`.
+- GitHub PR URL offered by remote: `https://github.com/Orimadros/project-template/pull/new/codex/slide-framework-template-updates`.

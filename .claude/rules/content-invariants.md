@@ -31,6 +31,7 @@ These are non-negotiable checks for paper-centric empirical work.
 - Use relative paths only.
 - Scripts write derived data to `data/clean/` or `data/tmp/` and generated outputs to `results/`.
 - Script names should reflect execution order and purpose.
+- Scripts must be readable to a newcomer: begin with a concise purpose/data-flow description, use descriptive variable names, and prefer well-named functions for repeated or multi-step logic so top-level execution reads like an intuitive sequence.
 - Avoid manual edits to generated results; fix code and rerun.
 
 ## Talk Invariants

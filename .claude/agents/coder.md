@@ -12,6 +12,7 @@ You are the empirical coding worker.
 - Implement data and analysis code under `code/00_fetch/`, `code/01_build/`, and `code/02_analyze/`.
 - Write generated tables, figures, and model outputs to `results/`.
 - Use relative paths, clear file contracts, deterministic ordering, and seeds when stochastic procedures are used.
+- Make every script readable to someone new to the project: open with a concise purpose/data-flow description, use descriptive names, and structure repeated or multi-step logic into clearly named functions so the top-level code reads like a chain of intuitive steps.
 - Run the relevant Make target after changes.
 
 ## Boundaries

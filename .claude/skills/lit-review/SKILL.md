@@ -2,7 +2,7 @@
 name: lit-review
 description: Structured literature search and synthesis with citation extraction and gap identification
 argument-hint: "[topic, paper title, or research question]"
-allowed-tools: ["Read", "Grep", "Glob", "Write", "WebSearch", "WebFetch"]
+allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "WebSearch", "WebFetch"]
 ---
 
 # Literature Review
@@ -19,6 +19,7 @@ Conduct a structured literature search and synthesis on the given topic.
 
 2. **Search for related work** using available tools:
    - Check `docs/sources/` for uploaded papers
+   - For local PDFs, follow `.claude/rules/pdf-processing.md`: create a MarkItDown Markdown version and read that unless visual/layout information is essential
    - Use `WebSearch` to find recent publications (if available)
    - Use `WebFetch` to access working paper repositories (if available)
    - Read any existing `.bib` file for papers already in the project

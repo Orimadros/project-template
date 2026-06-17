@@ -5,42 +5,53 @@ paths:
 
 # Robust PDF Processing
 
-## The Safe Processing Workflow
+## MarkItDown-First Workflow
 
-**Step 1: Receive PDF Upload**
-- User uploads PDF or other source material to `docs/sources/`
-- Claude DOES NOT attempt to read it directly
+When you need or want to read the contents of a PDF, create a Markdown version
+with MarkItDown and read that Markdown file instead of reading the PDF directly.
+This keeps source reading searchable, quotable, and easier to revisit.
 
-**Step 2: Check PDF Properties**
+**Step 1: Receive or locate the PDF**
+- User uploads PDF or other source material to `docs/sources/`, or the task
+  references a PDF already in the repository.
+- If the source is a compiled project deliverable and the `.tex` source exists,
+  prefer the `.tex` for project-internal claims; use PDF conversion only when
+  the compiled PDF itself is the object being reviewed.
+
+**Step 2: Check PDF properties**
 ```bash
-pdfinfo paper_name.pdf | grep "Pages:"
-ls -lh paper_name.pdf
+pdfinfo "docs/sources/paper_name.pdf" | grep "Pages:"
+ls -lh "docs/sources/paper_name.pdf"
 ```
 
-**Step 3: Create Subfolder and Split**
+**Step 3: Convert to Markdown**
 ```bash
-mkdir -p paper_name/
-
-for i in {0..9}; do
-  start=$((i*5 + 1))
-  end=$(((i+1)*5))
-  gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
-     -dFirstPage=$start -dLastPage=$end \
-     -sOutputFile="paper_name/paper_name_p$(printf '%03d' $start)-$(printf '%03d' $end).pdf" \
-     paper_name.pdf 2>/dev/null
-done
+uv run markitdown "docs/sources/paper_name.pdf" -o "docs/sources/paper_name.md"
 ```
 
-**Step 4: Process Chunks Intelligently**
-- Read chunks ONE AT A TIME using the Read tool
-- Extract key information from each chunk
-- Build understanding progressively
-- Don't try to hold all chunks in working memory
+- Save the Markdown next to the PDF using the same stem unless a project-specific
+  source folder already exists.
+- If the Markdown is older than the PDF or seems incomplete, regenerate it before
+  relying on it.
+- Read the generated Markdown for abstracts, introductions, methods, results,
+  literature claims, bibliographic details, and other text-centric content.
 
-**Step 5: Selective Deep Reading**
-- After scanning all chunks, identify the most relevant sections
-- Only read those sections in detail for the deliverable you're building (slides or paper)
-- Skip appendices, references, or less relevant sections unless needed
+**Step 4: Decide whether visual inspection is needed**
+Use the original PDF, page images, or PDF chunks in addition to Markdown when
+Markdown would lose important information, including:
+
+- scanned or OCR-poor pages
+- figures, plots, diagrams, maps, screenshots, or equations where layout matters
+- tables whose structure, alignment, footnotes, or multi-panel layout is important
+- slide decks or forms where spatial organization carries meaning
+- tasks asking about visual design, formatting, pagination, or exact PDF rendering
+
+**Step 5: Selective deep reading**
+- After scanning the Markdown, identify the most relevant sections.
+- Read those sections in detail for the deliverable you're building.
+- Inspect the corresponding PDF pages only when the Markdown is ambiguous or
+  when visual/layout content affects the claim.
+- Skip appendices, references, or less relevant sections unless needed.
 
 ## Error Handling Protocol
 
@@ -49,11 +60,16 @@ done
 2. Try splitting into 1-2 page pieces
 3. If still failing, skip and document the gap
 
-**If splitting fails:**
-1. Check if Ghostscript is installed: `gs --version`
-2. Try alternative: `pdftk paper.pdf burst output paper_%03d.pdf`
-3. If all else fails, ask user to upload specific page ranges manually
+**If MarkItDown fails or produces poor Markdown:**
+1. Note the failure and whether the issue is text extraction, OCR, tables, or
+   visual content.
+2. Try converting only the relevant pages or splitting into 1-2 page pieces.
+3. Check if Ghostscript is installed: `gs --version`
+4. Try alternative splitting: `pdftk paper.pdf burst output paper_%03d.pdf`
+5. If all else fails, ask the user to upload specific page ranges manually or
+   provide an OCR/text version.
 
 **If memory/token issues persist:**
-1. Process only 2-3 chunks per session
-2. Focus on specific sections user identifies as most important
+1. Read the generated Markdown by section instead of loading the whole file.
+2. Process only 2-3 chunks per session if PDF fallback is needed.
+3. Focus on specific sections user identifies as most important.

@@ -3,6 +3,7 @@
 .DS_Store
 __pycache__/
 *.py[cod]
+.venv/
 
 # LaTeX build outputs stay next to their root .tex document.
 *.aux

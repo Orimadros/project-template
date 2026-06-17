@@ -1,0 +1,12 @@
+[project]
+name = "project-template"
+version = "0.1.0"
+description = "Paper-centric empirical research project template"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "markitdown[all]>=0.1.5",
+]
+
+[tool.uv]
+package = false

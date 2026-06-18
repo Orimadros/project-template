@@ -104,7 +104,7 @@ make latex      # compile both articles and slides
 
 ## PDF Source Reading
 
-- When reading a PDF's contents, follow `.claude/rules/pdf-processing.md`: first create a Markdown version with `markitdown path/to/file.pdf -o path/to/file.md` and read the Markdown instead of the PDF.
+- When reading a PDF's contents, follow `.claude/rules/pdf-processing.md`: first create a Markdown version with a command of the form `markitdown docs/sources/hyperdominance-paper.pdf -o docs/sources/hyperdominance-paper.md` and read the Markdown instead of the PDF.
 - Use the original PDF or page images as a supplement when Markdown would lose important information, especially scanned pages, figures, diagrams, equations, complex tables, slide layouts, pagination, or visual design.
 
 ---

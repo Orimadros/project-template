@@ -5,6 +5,7 @@ description = "Paper-centric empirical research project template"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "jq>=1.11.0",
     "markitdown[all]>=0.1.5",
 ]
 

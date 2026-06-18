@@ -26,7 +26,7 @@ ls -lh "docs/sources/paper_name.pdf"
 
 **Step 3: Convert to Markdown**
 ```bash
-uv run markitdown "docs/sources/paper_name.pdf" -o "docs/sources/paper_name.md"
+markitdown docs/sources/paper_name.pdf -o docs/sources/paper_name.md
 ```
 
 - Save the Markdown next to the PDF using the same stem unless a project-specific

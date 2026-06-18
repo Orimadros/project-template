@@ -69,7 +69,7 @@ def is_source_pdf(relative_path: Path) -> bool:
 def block_message(relative_path: Path) -> str:
     md_path = relative_path.with_suffix(".md")
     command = (
-        "uv run markitdown "
+        "markitdown "
         f"{shlex.quote(str(relative_path))} -o {shlex.quote(str(md_path))}"
     )
     return (

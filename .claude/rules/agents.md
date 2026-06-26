@@ -28,12 +28,12 @@ This template uses a selective clo-author-style multi-agent system.
 
 ## Standalone Roles
 
-- `data-engineer`: data ingestion, cleaning, schemas, pipeline contracts.
+- `data-engineer`: data ingestion, cleaning, schemas, pipeline contracts, and Provenance Ledger coverage.
 - `domain-referee`: field-level substantive review.
 - `methods-referee`: identification, estimation, and inference review.
 - `editor`: aggregates reviews and makes accept/minor/major/reject-style decisions.
 - `orchestrator`: routes tasks and keeps the loop moving.
-- `verifier`: checks that claims, code, and outputs line up.
+- `verifier`: checks that claims, code, outputs, and Provenance Ledger records line up.
 
 ## Escalation
 

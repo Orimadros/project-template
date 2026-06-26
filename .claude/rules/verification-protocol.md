@@ -2,6 +2,9 @@
 paths:
   - "Makefile"
   - "code/**/*"
+  - "data/**/*"
+  - "results/**/*"
+  - "docs/data/provenance-ledger/**/*"
   - "docs/deliverables/articles/**/*.tex"
   - "docs/deliverables/slides/**/*.tex"
 ---
@@ -13,9 +16,10 @@ Every substantive task must end with a runnable verification step.
 ## For Pipeline Changes (`code/`, `Makefile`)
 
 1. Run the narrowest relevant target first (`make fetch`, `make build`, or `make analysis`).
-2. If stage-level behavior changed broadly, run `make all`.
-3. Confirm expected outputs exist and are non-empty (`data/clean/`, `results/`).
-4. Report what was run and what passed/failed.
+2. Run `make provenance` after any data/results asset is created or changed.
+3. If stage-level behavior changed broadly, run `make all`.
+4. Confirm expected outputs exist and are non-empty (`data/clean/`, `results/`).
+5. Report what was run and what passed/failed.
 
 ## For R Scripts (`.R`)
 
@@ -28,6 +32,7 @@ Every substantive task must end with a runnable verification step.
 1. Run script/notebook execution target.
 2. Ensure execution completes without errors.
 3. Confirm generated outputs are written to expected locations.
+4. Confirm generated data-bearing outputs are represented in `docs/data/provenance-ledger/`.
 
 ## For The Paper (`docs/deliverables/articles/main/main.tex`)
 
@@ -49,5 +54,6 @@ Every substantive task must end with a runnable verification step.
 - [ ] Relevant command(s) executed
 - [ ] No blocking runtime/compile errors
 - [ ] Expected output files created
+- [ ] `make provenance` passes when data/results changed
 - [ ] Paper/slides checked for claim consistency
 - [ ] Results reported to user

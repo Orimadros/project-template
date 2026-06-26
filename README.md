@@ -8,6 +8,8 @@ This version includes:
 - a canonical paper at `docs/deliverables/articles/main/main.tex`
 - staged code folders (`code/00_fetch`, `code/01_build`, `code/02_analyze`)
 - explicit host-native file-based pipelines via `make`
+- a Provenance Ledger for asset and variable-level data generation records
+- hook-level protection that makes `data/raw/` append-only for Claude/Codex
 - lockfile-based dependency setup when available
 - Beamer only for presentations, with talks derived from the paper
 - slide-writing standards adapted from Paul Goldsmith-Pinkham's Beamer tips
@@ -38,6 +40,7 @@ This version includes:
 │   └── tmp/
 ├── results/                # Generated tables, figures, model outputs
 └── docs/
+    ├── data/                # Provenance Ledger and data-facing metadata
     ├── sources/             # External reference/input documents + references.bib
     ├── work/                # Plans, task requirements, logs, checkpoints, reviews
     └── deliverables/        # Articles, slides, appendices, preambles, document assets
@@ -69,18 +72,30 @@ This version includes:
 - If a result looks wrong, fix upstream code and rerun the relevant Make target
 - Paper and slides include generated outputs rather than copying numbers by hand
 
-### 5. Worker and critic roles stay separate
+### 5. Data provenance is explicit and queryable
+- `docs/data/provenance-ledger/` records every data-bearing asset in `data/raw/`, `data/tmp/`, `data/clean/`, and `results/`.
+- Each asset has structured TOML metadata plus a narrative dossier.
+- Structured assets must document every variable, field, raster band/layer, class code, model-output field, unit, missing-value rule, and derivation.
+- Agents must update the ledger automatically when fetching data, writing data-generating code, generating outputs, or answering variable/code questions.
+- `make provenance` validates that the ledger covers current data/results assets.
+
+### 6. Raw data is append-only
+- Claude/Codex project hooks allow adding new files under `data/raw/`.
+- The hooks block direct edits, patch updates/deletes, chmods, overwrites, and deletions of existing raw files.
+- Before and after agent shell commands, hooks leave raw directories writable but lock existing raw files so fetch scripts can add new inputs without mutating old ones.
+
+### 7. Worker and critic roles stay separate
 - Creative agents draft or implement
 - Critic agents review but do not create
 - Quality gates use weighted paper components, with identification and paper quality carrying the most weight
 
-### 6. Talks are simple, visual, and paper-derived
+### 8. Talks are simple, visual, and paper-derived
 - Beamer talks follow `.claude/rules/slide-writing-principles.md`.
 - New decks should use `docs/deliverables/preambles/beamer-preamble.tex` for 16:9 defaults, spacing helpers, color-blind-conscious accents, `\sectiontransition` dividers, and backup-slide helpers.
 - A good talk request should include audience, duration, talk type/status, and goal; the agents then plan the Big 5 opening, intuition bridge, empirical credibility sequence, and review loop.
 - Slides make one point at a time, with substantive frame titles, low-clutter data graphics, compact `booktabs`/`siunitx` tables, and non-hue-only encodings; dense tables, proofs, and robustness detail move to linked backup slides.
 
-### 7. Agent customization is tool-native
+### 9. Agent customization is tool-native
 - Codex intentionally uses both `.codex/` and `.agents/`. This differs from Claude Code, which puts agents, skills, hooks, and settings under `.claude/`.
 - For Codex, `.codex/` is for project agents, hooks, and optional portable config: `.codex/agents/*.toml`, `.codex/hooks.json`, and `.codex/hooks/`.
 - For Codex, `.agents/skills/` is the repo skill location: `.agents/skills/<skill-name>/SKILL.md`. Do not move these to `.codex/skills/`.
@@ -120,6 +135,7 @@ Run `make help` to view target descriptions.
 Default template targets include:
 - `setup`: restore lockfile dependencies if present
 - `fetch`, `build`, `analysis`: staged project tasks
+- `provenance`: validate Provenance Ledger coverage
 - `all`: run the full host-native pipeline
 - `articles`: compile every root `.tex` document in `docs/deliverables/articles/`
 - `slides`: compile every root `.tex` document in `docs/deliverables/slides/`

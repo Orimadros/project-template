@@ -31,6 +31,12 @@
 |-------|--------|--------|
 | [What was checked] | [Result] | PASS / FAIL |
 
+## Provenance Ledger
+
+| Asset | Record Updated | Variable/Code/Layer Entries | Status |
+|-------|----------------|-----------------------------|--------|
+| [path or N/A] | YES / NO / N/A | YES / NO / N/A | complete / partial-flagged / missing-blocker / accepted-limited / N/A |
+
 ## Open Questions / Blockers
 
 - [ ] [Question or blocker]

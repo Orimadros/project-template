@@ -14,6 +14,7 @@ Use this at the beginning of a project or when opening a new research direction.
 - `docs/sources/`
 - `docs/sources/references.bib`
 - `.claude/rules/pdf-processing.md`
+- `.claude/rules/provenance-ledger.md`
 - `.claude/references/domain-profile.md`
 - existing paper files under `docs/deliverables/articles/`
 
@@ -24,7 +25,8 @@ Use this at the beginning of a project or when opening a new research direction.
 3. For PDF sources, follow `.claude/rules/pdf-processing.md`: create a MarkItDown Markdown version and read that unless visual/layout information is essential.
 4. Use `librarian` for source mapping and `librarian-critic` for coverage/citation gaps.
 5. If data feasibility matters, route to `data-engineer` or `explorer`.
-6. Write a concise discovery memo to `docs/work/reviews/` or a next-step plan to `docs/work/plans/`.
+6. If the task discovers, evaluates, or downloads a dataset, create or update the Provenance Ledger plan/entry with source-grounded asset and variable-level needs.
+7. Write a concise discovery memo to `docs/work/reviews/` or a next-step plan to `docs/work/plans/`.
 
 ## Output
 
@@ -33,4 +35,5 @@ Use this at the beginning of a project or when opening a new research direction.
 - Must-read sources already present
 - Missing sources to obtain
 - Data feasibility notes
+- Provenance Ledger implications for any datasets or variables
 - Recommended next action

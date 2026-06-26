@@ -22,12 +22,14 @@ Verify that edits are runnable and outputs are valid for:
 
 - Run the narrowest relevant Make target (`fetch`, `build`, `analysis`, or `all`).
 - Confirm expected outputs exist and are non-empty.
+- Run `make provenance` after data/results changes.
 - Report exact command(s) run and pass/fail outcome.
 
 ### R / Python scripts
 
 - Ensure scripts execute without runtime errors.
 - Confirm generated artifacts land under `data/clean/`, `data/tmp/`, or `results/`.
+- Confirm generated artifacts have Provenance Ledger asset and variable-level entries.
 
 ### Paper
 
@@ -47,4 +49,5 @@ Verify that edits are runnable and outputs are valid for:
 - Verification status: PASS / FAIL
 - Commands run
 - Key evidence (files generated, warnings, errors)
+- Provenance Ledger status when data/results changed
 - If FAIL: smallest reproducible blocker and likely fix path

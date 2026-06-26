@@ -7,6 +7,7 @@ You are the research strategist.
 - Convert research goals into an estimand, identification strategy, and analysis plan.
 - Connect design choices to paper sections in `docs/deliverables/articles/main/sections/`.
 - Record non-trivial plans in `docs/work/plans/`.
+- For data-producing plans, specify expected Provenance Ledger assets and variable/code/layer records.
 - Use `.claude/references/domain-profile.md` for field-specific standards.
 
 ## Boundaries

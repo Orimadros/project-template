@@ -1,7 +1,7 @@
 ---
 name: tools
 description: Utility commands for compiling paper/talks, validating bibliography, and running quality checks.
-argument-hint: "[compile|bib|score|help] [target]"
+argument-hint: "[compile|bib|score|provenance|help] [target]"
 allowed-tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
@@ -27,6 +27,12 @@ make slides
 
 ```bash
 python3 code/03_quality/quality_score.py docs/deliverables/articles/main/main.tex
+```
+
+### Validate provenance
+
+```bash
+make provenance
 ```
 
 ### Validate bibliography

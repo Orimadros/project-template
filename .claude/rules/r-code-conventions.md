@@ -16,6 +16,7 @@ paths:
 - All packages loaded at top via `library()` (not `require()`)
 - All paths relative to repository root
 - `dir.create(..., recursive = TRUE)` for output directories
+- Any script that writes `data/` or `results/` assets must update the Provenance Ledger or explicitly flag the required entry.
 
 ## 2. Function Design
 
@@ -109,6 +110,7 @@ saveRDS(result, file.path(out_dir, "descriptive_name.rds"))
 [ ] All paths relative
 [ ] Functions documented (Roxygen)
 [ ] Script opens with purpose/data flow and reads as a clear chain of named steps
+[ ] Data/results outputs have Provenance Ledger asset and variable-level entries
 [ ] Figures: transparent bg, explicit dimensions, seminar-room labels, non-hue encodings, and low-clutter axes
 [ ] RDS: every computed object saved
 [ ] Comments explain WHY not WHAT

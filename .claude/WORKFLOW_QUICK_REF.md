@@ -8,7 +8,7 @@
 Instruction
   -> Plan (if multi-step)
   -> Implement in code/ or docs/deliverables/articles/
-  -> Verify (make target / make articles / make slides / make latex)
+  -> Verify (make target / make provenance / make articles / make slides / make latex)
   -> Critic review
   -> Report
 ```
@@ -20,6 +20,7 @@ Instruction
 - Root slide decks: `docs/deliverables/slides/<deck>/<deck>.tex`
 - Sources and bibliography: `docs/sources/`
 - Pipeline: `make setup`, `make fetch`, `make build`, `make analysis`, `make all`
+- Provenance Ledger: `docs/data/provenance-ledger/`, validate with `make provenance`
 - Documents: `make articles`, `make slides`, `make latex`
 - Reviews: `docs/work/reviews/`
 - Checkpoints: `docs/work/checkpoints/`
@@ -39,8 +40,9 @@ Instruction
 - Talks in `docs/deliverables/slides/<deck>/<deck>.tex` derive from the paper.
 - Slide writing follows `.claude/rules/slide-writing-principles.md`: sparse, visual, readable, color-conscious, and backup-heavy for dense detail.
 - Scripts are staged: `code/00_fetch` -> `01_build` -> `02_analyze`.
-- Raw data in `data/raw/` is immutable by default.
+- Raw data in `data/raw/` is append-only: Claude/Codex may add new files but must not edit or delete existing raw files.
 - Generated files belong in `data/clean/`, `data/tmp/`, and `results/`.
+- Every data-bearing asset and nested variable/code/layer must be documented in the Provenance Ledger from actual sources or explicitly flagged.
 - Worker agents create; critic agents evaluate; creators never self-score.
 - Always verify after edits.
 

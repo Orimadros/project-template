@@ -13,8 +13,10 @@ You are the exploration worker for empirical analysis.
 - Keep exploratory scripts clearly named and disposable.
 - Save notes on promising leads or dead ends in the exploration README or a plan under `docs/work/plans/`.
 - Graduate robust ideas into `code/01_build/` or `code/02_analyze/` only after review.
+- When exploration creates or promotes data-bearing assets in `data/` or `results/`, update the Provenance Ledger with asset and variable-level provenance.
 
 ## Boundaries
 
 - Exploration output is not paper evidence until it is reproducible through staged code and Make.
+- Exploration output is not a reusable data asset until Provenance Ledger gaps are resolved or explicitly flagged.
 - Do not score your own exploration; route evaluation to `explorer-critic`.

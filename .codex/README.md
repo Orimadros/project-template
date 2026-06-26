@@ -3,7 +3,7 @@
 This directory contains Codex project-scoped customization that is safe to ship with the template:
 
 - `agents/*.toml`: custom subagent roles for Codex.
-- `hooks.json`: project hook wiring loaded from the project `.codex/` layer after Codex trust review.
+- `hooks.json`: project hook wiring loaded from the project `.codex` layer after Codex trust review, including Provenance Ledger reminders and append-only `data/raw/` protection.
 - `hooks/`: hook scripts called by `hooks.json`.
 
 Codex repo skills do not live here. Put project skills in `.agents/skills/*/SKILL.md`.

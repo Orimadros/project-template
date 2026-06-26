@@ -23,7 +23,7 @@ A submission/excellence score requires the aggregate score to be at least 95 and
 | Component | Weight | Minimum for submission | Examples |
 |-----------|--------|------------------------|----------|
 | Literature | 10% | 80 | coverage, citation fidelity, contribution positioning |
-| Data | 10% | 80 | source clarity, sample construction, measurement |
+| Data | 10% | 80 | source clarity, sample construction, measurement, Provenance Ledger coverage |
 | Identification | 25% | 80 | estimand, assumptions, threats, robustness |
 | Code | 15% | 80 | reproducibility, paths, seeds, output contracts |
 | Paper | 25% | 80 | argument, structure, claims, tables/figures |
@@ -43,6 +43,7 @@ A submission/excellence score requires the aggregate score to be at least 95 and
 - Runtime or LaTeX compile failure.
 - Hardcoded absolute paths in code.
 - Generated numbers in the paper that do not match `results/`.
+- Missing Provenance Ledger coverage for data/results assets or their queryable variables/codes/layers.
 - Causal claim without identification support.
 - Missing or fabricated citation.
 - Slide claim that contradicts the paper.

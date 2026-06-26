@@ -53,6 +53,7 @@ docs/work/plans/YYYY-MM-DD_short-description.md
 ```
 
 Format: Status (DRAFT/APPROVED/COMPLETED), approach, files to modify, verification steps.
+For data-producing tasks, also list expected Provenance Ledger asset entries and variable/code/layer entries.
 
 ## Context Management
 

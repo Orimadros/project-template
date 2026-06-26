@@ -13,6 +13,8 @@
 - **Paper is authoritative** -- `docs/deliverables/articles/main/main.tex` is the source of truth for the argument, notation, claims, tables, and figures
 - **Slides derive from the paper** -- Beamer decks in `docs/deliverables/slides/` are talks based on the canonical paper, not a parallel source of truth
 - **Reproducibility first** -- `code/` creates data/results; lockfiles pin dependencies; the Makefile defines the host pipeline
+- **Raw data is append-only** -- Claude/Codex hooks allow new files in `data/raw/` but block edits, overwrites, chmods, and deletes of existing raw files
+- **Provenance Ledger required** -- every data-bearing asset and nested variable/code/layer must be documented in `docs/data/provenance-ledger/`
 - **Worker/critic separation** -- creative agents draft; critic agents evaluate; creators never self-score
 - **[LEARN] tags** -- save corrections as `[LEARN:category] wrong -> right` in `MEMORY.md`
 
@@ -37,6 +39,8 @@
 │   └── tmp/
 ├── results/                # Generated tables, figures, model outputs
 └── docs/
+    ├── data/
+    │   └── provenance-ledger/ # Asset + variable-level data provenance
     ├── sources/             # External reference/input documents + references.bib
     ├── work/                # Process docs created while working
     │   ├── plans/
@@ -79,6 +83,7 @@ make setup
 make fetch
 make build
 make analysis
+make provenance
 make all
 
 # LaTeX documents (host, with TeX installed)
@@ -86,6 +91,17 @@ make articles   # compile every root .tex document under docs/deliverables/artic
 make slides     # compile every root .tex document under docs/deliverables/slides/
 make latex      # compile both articles and slides
 ```
+
+---
+
+## Provenance Ledger
+
+- Follow `.claude/rules/provenance-ledger.md` for every data-bearing asset in `data/raw/`, `data/tmp/`, `data/clean/`, and `results/`.
+- Agents that fetch data, write data-generating code, create outputs, or answer variable/code questions must update `docs/data/provenance-ledger/` without waiting for a separate request.
+- The ledger must document every asset plus nested queryable units: variables, columns, fields, raster bands/layers, class codes, model-output fields, units, missing-value rules, and derivations.
+- Definitions and generation procedures must come from actual sources, code, codebooks, metadata, papers, or provider documentation. Do not fill provenance from memory.
+- If exact provenance cannot be found, record the gap with `partial-flagged` or `missing-blocker`, warn the user, and run `make provenance`.
+- Claude/Codex may add new files to `data/raw/`, but must not overwrite, edit, delete, rename over, or chmod existing raw files.
 
 ---
 

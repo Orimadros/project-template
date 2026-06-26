@@ -19,6 +19,7 @@ Plan approved → orchestrator activates
   │         R scripts: Rscript runs without error
   │         Simulations: set.seed reproducibility
   │         Plots: PDF/PNG created, correct format
+  │         Data/results assets: make provenance passes
   │         If verification fails → fix → re-verify
   │
   Step 3: SCORE — Apply quality-gates rubric
@@ -37,5 +38,6 @@ Plan approved → orchestrator activates
 - [ ] No hardcoded absolute paths
 - [ ] `set.seed()` once at top if stochastic
 - [ ] Output files created at expected paths
+- [ ] Provenance Ledger updated and `make provenance` passes if data/results changed
 - [ ] Tolerance checks pass (if applicable)
 - [ ] Quality score >= 80

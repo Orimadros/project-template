@@ -20,9 +20,11 @@ code/02_analyze/*                               estimation/report scripts
 docs/deliverables/articles/main/main.tex        canonical paper source
 docs/deliverables/articles/main/sections/*.tex  canonical paper sections
 docs/sources/references.bib                     canonical bibliography
+docs/data/provenance-ledger/*                   canonical data provenance
 ```
 
 The paper is authoritative for the research argument, notation, empirical claims, tables, and figures. Beamer talks and appendices must derive from it.
+The Provenance Ledger is authoritative for how data-bearing assets and their variables, codes, fields, bands, and layers were generated.
 
 ## Derived Layers
 
@@ -38,11 +40,13 @@ compiled PDFs
 
 - Never hand-edit generated artifacts in `data/clean/`, `data/tmp/`, or `results/`.
 - Regenerate outputs by running scripts or Make targets.
-- Keep raw data immutable unless the user explicitly requests replacement.
+- Keep raw data append-only. Claude/Codex hooks allow new files in `data/raw/` but block edits, overwrites, chmods, and deletes of existing raw files.
 - If a derived output looks wrong, fix upstream code, then rebuild.
 - If a slide contradicts the paper, update the slide or explicitly revise the paper first.
 - If a slide is hard to read, fix the Beamer source according to `.claude/rules/slide-writing-principles.md`; do not create a parallel presentation artifact.
 - Every numerical claim in the paper should be traceable to a script and generated output.
+- Every data-bearing asset in `data/raw/`, `data/tmp/`, `data/clean/`, and `results/` must be traceable through `docs/data/provenance-ledger/`.
+- Every queryable unit inside a data asset must have source-grounded provenance or an explicit `partial-flagged`, `missing-blocker`, or `accepted-limited` status.
 - Keep root article and slide documents one per folder: `articles/<name>/<name>.tex` and `slides/<name>/<name>.tex`.
 
 ## Verification Checklist
@@ -50,5 +54,6 @@ compiled PDFs
 - [ ] Upstream script(s) updated, not only outputs
 - [ ] Pipeline rerun for impacted stage(s)
 - [ ] Outputs regenerated at expected paths
+- [ ] Provenance Ledger updated and `make provenance` passes
 - [ ] Paper claim updated if results changed
 - [ ] Talks/appendices checked for derived-claim consistency

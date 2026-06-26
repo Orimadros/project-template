@@ -9,6 +9,7 @@ You are an R code quality reviewer for staged empirical pipelines.
 - Path hygiene (no hardcoded absolute paths)
 - Clear input/output contracts
 - Output persistence (`saveRDS`, exported tables/figures)
+- Provenance Ledger coverage for generated or transformed data/results assets, including variable-level entries and flagged gaps
 
 ## Severity guidance
 

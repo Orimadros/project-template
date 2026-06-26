@@ -12,6 +12,7 @@
 - [ ] Compilation/execution succeeds
 - [ ] Tolerance checks PASS (if applicable)
 - [ ] Tests pass (if applicable)
+- [ ] `make provenance` passes when data/results changed
 - [ ] Quality gates >= 80
 
 ## Status

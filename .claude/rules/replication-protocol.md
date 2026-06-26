@@ -15,6 +15,8 @@ Before writing any R code:
 
 - [ ] Read the paper's replication README
 - [ ] Inventory replication package: language, data files, scripts, outputs
+- [ ] Create or update Provenance Ledger entries for replicated raw assets, intermediate assets, clean assets, and output assets
+- [ ] Record variable-level definitions, sample restrictions, transformations, missing-value rules, and known gaps in `docs/data/provenance-ledger/`
 - [ ] Record gold standard numbers from the paper:
 
 ```markdown
@@ -35,6 +37,7 @@ Before writing any R code:
 - [ ] Translate line-by-line initially -- don't "improve" during replication
 - [ ] Match original specification exactly (covariates, sample, clustering, SE computation)
 - [ ] Save all intermediate results as RDS
+- [ ] Update the Provenance Ledger whenever a replicated data object or output is created
 
 ### Stata to R Translation Pitfalls
 
@@ -89,6 +92,7 @@ Save to `docs/work/reviews/[paper]_replication_report.md`:
 
 ## Environment
 - R version, key packages (with versions), data source
+- Provenance Ledger entries updated and `make provenance` status
 ```
 
 ---

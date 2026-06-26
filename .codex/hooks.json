@@ -25,7 +25,7 @@
         ]
       },
       {
-        "matcher": "Edit|Write|^apply_patch$",
+        "matcher": "Bash|Edit|Write|^apply_patch$",
         "hooks": [
           {
             "type": "command",
@@ -45,6 +45,18 @@
             "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/context-monitor.py\"",
             "timeout": 5,
             "statusMessage": "Checking context budget"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/provenance-reminder.py\"",
+            "timeout": 5,
+            "statusMessage": "Checking Provenance Ledger reminder"
+          },
+          {
+            "type": "command",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.codex/hooks/lock-raw-data.sh\"",
+            "timeout": 5,
+            "statusMessage": "Locking existing raw data files"
           }
         ]
       },

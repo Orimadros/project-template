@@ -18,7 +18,7 @@ Use this workflow for referee-style reviews, internal critic reports, and major 
 
 ## Routing
 
-- `NEW ANALYSIS` -> strategist, coder, coder-critic, verifier.
+- `NEW ANALYSIS` -> strategist, coder, provenance-ledger, coder-critic, verifier.
 - `CLARIFICATION` -> writer, writer-critic, domain-referee.
 - `DISAGREE` -> strategist, methods-referee, editor.
 - `MINOR` -> proofreader or direct edit, then compile.
@@ -31,6 +31,7 @@ For non-trivial reviews, create a revision plan in `docs/work/plans/` with:
 - comment classification table
 - planned response
 - files expected to change
+- expected Provenance Ledger updates when data/results change
 - verification commands
 
 Do not bury revision decisions in chat only.

@@ -4,7 +4,7 @@ R_SCRIPT ?= Rscript
 PYTHON_RUN ?= uv run
 LATEX ?= xelatex
 
-.PHONY: help setup setup-python setup-r fetch build analysis latex articles slides compile-tex _compile-tex clean
+.PHONY: help setup setup-python setup-r fetch build analysis provenance latex articles slides compile-tex _compile-tex clean
 
 help:
 	@echo "Project workflow targets (run on host):"
@@ -12,10 +12,11 @@ help:
 	@echo "  make fetch      Run shell scripts in code/00_fetch/"
 	@echo "  make build      Run R scripts in code/01_build/"
 	@echo "  make analysis   Run R scripts + notebooks in code/02_analyze/"
+	@echo "  make provenance Validate docs/data/provenance-ledger coverage"
 	@echo "  make latex      Compile every root .tex document in articles/ and slides/"
 	@echo "  make articles   Compile every root .tex document in docs/deliverables/articles/"
 	@echo "  make slides     Compile every root .tex document in docs/deliverables/slides/"
-	@echo "  make all        setup -> fetch -> build -> analysis"
+	@echo "  make all        setup -> fetch -> build -> analysis -> provenance"
 	@echo "  make clean      Delete generated files in data/clean, data/tmp, results"
 
 setup: setup-python setup-r
@@ -77,7 +78,10 @@ analysis:
 		echo "[analysis] no notebooks found in code/02_analyze/"; \
 	fi
 
-all: setup fetch build analysis
+provenance:
+	@python3 code/03_quality/check_provenance_ledger.py
+
+all: setup fetch build analysis provenance
 
 latex: articles slides
 

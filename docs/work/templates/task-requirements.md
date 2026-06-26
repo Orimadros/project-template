@@ -49,6 +49,12 @@
 - [Measurable criterion for completion]
 - [Measurable criterion for completion]
 
+## Provenance Ledger Impact
+
+- **Affected assets:** [data/raw, data/tmp, data/clean, or results paths, if any]
+- **Nested records required:** [variables, codes, raster bands/layers, model-output fields, or N/A]
+- **Expected status:** complete / partial-flagged / missing-blocker / accepted-limited / N/A
+
 ---
 
 ## Approval

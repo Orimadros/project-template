@@ -5,6 +5,8 @@ paths:
   - "code/**/*.R"
   - "code/**/*.py"
   - "code/**/*.sh"
+  - "data/**/*"
+  - "results/**/*"
 ---
 
 # Content Invariants
@@ -32,6 +34,7 @@ These are non-negotiable checks for paper-centric empirical work.
 - Scripts write derived data to `data/clean/` or `data/tmp/` and generated outputs to `results/`.
 - Script names should reflect execution order and purpose.
 - Scripts must be readable to a newcomer: begin with a concise purpose/data-flow description, use descriptive variable names, and prefer well-named functions for repeated or multi-step logic so top-level execution reads like an intuitive sequence.
+- Data-bearing outputs must have Provenance Ledger entries with nested variable/code/layer provenance or explicit flagged gaps.
 - Avoid manual edits to generated results; fix code and rerun.
 
 ## Talk Invariants
@@ -45,3 +48,4 @@ These are non-negotiable checks for paper-centric empirical work.
 ## Traceability Invariant
 
 When a numerical claim changes, update all dependent paper text, tables/figures, appendices, and slides in the same task or record a follow-up plan in `docs/work/plans/`.
+When a data asset or variable definition changes, update `docs/data/provenance-ledger/` in the same task.

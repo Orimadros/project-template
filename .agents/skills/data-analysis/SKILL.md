@@ -17,6 +17,7 @@ Use this workflow for reproducible analysis under the staged project structure.
 - Use `saveRDS()` for heavy computed objects.
 - Use relative paths only.
 - Treat `docs/deliverables/articles/main/main.tex` as the canonical consumer of results.
+- Treat `docs/data/provenance-ledger/` as the canonical record for data asset and variable-level generation.
 
 ## Phases
 
@@ -25,11 +26,14 @@ Use this workflow for reproducible analysis under the staged project structure.
 3. Build reproducible staged scripts.
 4. Estimate and validate.
 5. Export tables/figures/model outputs to `results/`.
-6. Update or flag paper claims affected by the outputs.
-7. Save outputs and run review (`/review-r`, `/review code`, or `coder-critic`).
+6. Update the Provenance Ledger for every generated data-bearing asset and nested variable/code/layer.
+7. Run `make provenance`.
+8. Update or flag paper claims affected by the outputs.
+9. Save outputs and run review (`/review-r`, `/review code`, or `coder-critic`).
 
 ## Deliverables
 
 - Reproducible script(s) in `code/01_build/` or `code/02_analyze/`.
 - Output artifacts in `results/` and optionally `data/clean/`.
+- Provenance Ledger entries for changed assets and variables, or explicit flagged gaps.
 - Brief note describing assumptions, checks performed, and paper implications.

@@ -15,7 +15,7 @@ Use this after a review report, referee report, or internal critic pass.
 2. Classify comments as `NEW ANALYSIS`, `CLARIFICATION`, `DISAGREE`, or `MINOR`.
 3. Create a revision plan in `docs/work/plans/` for non-trivial revisions.
 4. Route implementation:
-   - `NEW ANALYSIS` -> strategist/coder/coder-critic/verifier
+   - `NEW ANALYSIS` -> strategist/coder/provenance-ledger/coder-critic/verifier
    - `CLARIFICATION` -> writer/writer-critic
    - `DISAGREE` -> strategist/methods-referee/editor
    - `MINOR` -> proofread/compile
@@ -25,5 +25,6 @@ Use this after a review report, referee report, or internal critic pass.
 
 - Comment classification table
 - Files changed or planned
+- Provenance Ledger updates when data/results change
 - Commands run
 - Remaining open decisions

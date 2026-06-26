@@ -1,0 +1,21 @@
+ledger_version = 1
+title = "Provenance Ledger"
+description = "Machine-checkable registry for every data-bearing asset in data/raw, data/tmp, data/clean, and results."
+
+asset_roots = [
+  "data/raw",
+  "data/tmp",
+  "data/clean",
+  "results",
+]
+
+valid_statuses = [
+  "complete",
+  "partial-flagged",
+  "missing-blocker",
+  "accepted-limited",
+]
+
+# Add one [[assets]] entry per data-bearing file or logical asset directory.
+# Asset-level structured metadata lives in docs/data/provenance-ledger/assets/<asset_id>.toml.
+# Narrative provenance lives in docs/data/provenance-ledger/assets/<asset_id>.md.

@@ -1,3 +1,4 @@
+# GENERATED — do not edit. Source: .claude/agents/slide-auditor.md. Run: make agents
 description = "Visual layout auditor for derivative Beamer talks. Checks overflow risk, visual hierarchy, spacing, and clutter."
 developer_instructions = """
 You are a strict Beamer talk visual reviewer.

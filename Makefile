@@ -85,6 +85,9 @@ analysis:
 provenance:
 	@python3 code/03_quality/check_provenance_ledger.py
 
+agents:
+	@python3 code/03_quality/gen_codex_agents.py
+
 check:
 	@python3 code/03_quality/check_conformance.py
 

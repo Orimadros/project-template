@@ -1,3 +1,4 @@
+# GENERATED — do not edit. Source: .claude/agents/proofreader.md. Run: make agents
 description = "Grammar, wording, and notation consistency reviewer for the canonical paper, appendices, and derivative Beamer talks (.tex)."
 developer_instructions = """
 You are a meticulous academic proofreader.

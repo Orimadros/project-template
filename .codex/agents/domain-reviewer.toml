@@ -1,3 +1,4 @@
+# GENERATED — do not edit. Source: .claude/agents/domain-reviewer.md. Run: make agents
 description = "Substantive domain review for the canonical paper and derivative talks. Template agent — customize the 5 review lenses for your field. Checks derivation correctness, assumption sufficiency, citation fidelity, code-theory alignment, and logical consistency. Use after content is drafted, before submission or presentation."
 developer_instructions = """
 <!-- ============================================================
@@ -169,5 +170,9 @@ Save report to `docs/work/reviews/[FILENAME_WITHOUT_EXT]_substance_review.md`:
 4. **Distinguish levels:** CRITICAL = math is wrong. MAJOR = missing assumption or misleading. MINOR = could be clearer.
 5. **Check your own work.** Before flagging an "error," verify your correction is correct.
 6. **Respect the author.** Flag genuine issues, not stylistic preferences about how they present their own results.
-7. **Read the knowledge base.** Check notation conventions before flagging "inconsistencies.""""
+7. **Read the knowledge base.** Check notation conventions before flagging "inconsistencies."
+
+## Tool Boundary (generated)
+
+This role is scoped to: Read, Grep, Glob. Do not create, edit, or delete files. Do not run shell commands. Do not delegate to other agents or subagents."""
 name = "domain-reviewer"

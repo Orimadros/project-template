@@ -273,10 +273,26 @@ def check_dangling_references(root: Path) -> list[Finding]:
     existing_references = {p.name for p in references_dir.glob("*.md")} if references_dir.is_dir() else set()
 
     skip_dirs = {".git", "__pycache__", ".venv", "node_modules"}
+    # Narrative process records (checkpoints, session logs, plans, reviews,
+    # merge reports) legitimately mention a removed rule file by name as
+    # history -- e.g. "Removed: <rules-dir>/some-rule.md (folded into
+    # AGENTS.md)". This check exists for OPERATIVE references ("follow
+    # <rules-dir>/some-rule.md") in files like AGENTS.md, rules, skills, and
+    # agents; it would otherwise false-positive on every future record of a
+    # rule being renamed or removed. (Deliberately not spelling out the real
+    # path prefix here, or this comment would trip the same regex it's
+    # describing -- see the git history of this line for proof.)
+    narrative_dirs = {
+        "docs/work/checkpoints", "docs/work/session_logs", "docs/work/plans",
+        "docs/work/reviews", "docs/work/merge_reports",
+    }
     for path in root.rglob("*"):
         if not path.is_file():
             continue
         if any(part in skip_dirs for part in path.parts):
+            continue
+        rel_str = path.relative_to(root).as_posix()
+        if any(rel_str.startswith(d + "/") for d in narrative_dirs):
             continue
         if path.suffix not in TEXT_SUFFIXES:
             continue

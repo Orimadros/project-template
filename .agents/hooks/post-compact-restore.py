@@ -145,6 +145,34 @@ def emit_session_context(message: str) -> int:
     return 0
 
 
+def reset_rule_injector_session(state_dir: Path, hook_input: dict) -> None:
+    """Compaction discards injected context, so the rule-injector's
+    per-session dedup markers and cumulative budget counter (both under
+    sessions/<session_id>/) must reset too -- otherwise a rule that was
+    injected before compaction stays permanently "already injected" even
+    though the model no longer has it in context."""
+    import hashlib
+    import shutil
+
+    session_id = None
+    for key in ("session_id", "conversation_id"):
+        value = hook_input.get(key)
+        if isinstance(value, str) and value:
+            session_id = value
+            break
+    if session_id is None:
+        env_value = os.environ.get("CODEX_SESSION_ID")
+        if env_value:
+            session_id = env_value
+        else:
+            transcript = hook_input.get("transcript_path")
+            if isinstance(transcript, str) and transcript:
+                session_id = hashlib.md5(transcript.encode()).hexdigest()[:12]
+    if session_id is None:
+        return
+    shutil.rmtree(state_dir / "sessions" / session_id, ignore_errors=True)
+
+
 def main() -> int:
     hook_input = read_hook_input()
     if hook_input.get("source") not in ("compact", "resume"):
@@ -155,6 +183,7 @@ def main() -> int:
         return 0
 
     state_dir = get_state_dir(project_dir)
+    reset_rule_injector_session(state_dir, hook_input)
     pre_compact_state = read_pre_compact_state(state_dir)
     plan_info = find_active_plan(project_dir)
     session_log = find_recent_session_log(project_dir)

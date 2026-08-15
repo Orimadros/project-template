@@ -145,6 +145,11 @@
             "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/verify-reminder.py",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/plan-name-check.py",
+            "timeout": 5
           }
         ]
       }
@@ -156,6 +161,11 @@
             "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/log-reminder.py",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/plan-name-check.py",
+            "timeout": 5
           }
         ]
       }

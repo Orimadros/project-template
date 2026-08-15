@@ -55,9 +55,9 @@
     │   └── provenance-ledger/ # Asset + variable-level data provenance
     ├── sources/             # External reference/input documents + references.bib
     ├── work/                # Process docs created while working
-    │   ├── plans/
-    │   ├── task_requirements/
+    │   ├── plans/           # Includes Clarity Status + MUST/SHOULD/MAY requirements per plan.md template
     │   ├── session_logs/
+    │   ├── meetings/       # Meeting notes/transcripts; YYYY-MM-DD_topic-slug.md
     │   ├── checkpoints/
     │   ├── reviews/
     │   ├── merge_reports/
@@ -75,11 +75,14 @@
 
 ## Naming Conventions
 
-- Stage scripts by execution order:
-  - `code/00_fetch/00_download_xxx.sh`
-  - `code/01_build/00_clean_xxx.R`
-  - `code/02_analyze/01_estimate_xxx.R`
+- Pipeline entry scripts in `code/00_fetch/`, `code/01_build/`, and `code/02_analyze/` use `NN_verb_noun.<extension>`, where `NN` is a two-digit execution-order prefix and the remaining name is lowercase `snake_case`:
+  - `code/00_fetch/01_download_biodiversity.sh`
+  - `code/01_build/03_construct_panel.R`
+  - `code/02_analyze/05_make_tables.py`
+- `make fetch`, `make build`, and `make analysis` run only those numbered pipeline entry points, in lexical order. Executed analysis notebooks follow the same pattern.
+- Supporting modules, shared engines, and other scripts that are not pipeline entry points are exempt; keep them unnumbered so Make does not run them directly (for example, `biodiversity_model.py`, imported by `01_solve_model.py`). They need not use a verb--noun filename.
 - Keep names imperative and explicit: `prep_`, `build_`, `estimate_`, `predict_`, `export_`
+- Meeting notes and transcripts in `docs/work/meetings/` must use `YYYY-MM-DD_topic-slug.md`: a real ISO calendar date, followed by one lowercase, hyphen-separated topic slug. For example, `docs/work/meetings/2026-08-10_bard-harstad-theta.md`. Claude/Codex hooks reject non-conforming meeting-file paths.
 - Each script should have a clear file contract: inputs, outputs, and stage responsibility
 - Scripts should be readable to someone not yet familiar with the project: start with a concise purpose/data-flow description, use descriptive variable names, and organize repeated or multi-step logic into clearly named functions so the main script reads like an intuitive chain of steps
 - Generated empirical tables and figures belong in `results/`; paper/talk files include them rather than hand-copying results
@@ -120,7 +123,7 @@ make latex      # compile both articles and slides
 
 ## PDF Source Reading
 
-- When reading a PDF's contents, follow `.claude/rules/pdf-processing.md`: first create a Markdown version with a command of the form `markitdown docs/sources/hyperdominance-paper.pdf -o docs/sources/hyperdominance-paper.md` and read the Markdown instead of the PDF.
+- When reading a PDF's contents, follow `.claude/rules/pdf-processing.md`: first create a Markdown version with `uv run python code/03_quality/pdf_to_markdown.py docs/sources/hyperdominance-paper.pdf --output docs/sources/hyperdominance-paper.md` and read the Markdown instead of the PDF.
 - Use the original PDF or page images as a supplement when Markdown would lose important information, especially scanned pages, figures, diagrams, equations, complex tables, slide layouts, pagination, or visual design.
 
 ---

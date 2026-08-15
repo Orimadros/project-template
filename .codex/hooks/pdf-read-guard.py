@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Block direct reads of source PDFs so agents convert them with MarkItDown first.
+Block direct reads of source PDFs so agents classify and convert them first.
 
 This hook is intentionally narrow: it only blocks Read tool calls for PDFs under
 docs/sources/. Compiled PDFs and visual QA artifacts elsewhere remain readable.
@@ -69,12 +69,13 @@ def is_source_pdf(relative_path: Path) -> bool:
 def block_message(relative_path: Path) -> str:
     md_path = relative_path.with_suffix(".md")
     command = (
-        "markitdown "
-        f"{shlex.quote(str(relative_path))} -o {shlex.quote(str(md_path))}"
+        "uv run python code/03_quality/pdf_to_markdown.py "
+        f"{shlex.quote(str(relative_path))} --output {shlex.quote(str(md_path))}"
     )
     return (
         "Direct reads of source PDFs are blocked for this project. "
-        "Create a Markdown version with MarkItDown and read that instead:\n\n"
+        "Create a Markdown version with Firecrawl pdf-inspector and read that "
+        "instead:\n\n"
         f"  {command}\n\n"
         "If visual/layout information is essential, inspect the original PDF or "
         "page images as a supplement and state why Markdown is insufficient."

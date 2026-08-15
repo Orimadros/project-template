@@ -52,6 +52,5 @@ A submission/excellence score requires the aggregate score to be at least 95 and
 ## Output Locations
 
 - Review reports: `docs/work/reviews/`
-- Revision plans: `docs/work/plans/`
+- Revision plans: `docs/work/plans/` (includes Clarity Status + requirements per `docs/work/templates/plan.md`)
 - Merge reports: `docs/work/merge_reports/`
-- Task requirements: `docs/work/task_requirements/`

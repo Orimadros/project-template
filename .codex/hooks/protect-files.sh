@@ -74,6 +74,71 @@ is_raw_path() {
   [[ "$path" == "data/raw" || "$path" == data/raw/* ]]
 }
 
+is_meeting_path() {
+  local path="$1"
+  [[ "$path" == docs/work/meetings/* ]]
+}
+
+is_valid_meeting_path() {
+  local path="$1"
+  python3 - "$path" <<'PY'
+from datetime import date
+import re
+import sys
+
+match = re.fullmatch(
+    r"docs/work/meetings/(\d{4}-\d{2}-\d{2})_([a-z0-9]+(?:-[a-z0-9]+)*)\.md",
+    sys.argv[1],
+)
+if not match:
+    raise SystemExit(1)
+
+try:
+    date.fromisoformat(match.group(1))
+except ValueError:
+    raise SystemExit(1)
+PY
+}
+
+reject_invalid_meeting_paths_in_command() {
+  printf '%s' "$INPUT" | python3 -c '
+import json
+from datetime import date
+import re
+import sys
+
+try:
+    command = (json.load(sys.stdin).get("tool_input") or {}).get("command")
+except json.JSONDecodeError:
+    raise SystemExit(0)
+
+if not isinstance(command, str):
+    raise SystemExit(0)
+
+pattern = re.compile(r"(?:\./)?docs/work/meetings(?:/[^\s;|&<>\"\x27]*)?")
+filename = re.compile(
+    r"docs/work/meetings/(\d{4}-\d{2}-\d{2})_([a-z0-9]+(?:-[a-z0-9]+)*)\.md"
+)
+for candidate in pattern.findall(command):
+    relative = candidate.removeprefix("./")
+    if relative in {"docs/work/meetings", "docs/work/meetings/", "docs/work/meetings/.gitkeep"}:
+        continue
+    match = filename.fullmatch(relative)
+    if match:
+        try:
+            date.fromisoformat(match.group(1))
+        except ValueError:
+            match = None
+    if not match:
+        print(
+            "Meeting files must use docs/work/meetings/YYYY-MM-DD_topic-slug.md "
+            "with a real date and lowercase hyphen-separated slug.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
+'
+}
+
 is_mutating_raw_command() {
   printf '%s' "$INPUT" | python3 -c '
 import json
@@ -128,6 +193,7 @@ sys.exit(1)
 
 if [[ "$TOOL" == "Bash" ]]; then
   protect_raw_permissions
+  reject_invalid_meeting_paths_in_command
   if is_mutating_raw_command; then
     echo "Protected raw data: commands may add new files, but must not edit or delete existing files in data/raw." >&2
     exit 2
@@ -161,6 +227,11 @@ while IFS=$'\t' read -r ACTION FILE; do
       continue
     fi
     echo "Protected raw data: $REL_FILE already exists or would be modified/deleted. Add new raw files only; do not edit or delete existing raw files." >&2
+    exit 2
+  fi
+
+  if is_meeting_path "$REL_FILE" && [[ "$REL_FILE" != "docs/work/meetings/.gitkeep" ]] && ! is_valid_meeting_path "$REL_FILE"; then
+    echo "Meeting files must use docs/work/meetings/YYYY-MM-DD_topic-slug.md with a real date and lowercase hyphen-separated slug." >&2
     exit 2
   fi
 

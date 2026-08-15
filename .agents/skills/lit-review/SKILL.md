@@ -19,7 +19,7 @@ Conduct a structured literature search and synthesis on the given topic.
 
 2. **Search for related work** using available tools:
    - Check `docs/sources/` for uploaded papers
-   - For local PDFs, follow `.claude/rules/pdf-processing.md`: create a MarkItDown Markdown version and read that unless visual/layout information is essential
+   - For local PDFs, follow `.claude/rules/pdf-processing.md`: create a pdf-inspector Markdown version and read that unless visual/layout information is essential
    - Use `WebSearch` to find recent publications (if available)
    - Use `WebFetch` to access working paper repositories (if available)
    - Read any existing `.bib` file for papers already in the project

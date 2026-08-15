@@ -1,13 +1,14 @@
 ---
 name: provenance-ledger
-description: Maintain source-grounded asset and variable-level provenance for every dataset, intermediate file, clean dataset, raster, model output, table, or data-bearing result. Use whenever Codex fetches data, writes data-generating code, creates or updates data/results assets, reviews data pipelines, or answers questions about variable meanings, code values, raster classes, units, missing values, or how an asset was generated.
-argument-hint: "[asset path, variable/code question, or data task]"
+description: Maintain source-grounded asset and variable-level provenance for every dataset, intermediate file, clean dataset, raster, model output, table, or data-bearing result. Use whenever the agent fetches data, writes data-generating code, creates or updates data/results assets, reviews data pipelines, or answers questions about variable meanings, code values, raster classes, units, missing values, or how an asset was generated.
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 ---
 
 # Provenance Ledger
 
 Maintain `docs/data/provenance-ledger/` as the authoritative source for how each data-bearing asset and queryable unit was generated.
+
+**Arguments:** [asset path, variable/code question, or data task]
 
 ## Required Context
 

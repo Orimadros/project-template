@@ -1,7 +1,6 @@
 ---
 name: compile-latex
 description: Compile the canonical paper or a derivative Beamer talk with XeLaTeX and BibTeX.
-argument-hint: "[articles|slides|all|optional document path]"
 allowed-tools: ["Read", "Bash", "Glob"]
 ---
 

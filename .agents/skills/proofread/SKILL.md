@@ -1,7 +1,6 @@
 ---
 name: proofread
 description: Run proofreading protocol on the canonical paper, appendices, and derivative Beamer talks. Produces a report without editing files.
-argument-hint: "[filename, 'paper', or 'all']"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
 ---
 

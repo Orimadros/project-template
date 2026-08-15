@@ -32,7 +32,8 @@ These are non-negotiable checks for paper-centric empirical work.
 - Packages/imports belong at the top of scripts.
 - Use relative paths only.
 - Scripts write derived data to `data/clean/` or `data/tmp/` and generated outputs to `results/`.
-- Script names should reflect execution order and purpose.
+- Pipeline entry scripts in `code/00_fetch/`, `code/01_build/`, and `code/02_analyze/` must use `NN_verb_noun.<extension>`: a two-digit execution-order prefix followed by a lowercase snake-case action and object (for example, `01_solve_model.py`). `make` runs only these numbered entry points, in lexical order.
+- Imported modules, shared engines, and other non-pipeline helpers are exempt from the numbered verb--noun rule; keep them unnumbered so they are not executed by `make` (for example, `biodiversity_model.py`).
 - Scripts must be readable to a newcomer: begin with a concise purpose/data-flow description, use descriptive variable names, and prefer well-named functions for repeated or multi-step logic so top-level execution reads like an intuitive sequence.
 - Data-bearing outputs must have Provenance Ledger entries with nested variable/code/layer provenance or explicit flagged gaps.
 - Avoid manual edits to generated results; fix code and rerun.

@@ -1,13 +1,14 @@
 ---
 name: strategize
 description: Turn a paper idea into a research design, identification strategy, analysis plan, and paper outline.
-argument-hint: "[research question or design problem]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
 ---
 
 # Strategize
 
 Use this for research design decisions before code or paper drafting.
+
+**Arguments:** [research question or design problem]
 
 ## Required Context
 

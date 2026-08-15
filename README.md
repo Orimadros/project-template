@@ -42,7 +42,7 @@ This version includes:
 └── docs/
     ├── data/                # Provenance Ledger and data-facing metadata
     ├── sources/             # External reference/input documents + references.bib
-    ├── work/                # Plans, task requirements, logs, checkpoints, reviews
+    ├── work/                # Plans (with clarity/requirements sections), logs, meetings, checkpoints, reviews
     └── deliverables/        # Articles, slides, appendices, preambles, document assets
 ```
 
@@ -102,6 +102,11 @@ This version includes:
 - Codex reads project instructions from `AGENTS.md`, repo skills from `.agents/skills/`, custom agents from `.codex/agents/*.toml`, and project hooks from `.codex/hooks.json` after the project `.codex/` layer is trusted.
 - Claude Code keeps its parallel setup in `.claude/`: agents, skills, hooks, settings, rules, and references.
 - Shared research calibration lives once in `.claude/rules/` and `.claude/references/`; Codex instructions point there instead of mirroring those files.
+
+### 10. Meeting records have a stable filename convention
+- Meeting notes and transcripts belong in `docs/work/meetings/`.
+- Their filenames must be `YYYY-MM-DD_topic-slug.md`, using a real ISO calendar date and a lowercase, hyphen-separated topic slug; for example, `2026-08-10_bard-harstad-theta.md`.
+- Claude and Codex pre-tool hooks reject non-conforming meeting-file paths.
 
 ---
 

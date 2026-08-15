@@ -5,11 +5,13 @@ paths:
 
 # Robust PDF Processing
 
-## MarkItDown-First Workflow
+## pdf-inspector-First Workflow
 
 When you need or want to read the contents of a PDF, create a Markdown version
-with MarkItDown and read that Markdown file instead of reading the PDF directly.
-This keeps source reading searchable, quotable, and easier to revisit.
+with Firecrawl [pdf-inspector](https://github.com/firecrawl/pdf-inspector) and
+read that Markdown file instead of reading the PDF directly. This keeps source
+reading searchable, quotable, and easier to revisit while classifying PDFs that
+need OCR before agents rely on an incomplete extraction.
 
 **Step 1: Receive or locate the PDF**
 - User uploads PDF or other source material to `docs/sources/`, or the task
@@ -20,19 +22,30 @@ This keeps source reading searchable, quotable, and easier to revisit.
 
 **Step 2: Check PDF properties**
 ```bash
-pdfinfo "docs/sources/paper_name.pdf" | grep "Pages:"
-ls -lh "docs/sources/paper_name.pdf"
+uv run python code/03_quality/pdf_to_markdown.py --help
 ```
 
 **Step 3: Convert to Markdown**
 ```bash
-markitdown docs/sources/hyperdominance-paper.pdf -o docs/sources/hyperdominance-paper.md
+uv run python code/03_quality/pdf_to_markdown.py \
+  docs/sources/hyperdominance-paper.pdf \
+  --output docs/sources/hyperdominance-paper.md
 ```
 
 - Save the Markdown next to the PDF using the same stem unless a project-specific
   source folder already exists.
 - If the Markdown is older than the PDF or seems incomplete, regenerate it before
   relying on it.
+- The wrapper runs `pdf_inspector.process_pdf`, which classifies the document
+  and produces layout-aware Markdown in one call. It reports `text_based`,
+  `mixed`, `scanned`, or `image_based` plus pages that need OCR.
+- A `text_based` PDF whose wrapper writes Markdown without a warning can be
+  read from the generated Markdown. `mixed` PDFs may yield useful partial
+  Markdown, but inspect every reported OCR-needed page in the original PDF or
+  page images before making claims about it. For `scanned`, `image_based`, or
+  encoding-corrupted PDFs, the wrapper exits without writing Markdown; obtain
+  an authorized OCR/text version or use visual inspection for the needed
+  material.
 - Read the generated Markdown for abstracts, introductions, methods, results,
   literature claims, bibliographic details, and other text-centric content.
 
@@ -55,19 +68,16 @@ Markdown would lose important information, including:
 
 ## Error Handling Protocol
 
-**If a chunk fails to process:**
-1. Note the problematic chunk (e.g., "Chunk p021-025 failed")
-2. Try splitting into 1-2 page pieces
-3. If still failing, skip and document the gap
-
-**If MarkItDown fails or produces poor Markdown:**
-1. Note the failure and whether the issue is text extraction, OCR, tables, or
-   visual content.
-2. Try converting only the relevant pages or splitting into 1-2 page pieces.
-3. Check if Ghostscript is installed: `gs --version`
-4. Try alternative splitting: `pdftk paper.pdf burst output paper_%03d.pdf`
-5. If all else fails, ask the user to upload specific page ranges manually or
-   provide an OCR/text version.
+**If pdf-inspector fails, reports OCR-needed pages, or produces poor Markdown:**
+1. Record whether the problem is an unreadable file, scan/OCR need, broken font
+   encoding, tables, or other visual/layout content.
+2. For `mixed` PDFs, use the Markdown only for the extractable portions and
+   inspect the reported pages directly.
+3. For `scanned` or `image_based` PDFs, do not invent a text extraction. Obtain
+   an authorized OCR/text version, inspect the necessary PDF pages visually, or
+   ask the user for the relevant page range.
+4. If a native-text PDF still has poor output, inspect only the relevant page
+   range visually and document the limitation in the resulting notes.
 
 **If memory/token issues persist:**
 1. Read the generated Markdown by section instead of loading the whole file.

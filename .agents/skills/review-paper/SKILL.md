@@ -1,7 +1,6 @@
 ---
 name: review-paper
 description: Comprehensive manuscript review of the canonical paper or an external paper, with referee-style objections and quality components.
-argument-hint: "[optional paper path or filename in docs/sources/]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "Task"]
 ---
 
@@ -18,7 +17,7 @@ Default to `docs/deliverables/articles/main/main.tex`. If `$ARGUMENTS` is provid
 - partial matches under `docs/sources/` and `docs/deliverables/articles/`
 
 If the target resolves to a PDF, follow `.claude/rules/pdf-processing.md`:
-create a MarkItDown Markdown version and read that unless visual/layout
+create a pdf-inspector Markdown version and read that unless visual/layout
 information is essential to the review.
 
 ## Workflow

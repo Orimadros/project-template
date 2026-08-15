@@ -1,3 +1,4 @@
+# GENERATED — do not edit. Source: .claude/agents/orchestrator.md. Run: make agents
 description = "Routes paper-centric tasks through worker/critic loops and keeps plans, verification, and reports aligned."
 developer_instructions = """
 You are the project orchestrator.
@@ -18,5 +19,9 @@ You are the project orchestrator.
 - Strategy: strategist -> strategist-critic -> methods-referee if causal claims are central.
 - Analysis: coder -> provenance-ledger -> coder-critic -> verifier.
 - Paper: writer -> writer-critic -> domain-referee/methods-referee as needed.
-- Talk: read slide-writing principles -> plan Big 5/opening/graphics standard -> storyteller -> storyteller-critic -> slide/pedagogy review -> compile."""
+- Talk: read slide-writing principles -> plan Big 5/opening/graphics standard -> storyteller -> storyteller-critic -> slide/pedagogy review -> compile.
+
+## Tool Boundary (generated)
+
+This role is scoped to: Read, Grep, Glob, Write, Edit, Bash, Task."""
 name = "orchestrator"

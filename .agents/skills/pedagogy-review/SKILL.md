@@ -1,7 +1,6 @@
 ---
 name: pedagogy-review
 description: Run narrative/delivery review on research-talk slides. Checks story arc, audience prerequisites, examples, notation clarity, and pacing.
-argument-hint: "[TEX filename]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
 ---
 

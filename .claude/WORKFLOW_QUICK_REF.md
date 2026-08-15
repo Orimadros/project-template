@@ -39,7 +39,7 @@ Instruction
 - The paper `docs/deliverables/articles/main/main.tex` is the source of truth for the research argument.
 - Talks in `docs/deliverables/slides/<deck>/<deck>.tex` derive from the paper.
 - Slide writing follows `.claude/rules/slide-writing-principles.md`: sparse, visual, readable, color-conscious, and backup-heavy for dense detail.
-- Scripts are staged: `code/00_fetch` -> `01_build` -> `02_analyze`.
+- Scripts are staged: `code/00_fetch` -> `01_build` -> `02_analyze`. Pipeline entry scripts use `NN_verb_noun.<extension>` (for example, `03_calibrate_kappa.py`) and run in lexical order; unnumbered modules and helpers are not pipeline entry points.
 - Raw data in `data/raw/` is append-only: Claude/Codex may add new files but must not edit or delete existing raw files.
 - Generated files belong in `data/clean/`, `data/tmp/`, and `results/`.
 - Every data-bearing asset and nested variable/code/layer must be documented in the Provenance Ledger from actual sources or explicitly flagged.

@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/.codex/hooks/notify.sh\"",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/notify.sh\"",
             "timeout": 5,
             "statusMessage": "Sending approval notification"
           }
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/pdf-read-guard.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/pdf-read-guard.py\"",
             "timeout": 5,
             "statusMessage": "Checking PDF source reading rule"
           }
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/.codex/hooks/protect-files.sh\"",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/protect-files.sh\"",
             "timeout": 5,
             "statusMessage": "Checking protected files"
           }
@@ -42,21 +42,32 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/context-monitor.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/context-monitor.py\"",
             "timeout": 5,
             "statusMessage": "Checking context budget"
           },
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/provenance-reminder.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/provenance-reminder.py\"",
             "timeout": 5,
             "statusMessage": "Checking Provenance Ledger reminder"
           },
           {
             "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/.codex/hooks/lock-raw-data.sh\"",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/lock-raw-data.sh\"",
             "timeout": 5,
             "statusMessage": "Locking existing raw data files"
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Bash|Edit|Write|^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/rule-injector.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking path-scoped project rules"
           }
         ]
       },
@@ -65,9 +76,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/verify-reminder.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/verify-reminder.py\"",
             "timeout": 5,
             "statusMessage": "Checking verification reminders"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/plan-name-check.py\"",
+            "timeout": 5,
+            "statusMessage": "Checking plan filename convention"
           }
         ]
       }
@@ -77,7 +94,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/pre-compact.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/pre-compact.py\"",
             "timeout": 10,
             "statusMessage": "Saving pre-compact state"
           }
@@ -90,7 +107,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/post-compact-restore.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/post-compact-restore.py\"",
             "timeout": 5,
             "statusMessage": "Restoring compacted context"
           }
@@ -102,9 +119,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/log-reminder.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/log-reminder.py\"",
             "timeout": 10,
             "statusMessage": "Checking session log"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/plan-name-check.py\"",
+            "timeout": 5,
+            "statusMessage": "Checking plan filename convention"
           }
         ]
       }

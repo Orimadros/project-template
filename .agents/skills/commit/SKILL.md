@@ -1,7 +1,6 @@
 ---
 name: commit
 description: Stage, commit, create PR, and merge to main. Use for the standard commit-PR-merge cycle.
-argument-hint: "[optional: commit message]"
 allowed-tools: ["Bash", "Read", "Glob"]
 ---
 
@@ -31,7 +30,7 @@ git checkout -b <short-descriptive-branch-name>
 git add <file1> <file2> ...
 ```
 
-Do NOT stage `.codex/config.toml` or any files containing secrets.
+Do NOT stage `.claude/settings.local.json`, `.codex/config.toml`, or any files containing secrets.
 
 4. **Commit** with a descriptive message:
 
@@ -55,7 +54,7 @@ gh pr create --title "<short title>" --body "$(cat <<'EOF'
 ## Test plan
 <checklist>
 
-🤖 Generated with [Codex](https://openai.com/codex)
+🤖 Generated with <agent name and link, e.g. Claude Code or Codex>
 EOF
 )"
 ```
@@ -73,6 +72,6 @@ git pull
 ## Important
 
 - Always create a NEW branch — never commit directly to main
-- Exclude `settings.local.json` and sensitive files from staging
+- Exclude `settings.local.json`, `config.toml`, and other sensitive local files from staging
 - Use `--merge` (not `--squash` or `--rebase`) unless asked otherwise
 - If the commit message from `$ARGUMENTS` is provided, use it exactly

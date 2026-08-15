@@ -1,3 +1,8 @@
+---
+paths:
+  - "docs/work/plans/**"
+---
+
 # Plan-First Workflow
 
 **For any non-trivial task, enter plan mode before writing code.**
@@ -6,43 +11,41 @@
 
 1. **Enter Plan Mode** — use `EnterPlanMode`
 2. **Check MEMORY.md** — read any `[LEARN]` entries relevant to this task
-3. **Task requirements (for complex/ambiguous tasks)** — see below
-4. **Draft the plan** — what changes, which files, in what order
-5. **Save to disk** — write to `docs/work/plans/YYYY-MM-DD_short-description.md`
-6. **Present to user** — wait for approval
-7. **Exit plan mode** — only after approval
-8. **Save initial session log** — capture goal and key context while fresh
-9. **Implement via orchestrator** — see `orchestrator-protocol.md`
+3. **Draft the plan** — resolve ambiguity first (see below), then write what changes, which files, in what order
+4. **Save to disk** — write to `docs/work/plans/YYYY-MM-DD_short-description.md` using `docs/work/templates/plan.md`
+5. **Present to user** — wait for approval
+6. **Exit plan mode** — only after approval
+7. **Save initial session log** — capture goal and key context while fresh
+8. **Implement via orchestrator** — see the "Orchestrator protocol (contractor mode)" entry under Standing Rules in `AGENTS.md`
 
-## Step 3: Task Requirements (For Complex/Ambiguous Tasks)
+## Resolving Ambiguity Before Drafting
 
-**When to use:**
+Every plan file includes a **Clarity Status** table and MUST/SHOULD/MAY requirements list — there is no separate pre-planning artifact or folder to remember. Fill these in as part of Step 3, before the Approach section, not after.
+
+**When the Clarity Status table needs real entries (not just "CLEAR — user specified"):**
 - Task is high-level or vague ("improve the paper", "analyze the data")
 - Multiple valid interpretations exist
 - Significant effort required (>1 hour or >3 files)
 
-**When to skip:**
+**When it's fine to mark everything CLEAR and move on:**
 - Task is clear and specific ("fix typo in line 42")
 - Simple single-file edit
 - User has already provided detailed requirements
 
 **Protocol:**
-1. Use AskUserQuestion to clarify ambiguities (max 3-5 questions)
-2. Create `docs/work/task_requirements/YYYY-MM-DD_description.md` using `docs/work/templates/task-requirements.md`
-3. Mark each requirement:
+1. Use AskUserQuestion to clarify ambiguities (max 3-5 questions) *before* writing the plan's Approach section
+2. In the plan file, mark each requirement:
    - **MUST** (non-negotiable)
    - **SHOULD** (preferred)
    - **MAY** (optional)
-4. Declare clarity status for each major aspect:
+3. In the plan file, declare clarity status for each major aspect:
    - **CLEAR:** Fully specified
    - **ASSUMED:** Reasonable assumption (user can override)
    - **BLOCKED:** Cannot proceed until answered
-5. Get user approval on the task requirements
-6. THEN proceed to Step 4 (draft the plan) with the requirements as input
+4. If any aspect is BLOCKED, do not proceed to the Approach section — resolve it first
+5. Get user approval on the whole plan (requirements + approach together)
 
-**Template:** `docs/work/templates/task-requirements.md`
-
-**Why this helps:** Catches ambiguity BEFORE planning. Reduces mid-plan pivots by 30-50%.
+**Why this helps:** Catches ambiguity BEFORE the approach is drafted, without adding a second file/folder that's easy to skip. A prior version of this rule used a separate `docs/work/task_requirements/` file for this step; across nine real plans it was never used, so it was folded into the plan template instead.
 
 ## Plans on Disk
 
@@ -52,7 +55,7 @@ Plans survive context compression. Save every plan to:
 docs/work/plans/YYYY-MM-DD_short-description.md
 ```
 
-Format: Status (DRAFT/APPROVED/COMPLETED), approach, files to modify, verification steps.
+Use `docs/work/templates/plan.md`: Status (DRAFT/APPROVED/COMPLETED), Clarity Status, MUST/SHOULD/MAY requirements, approach, files to modify, verification steps.
 For data-producing tasks, also list expected Provenance Ledger asset entries and variable/code/layer entries.
 
 ## Context Management

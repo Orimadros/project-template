@@ -1,13 +1,14 @@
 ---
 name: devils-advocate
 description: Challenge a talk deck or paper's design with 5-7 hard questions. Checks ordering, prerequisites, argument gaps, and cognitive load.
-argument-hint: "[deck or manuscript path]"
 allowed-tools: ["Read", "Grep", "Glob"]
 ---
 
 # Devil's Advocate Review
 
 Critically examine a talk deck or paper and challenge its design with 5-7 specific questions.
+
+**Arguments:** [deck or manuscript path]
 
 **Philosophy:** "We arrive at the best possible talk or paper through active dialogue."
 

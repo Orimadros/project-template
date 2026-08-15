@@ -20,7 +20,7 @@ _Last updated: 2026-05-23_
 | Sandbox | Experiments before they graduate to staged code | `code/99_explorations/` |
 | Data zones | Tracked placeholder folders; choose project-specific data policy after forking | `data/raw`, `data/clean`, `data/tmp` |
 | Results | Generated tables, figures, and model outputs | `results/` |
-| Work records | Plans, task requirements, session logs, checkpoints, reviews | `docs/work/` |
+| Work records | Plans (with clarity/requirements sections), session logs, checkpoints, reviews | `docs/work/` |
 | Agent calibration | Domain, journal, and personal style preferences | `.claude/references/` |
 | Codex customization | Repo skills, project agents, and project hooks | `.agents/skills/`, `.codex/` |
 | Claude Code customization | Claude agents, skills, hooks, settings, rules, references | `.claude/` |
@@ -60,7 +60,7 @@ Instruction
   -> Report      (what changed, what passed, what remains)
 ```
 
-Use `docs/work/task_requirements/` for complex ambiguous tasks, `docs/work/checkpoints/` for resumable state snapshots, and `docs/work/session_logs/` for narrative session records.
+For complex or ambiguous tasks, resolve ambiguity in the plan's own Clarity Status table (`docs/work/templates/plan.md`) before drafting the approach — there's no separate pre-planning file. Use `docs/work/checkpoints/` for resumable state snapshots and `docs/work/session_logs/` for narrative session records.
 
 ---
 
@@ -78,12 +78,14 @@ Use `/strategize` for empirical design. The output should clarify the estimand, 
 
 - Acquisition scripts: `code/00_fetch/`, run with `make fetch`
 - Cleaning/construction scripts: `code/01_build/`, run with `make build`
+- Pipeline entry scripts use `NN_verb_noun.<extension>` (for example, `01_download_biodiversity.sh` or `03_construct_panel.R`) and run in lexical order. Supporting modules and other non-pipeline helpers remain unnumbered and are not run directly by Make.
 - Raw data in `data/raw/` is immutable by default
 - Derived data goes to `data/clean/` or `data/tmp/`
 
 ### D. Analyze
 
 - Estimation/reporting scripts: `code/02_analyze/`, run with `make analysis`
+- Pipeline entry scripts use the same `NN_verb_noun.<extension>` convention; an imported engine such as `biodiversity_model.py` is an unnumbered helper rather than a pipeline entry point.
 - Generated tables, figures, and model outputs go to `results/`
 - Use `/analyze` or `/data-analysis` for paper-facing empirical work
 - If a result changes, update the relevant paper claim or record a follow-up plan
@@ -223,7 +225,7 @@ If a derived output looks wrong, fix upstream code and rerun the pipeline. Do no
 code/{00_fetch,01_build,02_analyze,03_quality,99_explorations}
 data/{raw,clean,tmp}        results/
 docs/sources/               docs/deliverables/{articles,slides,appendices,preambles,assets}
-docs/work/{plans,task_requirements,session_logs,checkpoints,reviews,merge_reports,templates}
+docs/work/{plans,session_logs,checkpoints,reviews,merge_reports,templates}
 .claude/references/
 ```
 

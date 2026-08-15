@@ -4,19 +4,43 @@ R_SCRIPT ?= Rscript
 PYTHON_RUN ?= uv run
 LATEX ?= xelatex
 
-.PHONY: help setup setup-python setup-r fetch build analysis provenance latex articles slides compile-tex _compile-tex clean
+.PHONY: help setup setup-python setup-r fetch build analysis provenance check agents all latex articles slides compile-tex _compile-tex clean
+
+define RUN_PIPELINE_SCRIPTS
+	@set -e; \
+	stage="$(1)"; \
+	label="$(2)"; \
+	scripts="$$(find "$$stage" -maxdepth 1 -type f \
+		\( -name '*.sh' -o -name '*.py' -o -name '*.R' \) -print | LC_ALL=C sort | \
+		grep -E '/[0-9]{2}_[a-z][a-z0-9]*(_[a-z0-9]+)*\.(sh|py|R)$$' || true)"; \
+	if [ -z "$$scripts" ]; then \
+		echo "[$$label] no numbered pipeline scripts found in $$stage/"; \
+		echo "         add an entry point such as $$stage/01_verb_noun.py"; \
+	else \
+		while IFS= read -r script; do \
+			echo "[$$label] running $$script"; \
+			case "$$script" in \
+				*.sh) bash "$$script" ;; \
+				*.py) $(PYTHON_RUN) python "$$script" ;; \
+				*.R) $(R_SCRIPT) "$$script" ;; \
+			esac; \
+		done <<< "$$scripts"; \
+	fi
+endef
 
 help:
 	@echo "Project workflow targets (run on host):"
 	@echo "  make setup      Restore lockfiles (uv.lock / renv.lock if present)"
-	@echo "  make fetch      Run shell scripts in code/00_fetch/"
-	@echo "  make build      Run R scripts in code/01_build/"
-	@echo "  make analysis   Run R scripts + notebooks in code/02_analyze/"
+	@echo "  make fetch      Run numbered pipeline scripts in code/00_fetch/"
+	@echo "  make build      Run numbered pipeline scripts in code/01_build/"
+	@echo "  make analysis   Run numbered scripts + notebooks in code/02_analyze/"
 	@echo "  make provenance Validate docs/data/provenance-ledger coverage"
+	@echo "  make agents     Regenerate .codex/agents/*.toml from .claude/agents/*.md"
+	@echo "  make check      Validate Claude Code / Codex cross-harness parity"
 	@echo "  make latex      Compile every root .tex document in articles/ and slides/"
 	@echo "  make articles   Compile every root .tex document in docs/deliverables/articles/"
 	@echo "  make slides     Compile every root .tex document in docs/deliverables/slides/"
-	@echo "  make all        setup -> fetch -> build -> analysis -> provenance"
+	@echo "  make all        setup -> fetch -> build -> analysis -> provenance -> check"
 	@echo "  make clean      Delete generated files in data/clean, data/tmp, results"
 
 setup: setup-python setup-r
@@ -38,50 +62,36 @@ setup-r:
 	fi
 
 fetch:
-	@if ls code/00_fetch/*.sh >/dev/null 2>&1; then \
-		for script in $$(ls code/00_fetch/*.sh | sort); do \
-			echo "[fetch] running $$script"; \
-			bash "$$script"; \
-		done; \
-	else \
-		echo "[fetch] no shell scripts found in code/00_fetch/"; \
-		echo "        add scripts like code/00_fetch/00_download_xxx.sh"; \
-	fi
+	$(call RUN_PIPELINE_SCRIPTS,code/00_fetch,fetch)
 
 build:
-	@if ls code/01_build/*.R >/dev/null 2>&1; then \
-		for script in $$(ls code/01_build/*.R | sort); do \
-			echo "[build] running $$script"; \
-			$(R_SCRIPT) "$$script"; \
-		done; \
-	else \
-		echo "[build] no R scripts found in code/01_build/"; \
-		echo "        add scripts like code/01_build/00_clean_xxx.R"; \
-	fi
+	$(call RUN_PIPELINE_SCRIPTS,code/01_build,build)
 
 analysis:
-	@if ls code/02_analyze/*.R >/dev/null 2>&1; then \
-		for script in $$(ls code/02_analyze/*.R | sort); do \
-			echo "[analysis] running $$script"; \
-			$(R_SCRIPT) "$$script"; \
-		done; \
+	$(call RUN_PIPELINE_SCRIPTS,code/02_analyze,analysis)
+	@set -e; \
+	notebooks="$$(find code/02_analyze -maxdepth 1 -type f -name '*.ipynb' -print | LC_ALL=C sort | \
+		grep -E '/[0-9]{2}_[a-z][a-z0-9]*(_[a-z0-9]+)*\.ipynb$$' || true)"; \
+	if [ -z "$$notebooks" ]; then \
+		echo "[analysis] no numbered pipeline notebooks found in code/02_analyze/"; \
 	else \
-		echo "[analysis] no R scripts found in code/02_analyze/"; \
-	fi
-	@if ls code/02_analyze/*.ipynb >/dev/null 2>&1; then \
-		for nb in $$(ls code/02_analyze/*.ipynb | sort); do \
+		while IFS= read -r nb; do \
 			base=$$(basename "$$nb" .ipynb); \
 			echo "[analysis] executing notebook $$nb"; \
 			$(PYTHON_RUN) jupyter nbconvert --to notebook --execute "$$nb" --output "$$base.executed.ipynb" --output-dir code/02_analyze; \
-		done; \
-	else \
-		echo "[analysis] no notebooks found in code/02_analyze/"; \
+		done <<< "$$notebooks"; \
 	fi
 
 provenance:
 	@python3 code/03_quality/check_provenance_ledger.py
 
-all: setup fetch build analysis provenance
+agents:
+	@python3 code/03_quality/gen_codex_agents.py
+
+check:
+	@python3 code/03_quality/check_conformance.py
+
+all: setup fetch build analysis provenance check
 
 latex: articles slides
 

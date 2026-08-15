@@ -20,66 +20,52 @@
 
 ---
 
+## Standing Rules
+
+These three rules apply to every session regardless of which file is being touched, so they live here rather than as separate path-scoped files in `.claude/rules/`.
+
+**Template vs. project (meta-governance).** This repo is both a working project and a reusable template. When editing infrastructure, ask: is this generic across projects (folder conventions, Make patterns, verification/quality rules, session-logging templates) -- commit it; or project-specific (raw-data idiosyncrasies, machine paths, institutional formatting) -- keep it local. `MEMORY.md` stores transferable learnings only. Keep `AGENTS.md`, `CLAUDE.md`, and `README.md` consistent, keep examples placeholder-based, and update rules and Make scaffolding together when workflow philosophy changes.
+
+**Orchestrator protocol (contractor mode).** After a plan is approved, work proceeds autonomously through: implement -> verify (compile/render/check outputs; fix and re-verify on failure) -> review (route to review agents by file type) -> fix (critical -> major -> minor) -> re-verify -> score against the quality-gates rubric. Loop back to review if under threshold, max 5 rounds; critic-fixer sub-loops also cap at 5 rounds; verification retries cap at 2. Never loop indefinitely. When the user says "just do it" / "handle it": skip the final approval pause and auto-commit if score >= 80, but still run the full verify-review-fix loop and still present the summary.
+
+**Session logging.** Log to `docs/work/session_logs/YYYY-MM-DD_description.md` (template: `docs/work/templates/session-log.md`) at three points, proactively: right after plan approval (goal, approach, rationale, key context); incrementally, 1-3 lines whenever a design decision is made, a problem is solved, the user corrects something, or the approach changes -- do not batch; and at session end (summary, quality scores, open questions, blockers). Quality reports are generated only at merge time, not at every commit/PR, saved to `docs/work/merge_reports/YYYY-MM-DD_[branch-name].md` using `docs/work/templates/quality-report.md`.
+
+---
+
 ## Folder Structure
 
 ```text
 [YOUR-PROJECT]/
 ├── AGENTS.md
 ├── CLAUDE.md
-├── .agents/
-│   └── skills/             # Codex repo skills: one SKILL.md per skill
-├── .codex/
-│   ├── agents/             # Codex project custom agents: one TOML file per agent
-│   ├── hooks/              # Codex hook scripts
-│   └── hooks.json          # Codex project hook wiring; requires trust in Codex
-├── .claude/
-│   ├── agents/             # Claude Code subagents
-│   ├── skills/             # Claude Code skills
-│   ├── hooks/              # Claude Code hook scripts
-│   ├── references/         # Shared domain/style/journal calibration
-│   └── rules/              # Shared workflow and quality rules
-├── Makefile                # Runs the staged pipeline on the host
-├── code/
-│   ├── 00_fetch/           # Raw data download scripts
-│   ├── 01_build/           # Data construction/prep scripts
-│   ├── 02_analyze/         # Estimation + notebook execution
-│   ├── 03_quality/         # Template quality-check utilities
-│   └── 99_explorations/    # Sandbox for experiments; graduate to staged folders
-├── data/                   # Tracked empty scaffold; add project policy after fork
-│   ├── raw/
-│   ├── clean/
-│   └── tmp/
-├── results/                # Generated tables, figures, model outputs
+├── .agents/skills/         # canonical skills (Agent Skills standard)
+├── .codex/{agents,hooks,hooks.json}  # Codex subagents (generated), shared hooks wiring
+├── .claude/{agents,skills,rules,references,settings.json}  # Claude subagents, skills/ (symlinks into .agents/skills/), shared rules/calibration, hook wiring
+├── Makefile                # host pipeline + make check / make agents
+├── code/{00_fetch,01_build,02_analyze,03_quality,99_explorations}
+├── data/{raw,clean,tmp}    # tracked empty scaffold; add project policy after fork
+├── results/                # generated tables, figures, model outputs
 └── docs/
-    ├── data/
-    │   └── provenance-ledger/ # Asset + variable-level data provenance
-    ├── sources/             # External reference/input documents + references.bib
-    ├── work/                # Process docs created while working
-    │   ├── plans/
-    │   ├── task_requirements/
-    │   ├── session_logs/
-    │   ├── checkpoints/
-    │   ├── reviews/
-    │   ├── merge_reports/
-    │   └── templates/
-    └── deliverables/        # Repo-produced document outputs and document-facing assets
-        ├── articles/        # One folder per article document
-        │   └── main/        # main/main.tex plus sections/ and compile outputs
-        ├── slides/          # One folder per Beamer deck
-        ├── appendices/
-        ├── preambles/
-        └── assets/
+    ├── data/provenance-ledger/
+    ├── sources/             # external reference/input documents + references.bib
+    ├── work/                # plans (with Clarity Status + MUST/SHOULD/MAY), session_logs,
+    │                        # meetings (YYYY-MM-DD_topic-slug.md), checkpoints, reviews,
+    │                        # merge_reports, templates
+    └── deliverables/{articles/main,slides,appendices,preambles,assets}
 ```
 
 ---
 
 ## Naming Conventions
 
-- Stage scripts by execution order:
-  - `code/00_fetch/00_download_xxx.sh`
-  - `code/01_build/00_clean_xxx.R`
-  - `code/02_analyze/01_estimate_xxx.R`
+- Pipeline entry scripts in `code/00_fetch/`, `code/01_build/`, and `code/02_analyze/` use `NN_verb_noun.<extension>`, where `NN` is a two-digit execution-order prefix and the remaining name is lowercase `snake_case`:
+  - `code/00_fetch/01_download_biodiversity.sh`
+  - `code/01_build/03_construct_panel.R`
+  - `code/02_analyze/05_make_tables.py`
+- `make fetch`, `make build`, and `make analysis` run only those numbered pipeline entry points, in lexical order. Executed analysis notebooks follow the same pattern.
+- Supporting modules, shared engines, and other scripts that are not pipeline entry points are exempt; keep them unnumbered so Make does not run them directly (for example, `biodiversity_model.py`, imported by `01_solve_model.py`). They need not use a verb--noun filename.
 - Keep names imperative and explicit: `prep_`, `build_`, `estimate_`, `predict_`, `export_`
+- Meeting notes and transcripts in `docs/work/meetings/` must use `YYYY-MM-DD_topic-slug.md`: a real ISO calendar date, followed by one lowercase, hyphen-separated topic slug. For example, `docs/work/meetings/2026-08-10_bard-harstad-theta.md`. Claude/Codex hooks reject non-conforming meeting-file paths.
 - Each script should have a clear file contract: inputs, outputs, and stage responsibility
 - Scripts should be readable to someone not yet familiar with the project: start with a concise purpose/data-flow description, use descriptive variable names, and organize repeated or multi-step logic into clearly named functions so the main script reads like an intuitive chain of steps
 - Generated empirical tables and figures belong in `results/`; paper/talk files include them rather than hand-copying results
@@ -120,7 +106,7 @@ make latex      # compile both articles and slides
 
 ## PDF Source Reading
 
-- When reading a PDF's contents, follow `.claude/rules/pdf-processing.md`: first create a Markdown version with a command of the form `markitdown docs/sources/hyperdominance-paper.pdf -o docs/sources/hyperdominance-paper.md` and read the Markdown instead of the PDF.
+- When reading a PDF's contents, follow `.claude/rules/pdf-processing.md`: first create a Markdown version with `uv run python code/03_quality/pdf_to_markdown.py docs/sources/hyperdominance-paper.pdf --output docs/sources/hyperdominance-paper.md` and read the Markdown instead of the PDF.
 - Use the original PDF or page images as a supplement when Markdown would lose important information, especially scanned pages, figures, diagrams, equations, complex tables, slide layouts, pagination, or visual design.
 
 ---
@@ -173,10 +159,35 @@ Weighted paper quality follows `.claude/rules/quality-gates.md`.
 
 ## Current Project State
 
-| Module | Path | Status | Notes |
-|--------|------|--------|-------|
-| Paper | `docs/deliverables/articles/main/main.tex` | [TODO/ACTIVE] | [Research question + manuscript scope] |
-| Fetch | `code/00_fetch/` | [TODO/ACTIVE] | [Data sources] |
-| Build | `code/01_build/` | [TODO/ACTIVE] | [Prep pipeline] |
-| Analyze | `code/02_analyze/` | [TODO/ACTIVE] | [Models/notebooks/results] |
-| Slides | `docs/deliverables/slides/` | [TODO/ACTIVE] | [Derivative Beamer talk scope] |
+Track live paper/pipeline/slides status in `docs/work/plans/` and `docs/data/provenance-ledger/` rather than in a static table here -- a placeholder table drifts the moment real work starts.
+
+---
+
+## Rules Index
+
+`.claude/rules/` and `.claude/references/` are shared, harness-neutral calibration -- the directory name is historical, not Claude-only. Claude Code auto-loads these by `paths:` frontmatter when a matching file is touched; Codex receives the same content via a PostToolUse rule-injector hook (`.codex/hooks.json`) plus this index as a fallback. Every rule below is path-scoped; the three standing rules above are not, because they apply everywhere.
+
+| Rule | Applies to |
+|------|------------|
+| `agents.md` | agent/skill definitions -- worker/critic pairing |
+| `beamer-integrity.md` | Beamer slides + preambles |
+| `content-invariants.md` | articles, slides, code, data, results |
+| `content-standards.md` | articles, slides, results |
+| `exploration-fast-track.md` | `code/99_explorations/` |
+| `exploration-folder-protocol.md` | `code/99_explorations/` |
+| `knowledge-base-template.md` | articles, slides, R/Python code, Makefile |
+| `no-pause-beamer.md` | Beamer slides |
+| `orchestrator-research.md` | R code, explorations |
+| `pdf-processing.md` | `docs/sources/` |
+| `plan-first-workflow.md` | `docs/work/plans/` |
+| `proofreading-protocol.md` | articles, appendices, slides, reviews |
+| `provenance-ledger.md` | data, results, provenance-ledger, fetch/build/analyze code |
+| `quality-gates.md` | articles, slides, code, Makefile |
+| `r-code-conventions.md` | R scripts |
+| `replication-protocol.md` | R scripts |
+| `revision.md` | reviews, plans, articles |
+| `single-source-of-truth.md` | code, data, results, articles, slides, assets |
+| `slide-writing-principles.md` | Beamer slides/preambles; agent/skill definitions |
+| `tikz-visual-quality.md` | slides, articles, assets (TikZ) |
+| `verification-protocol.md` | Makefile, code, data, results, articles, slides |
+| `working-paper-format.md` | articles, preambles |

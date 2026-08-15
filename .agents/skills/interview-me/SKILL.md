@@ -1,7 +1,6 @@
 ---
 name: interview-me
 description: Interactive interview to formalize a research idea into a structured research design brief with hypotheses and empirical strategy
-argument-hint: "[brief topic or 'start fresh']"
 allowed-tools: ["Read", "Write"]
 ---
 

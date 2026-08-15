@@ -1,7 +1,6 @@
 ---
 name: analyze
 description: Paper-centric empirical analysis workflow using code/ for scripts and results/ for generated paper outputs.
-argument-hint: "[analysis goal, table, figure, or robustness check]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 ---
 
@@ -9,11 +8,14 @@ allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 
 Use this for reproducible empirical work that should feed the canonical paper.
 
+**Arguments:** [analysis goal, table, figure, or robustness check]
+
 ## Constraints
 
 - Fetch scripts live in `code/00_fetch/`.
 - Build scripts live in `code/01_build/`.
 - Estimation/reporting scripts live in `code/02_analyze/`.
+- A pipeline entry script in those directories must be named `NN_verb_noun.<extension>` (for example, `01_solve_model.py`); its two-digit prefix establishes execution order within its stage. Unnumbered modules and helpers, such as `biodiversity_model.py`, are not pipeline entry points and may use other names.
 - Generated tables, figures, and model outputs live in `results/`.
 - Paper text lives in `docs/deliverables/articles/`; do not hand-edit generated results.
 - Any data-bearing asset created or changed under `data/` or `results/` must be represented in `docs/data/provenance-ledger/` with nested variable/code/layer entries.

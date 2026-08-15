@@ -4,15 +4,14 @@ description: |
   Extract reusable knowledge from the current session into a persistent skill.
   Use when you discover something non-obvious, create a workaround, or develop
   a multi-step workflow that future sessions would benefit from.
-author: Codex Academic Workflow
-version: 1.0.0
-argument-hint: "[skill-name (kebab-case)]"
 allowed-tools: ["Read", "Write", "Bash", "Glob", "Grep"]
 ---
 
 # /learn — Skill Extraction Workflow
 
 Extract non-obvious discoveries into reusable skills that persist across sessions.
+
+**Arguments:** [skill-name (kebab-case)]
 
 ## When to Use This Skill
 
@@ -60,6 +59,8 @@ grep -r -i "KEYWORD" .agents/skills/ 2>/dev/null
 
 Create the skill file at `.agents/skills/[skill-name]/SKILL.md`:
 
+Frontmatter uses only the Agent Skills spec's six fields (`name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools`) so the skill stays portable across harnesses -- no `author`, `version`, or `context` keys. If the skill takes an argument, document it as a `**Arguments:** [hint]` line in the body instead of an `argument-hint` frontmatter field.
+
 ```yaml
 ---
 name: descriptive-kebab-case-name
@@ -68,12 +69,11 @@ description: |
   - What the skill does
   - Specific trigger conditions (exact error messages, symptoms)
   - When to use it (contexts, scenarios)
-author: Codex Academic Workflow
-version: 1.0.0
-argument-hint: "[expected arguments]"  # Optional
 ---
 
 # Skill Name
+
+**Arguments:** [expected arguments, if any]
 
 ## Problem
 [Clear problem description — what situation triggers this skill]
@@ -107,6 +107,7 @@ Before finalizing, verify:
 - [ ] Content is general enough to be reusable
 - [ ] No sensitive information (credentials, personal data)
 - [ ] Skill name is descriptive and uses kebab-case
+- [ ] Frontmatter uses only spec fields (`make check` catches this if not)
 
 ## Output
 
@@ -129,8 +130,6 @@ description: |
   Handle silent observation dropping in fixest when covariates have missing values.
   Use when: estimates seem wrong, sample size unexpectedly small, or comparing
   results between packages.
-author: Codex Academic Workflow
-version: 1.0.0
 ---
 
 # fixest Missing Covariate Handling

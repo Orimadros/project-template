@@ -4,7 +4,7 @@ set -euo pipefail
 # Keep existing raw-data files immutable while leaving directories writable so
 # fetch steps can add new raw files.
 
-ROOT="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s' "${CODEX_PROJECT_DIR:-$PWD}")"
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s' "${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}")"
 RAW_DIR="$ROOT/data/raw"
 
 if [[ ! -d "$RAW_DIR" ]]; then

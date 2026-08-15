@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """
-SessionStart restoration hook for Codex compact/resume sessions.
+Post-Compact Context Restoration Hook
 
-Codex ignores plain stdout for PostCompact, so this hook runs on
-SessionStart with source compact/resume and returns developer context for the
-new compacted session.
+Fires after compaction/resume (SessionStart, matcher "compact|resume") to
+restore context. Reads state saved by pre-compact.py and reports it back
+via {"hookSpecificOutput": {"hookEventName": "SessionStart",
+"additionalContext": ...}} -- valid JSON should satisfy a "parse as JSON,
+fall back to plain text" SessionStart handler on either harness, whereas a
+plain-text-only payload is not guaranteed to reach the model.
+
+Hook Event: SessionStart (matcher: "compact|resume")
 """
 
 from __future__ import annotations
@@ -27,31 +32,25 @@ def project_dir_from(hook_input: dict) -> str:
     cwd = hook_input.get("cwd")
     if isinstance(cwd, str) and cwd:
         return cwd
-    return os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("PWD") or ""
+    return os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("PWD") or ""
 
 
-def codex_home() -> Path:
-    return Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))).expanduser()
+def get_state_dir(project_dir: str) -> Path:
+    state_home = Path(os.environ.get("XDG_STATE_HOME") or (Path.home() / ".local" / "state"))
+    project_hash = hashlib.md5(project_dir.encode()).hexdigest()[:8] if project_dir else "default"
+    state_dir = state_home / "agent-hooks" / project_hash
+    state_dir.mkdir(parents=True, exist_ok=True)
+    return state_dir
 
 
-def get_session_dir(project_dir: str) -> Path:
-    if project_dir:
-        project_hash = hashlib.md5(project_dir.encode()).hexdigest()[:8]
-    else:
-        project_hash = "default"
-    session_dir = codex_home() / "sessions" / project_hash
-    session_dir.mkdir(parents=True, exist_ok=True)
-    return session_dir
-
-
-def read_pre_compact_state(session_dir: Path) -> dict | None:
-    state_file = session_dir / "pre-compact-state.json"
+def read_pre_compact_state(state_dir: Path) -> dict | None:
+    state_file = state_dir / "pre-compact-state.json"
     if not state_file.exists():
         return None
 
     try:
         state = json.loads(state_file.read_text())
-        state_file.unlink()
+        state_file.unlink()  # Clean up after restore
         return state
     except (json.JSONDecodeError, OSError):
         return None
@@ -108,7 +107,7 @@ def restoration_message(
     plan_info: dict | None,
     session_log: dict | None,
 ) -> str:
-    lines = ["Codex compact/resume context restoration:"]
+    lines = ["Context restored after compaction:"]
 
     if pre_compact_state:
         lines.append("Pre-compaction state:")
@@ -138,7 +137,8 @@ def emit_session_context(message: str) -> int:
             "hookSpecificOutput": {
                 "hookEventName": "SessionStart",
                 "additionalContext": message,
-            }
+            },
+            "systemMessage": message,
         },
         sys.stdout,
     )
@@ -154,8 +154,8 @@ def main() -> int:
     if not project_dir:
         return 0
 
-    session_dir = get_session_dir(project_dir)
-    pre_compact_state = read_pre_compact_state(session_dir)
+    state_dir = get_state_dir(project_dir)
+    pre_compact_state = read_pre_compact_state(state_dir)
     plan_info = find_active_plan(project_dir)
     session_log = find_recent_session_log(project_dir)
 

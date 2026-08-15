@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Non-blocking Provenance Ledger reminder for Codex.
+Non-blocking Provenance Ledger reminder for PostToolUse hooks.
 """
 
 from __future__ import annotations

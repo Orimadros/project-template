@@ -2,6 +2,9 @@
 set -euo pipefail
 
 # Block accidental edits to protected files and existing raw data.
+# Codex file edits usually arrive as apply_patch with patch text in
+# tool_input.command; legacy file_path/path fields (Claude's Edit/Write) are
+# also supported.
 
 INPUT="$(cat)"
 TOOL="$(printf '%s' "$INPUT" | python3 -c 'import json, sys
@@ -14,8 +17,8 @@ try:
     data = json.load(sys.stdin)
 except json.JSONDecodeError:
     data = {}
-print(data.get("cwd") or os.environ.get("CLAUDE_PROJECT_DIR") or "")')"
-PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s' "$CWD")"
+print(data.get("cwd") or os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or "")')"
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s' "${CWD:-${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}}")"
 export PROJECT_ROOT
 
 extract_paths() {
@@ -48,12 +51,16 @@ for path in dict.fromkeys(paths):
 '
 }
 
+# Literal paths only, no basename matching -- a basename match on
+# "settings.json" would block any file with that name anywhere in the repo.
 PROTECTED_PATTERNS=(
   "docs/sources/references.bib"
   ".claude/references/domain-profile.md"
   ".claude/references/personal-style-guide.md"
   ".claude/references/journal-profiles.md"
-  "settings.json"
+  ".claude/settings.json"
+  ".claude/settings.local.json"
+  ".codex/config.toml"
 )
 
 protect_raw_permissions() {
@@ -215,7 +222,6 @@ while IFS=$'\t' read -r ACTION FILE; do
   if [[ -n "$CWD" && "$FILE" == "$CWD/"* ]]; then
     REL_FILE="${FILE#"$CWD"/}"
   fi
-  BASENAME="$(basename "$FILE")"
 
   if is_raw_path "$REL_FILE"; then
     RAW_TARGET="$PROJECT_ROOT/$REL_FILE"
@@ -235,8 +241,8 @@ while IFS=$'\t' read -r ACTION FILE; do
   fi
 
   for PATTERN in "${PROTECTED_PATTERNS[@]}"; do
-    if [[ "$REL_FILE" == "$PATTERN" || "$BASENAME" == "$PATTERN" ]]; then
-      echo "Protected file: $REL_FILE. Edit manually or remove protection in .claude/hooks/protect-files.sh" >&2
+    if [[ "$REL_FILE" == "$PATTERN" ]]; then
+      echo "Protected file: $REL_FILE. Edit intentionally, or remove the protection in .agents/hooks/protect-files.sh." >&2
       exit 2
     fi
   done

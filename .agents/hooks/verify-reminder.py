@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
-Verification reminder for Codex file edits.
+Verification reminder for PostToolUse file-edit hooks.
 
-Runs as a PostToolUse hook for file-edit tools. For Codex, apply_patch reports
-edited files through tool_input.command, so this script extracts paths from
-patch headers in addition to legacy file_path fields.
+Codex's apply_patch reports edited files through tool_input.command as patch
+headers rather than a file_path field, so paths are extracted from both.
 """
 
 from __future__ import annotations
@@ -29,25 +28,11 @@ VERIFY_FILENAMES = {
 }
 
 SKIP_EXTENSIONS = {
-    ".md",
-    ".txt",
-    ".rst",
-    ".json",
-    ".yaml",
-    ".yml",
-    ".toml",
-    ".ini",
-    ".cfg",
-    ".lock",
-    ".env",
-    ".gitignore",
-    ".svg",
-    ".png",
-    ".jpg",
-    ".pdf",
-    ".bib",
-    ".cls",
-    ".sty",
+    ".md", ".txt", ".rst",
+    ".json", ".yaml", ".yml", ".toml", ".ini", ".cfg",
+    ".lock", ".env", ".gitignore",
+    ".svg", ".png", ".jpg", ".pdf",
+    ".bib", ".cls", ".sty",
 }
 
 SKIP_PARTS = {
@@ -73,21 +58,15 @@ def project_dir_from(hook_input: dict) -> str:
     cwd = hook_input.get("cwd")
     if isinstance(cwd, str) and cwd:
         return cwd
-    return os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("PWD") or ""
+    return os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("PWD") or ""
 
 
-def codex_home() -> Path:
-    return Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))).expanduser()
-
-
-def get_session_dir(project_dir: str) -> Path:
-    if project_dir:
-        project_hash = hashlib.md5(project_dir.encode()).hexdigest()[:8]
-    else:
-        project_hash = "default"
-    session_dir = codex_home() / "sessions" / project_hash
-    session_dir.mkdir(parents=True, exist_ok=True)
-    return session_dir
+def get_state_dir(project_dir: str) -> Path:
+    state_home = Path(os.environ.get("XDG_STATE_HOME") or (Path.home() / ".local" / "state"))
+    project_hash = hashlib.md5(project_dir.encode()).hexdigest()[:8] if project_dir else "default"
+    state_dir = state_home / "agent-hooks" / project_hash
+    state_dir.mkdir(parents=True, exist_ok=True)
+    return state_dir
 
 
 def normalize_path(path: str, project_dir: str) -> str:
@@ -160,8 +139,8 @@ def needs_verification(file_path: str) -> tuple[bool, str]:
     return False, ""
 
 
-def was_recently_reminded(session_dir: Path, file_path: str) -> bool:
-    cache_file = session_dir / "verify-reminder-cache.json"
+def was_recently_reminded(state_dir: Path, file_path: str) -> bool:
+    cache_file = state_dir / "verify-reminder-cache.json"
 
     try:
         cache = json.loads(cache_file.read_text()) if cache_file.exists() else {}
@@ -199,7 +178,7 @@ def post_tool_context(message: str) -> int:
 def main() -> int:
     hook_input = read_hook_input()
     project_dir = project_dir_from(hook_input)
-    session_dir = get_session_dir(project_dir)
+    state_dir = get_state_dir(project_dir)
 
     reminders: list[str] = []
     for file_path in edited_paths(hook_input):
@@ -207,7 +186,7 @@ def main() -> int:
             continue
 
         needs_verify, action = needs_verification(file_path)
-        if not needs_verify or was_recently_reminded(session_dir, file_path):
+        if not needs_verify or was_recently_reminded(state_dir, file_path):
             continue
 
         reminders.append(f"{file_path}: {action}")

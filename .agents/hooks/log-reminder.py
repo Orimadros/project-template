@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
-Session log reminder for Codex Stop hooks.
+Session Log Reminder Hook
 
-After a threshold of assistant stops without an updated session log, this hook
-asks Codex to continue once and update the log. Stop hooks must emit JSON when
-they write to stdout.
+A Stop hook that tracks how many responses have passed since the session
+log was last updated. After a threshold, it blocks stopping via a JSON
+{"decision": "block", "reason": ...} response and reminds the agent to
+update the session log.
+
+Adapted from: https://gist.github.com/michaelewens/9a1bc5a97f3f9bbb79453e5b682df462
 """
 
 from __future__ import annotations
@@ -30,19 +33,13 @@ def project_dir_from(hook_input: dict) -> str:
     cwd = hook_input.get("cwd")
     if isinstance(cwd, str) and cwd:
         return cwd
-    return os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("PWD") or ""
-
-
-def codex_home() -> Path:
-    return Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))).expanduser()
+    return os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("PWD") or ""
 
 
 def get_state_dir(project_dir: str) -> Path:
-    if project_dir:
-        project_hash = hashlib.md5(project_dir.encode()).hexdigest()[:8]
-    else:
-        project_hash = "default"
-    state_dir = codex_home() / "sessions" / project_hash
+    state_home = Path(os.environ.get("XDG_STATE_HOME") or (Path.home() / ".local" / "state"))
+    project_hash = hashlib.md5(project_dir.encode()).hexdigest()[:8] if project_dir else "default"
+    state_dir = state_home / "agent-hooks" / project_hash
     state_dir.mkdir(parents=True, exist_ok=True)
     return state_dir
 
@@ -79,7 +76,7 @@ def find_latest_log(project_dir: str) -> tuple[Path | None, float]:
     return latest, latest.stat().st_mtime
 
 
-def continue_with(reason: str) -> int:
+def block(reason: str) -> int:
     json.dump({"decision": "block", "reason": reason}, sys.stdout)
     return 0
 
@@ -87,8 +84,8 @@ def continue_with(reason: str) -> int:
 def main() -> int:
     hook_input = read_hook_input()
 
-    # If Codex is already continuing because of a Stop hook, let this turn stop
-    # to avoid a continuation loop.
+    # If a Stop hook already blocked this turn, let it stop now to avoid a
+    # continuation loop.
     if hook_input.get("stop_hook_active", False):
         return 0
 
@@ -106,10 +103,10 @@ def main() -> int:
         if not state.get("no_log_reminded", False):
             state["no_log_reminded"] = True
             save_state(state_path, state)
-            return continue_with(
-                "No session log exists yet. Create one at "
-                f"docs/work/session_logs/{today}_description.md before stopping. "
-                "Include the current goal, key context, and verification state."
+            return block(
+                f"No session log exists yet. Create one at "
+                f"docs/work/session_logs/{today}_description.md before continuing. "
+                "Include the current goal and key context."
             )
         return 0
 
@@ -125,7 +122,7 @@ def main() -> int:
     if state["counter"] >= THRESHOLD and not state["reminded"]:
         state["reminded"] = True
         save_state(state_path, state)
-        return continue_with(
+        return block(
             f"SESSION LOG REMINDER: {state['counter']} responses without updating the session log. "
             f"Append recent progress, decisions, and verification status to {latest_log.name}."
         )

@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/notify.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.agents/hooks/notify.sh",
             "timeout": 5
           }
         ]
@@ -63,7 +63,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pdf-read-guard.py",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/pdf-read-guard.py",
             "timeout": 5
           }
         ]
@@ -73,7 +73,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-files.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.agents/hooks/protect-files.sh",
             "timeout": 5
           }
         ]
@@ -84,7 +84,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-compact.py",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/pre-compact.py",
             "timeout": 10
           }
         ]
@@ -96,7 +96,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-compact-restore.py",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/post-compact-restore.py",
             "timeout": 5
           }
         ]
@@ -108,17 +108,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/context-monitor.py",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/context-monitor.py",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/provenance-reminder.py",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/provenance-reminder.py",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lock-raw-data.sh",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/lock-raw-data.sh",
             "timeout": 5
           }
         ]
@@ -128,12 +128,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/provenance-reminder.py",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/provenance-reminder.py",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lock-raw-data.sh",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/lock-raw-data.sh",
             "timeout": 5
           }
         ]
@@ -143,7 +143,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/verify-reminder.py",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/verify-reminder.py",
             "timeout": 5
           }
         ]
@@ -154,7 +154,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/log-reminder.py",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/log-reminder.py",
             "timeout": 10
           }
         ]

@@ -1,13 +1,14 @@
 ---
 name: tools
 description: Utility commands for compiling paper/talks, validating bibliography, and running quality checks.
-argument-hint: "[compile|bib|score|provenance|help] [target]"
 allowed-tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
 # Tools
 
 Use this for quick maintenance commands.
+
+**Arguments:** [compile|bib|score|provenance|help] [target]
 
 ## Common Commands
 

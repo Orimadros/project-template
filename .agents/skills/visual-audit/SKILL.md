@@ -1,7 +1,6 @@
 ---
 name: visual-audit
 description: Perform adversarial visual audit of Beamer talks for overflow, hierarchy, spacing, and readability issues.
-argument-hint: "[TEX filename]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task", "Bash"]
 ---
 

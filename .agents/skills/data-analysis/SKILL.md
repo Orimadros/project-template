@@ -1,13 +1,14 @@
 ---
 name: data-analysis
 description: End-to-end empirical data analysis workflow from setup to estimation to paper-ready outputs.
-argument-hint: "[dataset path, paper claim, table, figure, or analysis goal]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 ---
 
 # Data Analysis Workflow
 
 Use this workflow for reproducible analysis under the staged project structure.
+
+**Arguments:** [dataset path, paper claim, table, figure, or analysis goal]
 
 ## Constraints
 

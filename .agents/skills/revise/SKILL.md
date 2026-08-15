@@ -1,13 +1,14 @@
 ---
 name: revise
 description: Convert reviews into a classified revision plan and, when asked, implement paper/code/talk revisions.
-argument-hint: "[review report path or revision goal]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 ---
 
 # Revise
 
 Use this after a review report, referee report, or internal critic pass.
+
+**Arguments:** [review report path or revision goal]
 
 ## Workflow
 

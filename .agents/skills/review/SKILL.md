@@ -1,13 +1,14 @@
 ---
 name: review
 description: Run paper-centric worker/critic or simulated referee review over the canonical paper, code outputs, or talks.
-argument-hint: "[paper|section|code|talk|peer] [optional target]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task", "Bash"]
 ---
 
 # Review
 
 Use this for structured review. Reviews are read-only unless the user explicitly asks to implement fixes.
+
+**Arguments:** [paper|section|code|talk|peer] [optional target]
 
 ## Modes
 

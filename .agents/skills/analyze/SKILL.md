@@ -1,13 +1,14 @@
 ---
 name: analyze
 description: Paper-centric empirical analysis workflow using code/ for scripts and results/ for generated paper outputs.
-argument-hint: "[analysis goal, table, figure, or robustness check]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 ---
 
 # Analyze
 
 Use this for reproducible empirical work that should feed the canonical paper.
+
+**Arguments:** [analysis goal, table, figure, or robustness check]
 
 ## Constraints
 

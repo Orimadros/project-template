@@ -1,13 +1,14 @@
 ---
 name: talk
 description: Create or revise Beamer talks that derive from the canonical paper and follow the project slide-writing principles.
-argument-hint: "[talk goal, audience, duration, or deck path]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 ---
 
 # Talk
 
 Use this for Beamer presentations derived from the paper.
+
+**Arguments:** [talk goal, audience, duration, or deck path]
 
 ## Required Context
 

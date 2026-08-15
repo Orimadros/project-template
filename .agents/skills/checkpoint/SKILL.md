@@ -1,7 +1,6 @@
 ---
 name: checkpoint
 description: Write a structured resumable state snapshot to docs/work/checkpoints/.
-argument-hint: "[slug]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash"]
 ---
 

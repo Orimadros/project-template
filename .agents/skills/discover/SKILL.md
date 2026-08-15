@@ -1,7 +1,6 @@
 ---
 name: discover
 description: Paper-centric discovery workflow for literature, sources, data possibilities, and research terrain mapping.
-argument-hint: "[topic, paper title, dataset, or research question]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "Task"]
 ---
 

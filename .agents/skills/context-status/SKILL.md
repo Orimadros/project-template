@@ -4,8 +4,6 @@ description: |
   Show current context status and session health.
   Use to check how much context has been used, whether auto-compact is
   approaching, and what state will be preserved.
-author: Codex Academic Workflow
-version: 1.0.0
 allowed-tools: ["Read", "Bash", "Glob"]
 ---
 
@@ -28,8 +26,8 @@ and preservation state.
 Read the context monitor cache to get the current estimate:
 
 ```bash
-CODEX_STATE_DIR="${CODEX_HOME:-$HOME/.codex}/sessions"
-find "$CODEX_STATE_DIR" -maxdepth 2 -name context-monitor-cache.json -print -exec cat {} \; 2>/dev/null | head -40
+STATE_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/agent-hooks"
+find "$STATE_ROOT" -maxdepth 3 -name context-monitor-cache.json -print -exec cat {} \; 2>/dev/null | head -40
 ```
 
 ### Step 2: Find Active Plan
@@ -71,5 +69,5 @@ File:   docs/work/session_logs/YYYY-MM-DD_description.md
 ## Notes
 
 - Context % is an estimate based on tool call count
-- Actual compaction is triggered by Codex automatically
+- Actual compaction is triggered automatically by the harness
 - All important state is saved to disk (plans, logs, MEMORY.md)

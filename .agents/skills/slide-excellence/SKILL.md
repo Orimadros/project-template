@@ -1,9 +1,7 @@
 ---
 name: slide-excellence
 description: Multi-agent Beamer talk review for derivative decks: paper consistency, slide-writing principles, visual quality, pedagogy, proofreading, and TikZ.
-argument-hint: "[TEX filename]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
-context: fork
 ---
 
 # Slide Excellence (Paper-Derived Beamer Talk)

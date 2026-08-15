@@ -1,7 +1,6 @@
 ---
 name: write
 description: Draft or revise the canonical paper using domain profile, personal style guide, citations, and generated results.
-argument-hint: "[section, claim, or revision goal]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Task"]
 ---
 

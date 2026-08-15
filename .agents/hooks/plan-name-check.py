@@ -1,20 +1,31 @@
 #!/usr/bin/env python3
 """
-Warn (never block) when a file in docs/work/plans/ doesn't match the
-YYYY-MM-DD_slug.md naming convention.
+Instruct the agent to rename any file in docs/work/plans/ that doesn't
+match the YYYY-MM-DD_slug.md naming convention -- automatically, without
+needing the human to notice a message and ask for it.
 
 Registered on BOTH harnesses. Two entry points, dispatched by
-hook_event_name:
+hook_event_name, each using the mechanism that actually reaches the model
+for that event (a plain "systemMessage" is display-only and is never fed
+back as something to act on):
   - PostToolUse (Write|Edit|apply_patch): checks paths touched by this
-    tool call. Catches Codex immediately, since Codex writes its own plan
-    file through a normal tool call.
-  - Stop: sweeps the whole docs/work/plans/ directory. Needed because
-    Claude Code's plan-mode file is created by the harness itself and may
-    never pass through a Write/Edit tool call this hook can see -- the
-    PostToolUse path alone would silently miss it.
+    tool call and returns hookSpecificOutput.additionalContext -- the same
+    mechanism context-monitor.py/provenance-reminder.py/verify-reminder.py
+    use, confirmed live in this repo to actually reach the model. Catches
+    Codex immediately, since Codex writes its own plan file through a
+    normal tool call.
+  - Stop: sweeps the whole docs/work/plans/ directory and returns
+    {"decision": "block", "reason": ...} -- the same mechanism
+    log-reminder.py already uses to force the agent to continue instead of
+    stopping. Needed because Claude Code's plan-mode file is created by the
+    harness itself and may never pass through a Write/Edit tool call this
+    hook can see, so the PostToolUse path alone would silently miss it.
+    Guarded by stop_hook_active exactly like log-reminder.py, so a second
+    consecutive Stop is allowed through rather than looping forever if the
+    agent doesn't (or can't) act on the first one.
 
-Both paths emit the same non-blocking notice; neither uses exit 2 or a
-"decision": "block" response.
+Doesn't use exit 2 / PreToolUse-style hard blocking -- the write itself
+always succeeds; only the conversation's continuation is steered.
 """
 
 from __future__ import annotations
@@ -84,16 +95,33 @@ def suggest_slug(path: Path) -> str:
     return "description"
 
 
-def violation_message(bad_paths: list[Path]) -> str:
+def rename_targets(bad_paths: list[Path]) -> list[tuple[Path, str]]:
     from datetime import date
 
     today = date.today().isoformat()
-    lines = ["Plan filename convention check: the following file(s) under docs/work/plans/ don't match YYYY-MM-DD_slug.md:"]
+    targets = []
     for path in bad_paths:
         slug = suggest_slug(path)
-        lines.append(f"  - {path.name} -> suggest renaming to {today}_{slug}.md (or a date matching when the plan was actually written)")
-    lines.append("This is a non-blocking notice. Rename at your convenience; it will not stop or fail the current action.")
+        targets.append((path, f"{today}_{slug}.md"))
+    return targets
+
+
+def violation_message(bad_paths: list[Path]) -> str:
+    targets = rename_targets(bad_paths)
+    lines = [
+        "PLAN FILENAME VIOLATION: rename the following file(s) under docs/work/plans/ "
+        "now, using your file tools, before doing anything else. Use the suggested name "
+        "as a starting point, but prefer a date matching when the plan was actually "
+        "written if you know it, and shorten an overly long slug if the heading was verbose."
+    ]
+    for path, suggested in targets:
+        lines.append(f"  - Rename {path.name} -> {suggested}")
     return "\n".join(lines)
+
+
+def short_summary(bad_paths: list[Path]) -> str:
+    names = ", ".join(p.name for p in bad_paths[:3])
+    return f"Plan filename convention violation: renaming {names} now."
 
 
 def check_paths(candidates: list[str], project_dir: Path) -> list[Path]:
@@ -125,8 +153,26 @@ def sweep_plans_dir(project_dir: Path) -> list[Path]:
     return bad
 
 
-def emit_notice(message: str) -> int:
-    json.dump({"systemMessage": message}, sys.stdout)
+def emit_stop_directive(message: str) -> int:
+    """Stop hooks reach the model by forcing continuation, not by display
+    text -- a bare systemMessage is shown to the human only."""
+    json.dump({"decision": "block", "reason": message}, sys.stdout)
+    return 0
+
+
+def emit_posttool_directive(message: str, summary: str) -> int:
+    """PostToolUse hooks reach the model via additionalContext; systemMessage
+    alone is display-only. Kept alongside for human-visible confirmation."""
+    json.dump(
+        {
+            "hookSpecificOutput": {
+                "hookEventName": "PostToolUse",
+                "additionalContext": message,
+            },
+            "systemMessage": summary,
+        },
+        sys.stdout,
+    )
     return 0
 
 
@@ -139,13 +185,14 @@ def main() -> int:
         if hook_input.get("stop_hook_active", False):
             return 0
         bad = sweep_plans_dir(project_dir)
-    else:
-        bad = check_paths(touched_paths(hook_input), project_dir)
+        if not bad:
+            return 0
+        return emit_stop_directive(violation_message(bad))
 
+    bad = check_paths(touched_paths(hook_input), project_dir)
     if not bad:
         return 0
-
-    return emit_notice(violation_message(bad))
+    return emit_posttool_directive(violation_message(bad), short_summary(bad))
 
 
 if __name__ == "__main__":

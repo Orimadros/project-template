@@ -38,7 +38,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Bash|Edit|Write|^apply_patch$",
+        "matcher": "Read|Bash|Edit|Write|^apply_patch$",
         "hooks": [
           {
             "type": "command",
@@ -48,32 +48,16 @@
           },
           {
             "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/rule-injector.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking path-scoped project rules"
+          },
+          {
+            "type": "command",
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/provenance-reminder.py\"",
             "timeout": 5,
             "statusMessage": "Checking Provenance Ledger reminder"
           },
-          {
-            "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/lock-raw-data.sh\"",
-            "timeout": 5,
-            "statusMessage": "Locking existing raw data files"
-          }
-        ]
-      },
-      {
-        "matcher": "Read|Bash|Edit|Write|^apply_patch$",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/rule-injector.py\"",
-            "timeout": 10,
-            "statusMessage": "Checking path-scoped project rules"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write|^apply_patch$",
-        "hooks": [
           {
             "type": "command",
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/verify-reminder.py\"",
@@ -85,6 +69,12 @@
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/plan-name-check.py\"",
             "timeout": 5,
             "statusMessage": "Checking plan filename convention"
+          },
+          {
+            "type": "command",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/lock-raw-data.sh\"",
+            "timeout": 5,
+            "statusMessage": "Locking existing raw data files"
           }
         ]
       }

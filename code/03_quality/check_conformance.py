@@ -191,6 +191,54 @@ def check_hooks_consolidated(root: Path) -> list[Finding]:
     return findings
 
 
+def check_codex_matchers_non_overlapping(root: Path) -> list[Finding]:
+    """Codex's rule to resolve multiple hook blocks with overlapping
+    matchers on the same event is unverified (confirmed live 2026-08-17:
+    rule-injector.py was correctly registered but never once executed
+    across a full session, because its block's matcher overlapped an
+    earlier block's on the same PostToolUse event -- see rule-injector.py
+    docstring). Require one block per event in .codex/hooks.json so this
+    can't silently regress; Claude's settings.json is unaffected since its
+    documented behavior is to run every matching block."""
+    findings: list[Finding] = []
+    full = root / CODEX_HOOKS_JSON
+    if not full.is_file():
+        return findings
+
+    import json
+
+    try:
+        data = json.loads(full.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return findings
+
+    for event_name, entries in data.get("hooks", {}).items():
+        if not isinstance(entries, list) or len(entries) < 2:
+            continue
+        token_sets = []
+        for entry in entries:
+            matcher = entry.get("matcher")
+            if not matcher:
+                token_sets.append(None)  # no matcher == matches everything
+                continue
+            token_sets.append({t.strip().strip("^$") for t in matcher.split("|")})
+        overlap = False
+        for i in range(len(token_sets)):
+            for j in range(i + 1, len(token_sets)):
+                if token_sets[i] is None or token_sets[j] is None or (token_sets[i] & token_sets[j]):
+                    overlap = True
+        if overlap:
+            findings.append(
+                Finding(
+                    "error",
+                    f"{CODEX_HOOKS_JSON}: event '{event_name}' has multiple hook blocks with "
+                    "overlapping matchers; merge into a single block per event (Codex's cross-block "
+                    "matcher resolution is unverified and has silently dropped hooks before)",
+                )
+            )
+    return findings
+
+
 def check_skill_frontmatter(root: Path) -> list[Finding]:
     findings: list[Finding] = []
     agents_dir = root / AGENTS_SKILLS
@@ -378,6 +426,7 @@ def main() -> int:
     findings.extend(check_skill_frontmatter(root))
     findings.extend(check_claude_md_stub(root))
     findings.extend(check_hooks_consolidated(root))
+    findings.extend(check_codex_matchers_non_overlapping(root))
     findings.extend(check_agents_generated(root))
     findings.extend(check_rules_path_scoped(root))
     findings.extend(check_dangling_references(root))

@@ -15,6 +15,17 @@ blocked tool call. Set INJECT_CONTEXT = False below to run in observe-only
 mode (matches are computed and logged, nothing is surfaced to the agent) --
 useful for a first cautious run in a real Codex session before trusting
 this fully.
+
+Must be registered in the SAME PostToolUse block as every other hook that
+shares its matcher (see .codex/hooks.json). Confirmed live 2026-08-17: when
+this script had its own block with a matcher overlapping an earlier block's
+(both matching Edit/Write/apply_patch), it never executed once across a
+full Codex session -- state evidence (no rules-index.json ever written)
+showed the sibling block's hooks ran normally while this one silently did
+not. Codex's rule for resolving overlapping matchers across blocks on one
+event is unverified; collapsing to one block per event is the fix, and
+check_conformance.py's check_codex_matchers_non_overlapping guards against
+this regressing.
 """
 
 from __future__ import annotations

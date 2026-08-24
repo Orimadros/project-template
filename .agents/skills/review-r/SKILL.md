@@ -19,6 +19,7 @@ Run the comprehensive R code review protocol.
    - Follow the full protocol in the agent instructions
    - Read `.claude/rules/r-code-conventions.md` for current standards
    - Check that generated data/results assets have Provenance Ledger entries with variable-level provenance
+   - Check that the reviewed script has a fresh immutable Asset Graph node and manually inspected input/import/output relationships
    - Save report to `docs/work/reviews/[script_name]_r_review.md`
 
 3. **After all reviews complete**, present a summary:

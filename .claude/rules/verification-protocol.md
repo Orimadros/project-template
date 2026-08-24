@@ -20,6 +20,7 @@ Every substantive task must end with a runnable verification step.
 3. If stage-level behavior changed broadly, run `make all`.
 4. Confirm expected outputs exist and are non-empty (`data/clean/`, `results/`).
 5. Report what was run and what passed/failed.
+6. For any governed file addition, content change, move, or deletion, confirm its immutable node, lifecycle event, review hash, and direct relationships are current.
 
 ## For R Scripts (`.R`)
 

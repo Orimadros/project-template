@@ -1,0 +1,26 @@
+asset_id = "asset_REPLACE_WITH_IMMUTABLE_UUID"
+node_id = "file_REPLACE"
+asset_name = "REPLACE"
+asset_type = "dataset"
+stage = "REPLACE"
+format = "REPLACE"
+status = "complete"
+created_or_downloaded_at = "YYYY-MM-DDTHH:MM:SSZ"
+source_documents = []
+reproduction_command = "REPLACE"
+dossier = "docs/data/provenance-ledger/assets/asset_REPLACE.md"
+last_updated = "YYYY-MM-DD"
+
+[[variables]]
+id = "var_REPLACE_WITH_IMMUTABLE_UUID"
+name = "REPLACE"
+kind = "REPLACE"
+data_type = "REPLACE"
+description = "REPLACE with a source-grounded definition."
+unit = "REPLACE"
+missing_value_codes = []
+allowed_values = []
+derivation = "REPLACE"
+source_evidence = ["REPLACE"]
+status = "complete"
+

@@ -377,6 +377,26 @@ def main() -> int:
     args = parser.parse_args()
 
     root = args.root.resolve()
+    # Provenance Ledger v2 delegates to the Asset Graph validator. Keep the v1
+    # implementation below during migration so existing template forks remain
+    # valid until their grouped manifests are introduced.
+    index_document, index_error = load_toml(root / LEDGER_PATH)
+    if index_error is None and index_document and index_document.get("ledger_version") == 2:
+        from asset_graph_lib.loader import load_ledger
+        from asset_graph_lib.validation import validate_ledger
+
+        ledger = load_ledger(root)
+        graph_findings = validate_ledger(ledger)
+        for finding in graph_findings:
+            print(f"[{finding.severity.upper()}] {finding.code}: {finding.message}")
+        errors = sum(finding.severity == "error" for finding in graph_findings)
+        warnings = sum(finding.severity == "warning" for finding in graph_findings)
+        if not graph_findings:
+            print("Provenance Ledger / Asset Graph: PASS")
+        else:
+            print(f"Provenance Ledger / Asset Graph: {errors} error(s), {warnings} warning(s)")
+        return 2 if errors else 0
+
     assets, findings = validate_index(root)
     findings.extend(validate_coverage(root, assets))
     print_findings(findings)

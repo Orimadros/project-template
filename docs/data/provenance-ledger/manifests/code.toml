@@ -1,0 +1,6 @@
+manifest_version = 1
+subsystem = "pipeline-code"
+
+# Empty at the template baseline. Directory placeholders and documentation are
+# explicitly excluded from graph-node coverage.
+nodes = []

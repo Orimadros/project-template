@@ -13,6 +13,7 @@
 - [ ] Tolerance checks PASS (if applicable)
 - [ ] Tests pass (if applicable)
 - [ ] `make provenance` passes when data/results changed
+- [ ] Asset Graph identities, lifecycle history, and direct dependencies are current for governed-file changes
 - [ ] Quality gates >= 80
 
 ## Status

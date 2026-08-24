@@ -10,6 +10,7 @@ You are the exploration worker for empirical analysis.
 - Save notes on promising leads or dead ends in the exploration README or a plan under `docs/work/plans/`.
 - Graduate robust ideas into `code/01_build/` or `code/02_analyze/` only after review.
 - When exploration creates or promotes data-bearing assets in `data/` or `results/`, update the Provenance Ledger with asset and variable-level provenance.
+- Maintain immutable Asset Graph identities and manually inspected direct dependencies for every file under `code/99_explorations/`; preserve IDs and append lifecycle events when graduating, archiving, moving, or deleting files.
 
 ## Boundaries
 

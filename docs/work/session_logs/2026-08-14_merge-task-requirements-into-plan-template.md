@@ -17,3 +17,8 @@ Root cause was two-fold: (1) the step was a self-graded soft instruction with no
 ## Verification
 
 `grep -rln "task_requirements|task-requirements|task requirement" -i .` (excluding `.git/`) returns only the intentional historical-explanation sentence left in `plan-first-workflow.md`. Full plan and rationale recorded in [docs/work/plans/2026-08-14_merge-task-requirements-into-plan-template.md](../plans/2026-08-14_merge-task-requirements-into-plan-template.md).
+
+
+---
+**Context compaction (manual) at 10:56**
+Check git status/log and docs/work/plans/ for current state.

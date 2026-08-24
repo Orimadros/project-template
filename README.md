@@ -8,7 +8,7 @@ This version includes:
 - a canonical paper at `docs/deliverables/articles/main/main.tex`
 - staged code folders (`code/00_fetch`, `code/01_build`, `code/02_analyze`)
 - explicit host-native file-based pipelines via `make`
-- a Provenance Ledger for asset and variable-level data generation records
+- a Provenance Ledger and durable Asset Graph for substantive pipeline code, data, results, and variable-level data generation records; documents and repository-control placeholders stay outside the graph
 - hook-level protection that makes `data/raw/` append-only for Claude/Codex
 - lockfile-based dependency setup when available
 - Beamer only for presentations, with talks derived from the paper
@@ -73,11 +73,14 @@ This version includes:
 - Paper and slides include generated outputs rather than copying numbers by hand
 
 ### 5. Data provenance is explicit and queryable
-- `docs/data/provenance-ledger/` records every data-bearing asset in `data/raw/`, `data/tmp/`, `data/clean/`, and `results/`.
+- `docs/data/provenance-ledger/` records every governed file under the staged pipeline code, `code/99_explorations/`, `data/`, and `results/`. Paper, slide, work, and repository-control documents are intentionally outside graph-node coverage.
+- Each file receives an immutable ID that survives moves and renames. Deleted files remain tombstones, so historical outputs can still identify producers that no longer exist.
+- Agents inspect and author direct typed dependencies manually; the graph tooling validates those records and derives downstream and transitive relationships without scanning source code for inferred edges.
 - Each asset has structured TOML metadata plus a narrative dossier.
 - Structured assets must document every variable, field, raster band/layer, class code, model-output field, unit, missing-value rule, and derivation.
-- Agents must update the ledger automatically when fetching data, writing data-generating code, generating outputs, or answering variable/code questions.
-- `make provenance` validates that the ledger covers current data/results assets.
+- Hooks notify agents when governed files are added, changed, moved, or deleted; agents then update the relevant records and review hashes.
+- `make provenance` validates graph coverage, identity/history consistency, relationships, freshness, and variable-level provenance.
+- `/inspect-asset-graph` answers producer, raw-source, lineage, impact, path-history, and rebuildability questions from the committed graph.
 
 ### 6. Raw data is append-only
 - Claude/Codex project hooks allow adding new files under `data/raw/`.
@@ -141,6 +144,9 @@ Default template targets include:
 - `setup`: restore lockfile dependencies if present
 - `fetch`, `build`, `analysis`: staged project tasks
 - `provenance`: validate Provenance Ledger coverage
+- `asset-graph-check`: validate identity, history, lineage, and freshness
+- `asset-graph-test`: run Asset Graph unit and historical-lineage fixtures
+- `asset-graph-query NODE=path-or-id`: show compact node metadata and immediate adjacency
 - `all`: run the full host-native pipeline
 - `articles`: compile every root `.tex` document in `docs/deliverables/articles/`
 - `slides`: compile every root `.tex` document in `docs/deliverables/slides/`

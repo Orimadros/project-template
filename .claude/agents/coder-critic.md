@@ -16,6 +16,7 @@ You are the code critic. You inspect code and outputs but do not implement fixes
 - Do paper claims match generated outputs?
 - Are script inputs and outputs clear?
 - Does `make provenance` pass, and do data/results outputs have Provenance Ledger entries down to variables, codes, fields, bands, and layers?
+- Do governed files have stable identities, fresh manual inspection attestations, complete direct dependencies, and durable lineage through moves or deletions?
 - Could someone new to the project read the opening description and follow the script through clear variable names and an intuitive chain of named steps/functions?
 
 ## Output

@@ -20,6 +20,7 @@ _Last updated: 2026-05-23_
 | Sandbox | Experiments before they graduate to staged code | `code/99_explorations/` |
 | Data zones | Tracked placeholder folders; choose project-specific data policy after forking | `data/raw`, `data/clean`, `data/tmp` |
 | Results | Generated tables, figures, and model outputs | `results/` |
+| Asset Graph | Immutable identity and lineage for pipeline code, data, and results | `docs/data/provenance-ledger/` |
 | Work records | Plans (with clarity/requirements sections), session logs, checkpoints, reviews | `docs/work/` |
 | Agent calibration | Domain, journal, and personal style preferences | `.claude/references/` |
 | Codex customization | Repo skills, project agents, and project hooks | `.agents/skills/`, `.codex/` |
@@ -81,6 +82,8 @@ Use `/strategize` for empirical design. The output should clarify the estimand, 
 - Pipeline entry scripts use `NN_verb_noun.<extension>` (for example, `01_download_biodiversity.sh` or `03_construct_panel.R`) and run in lexical order. Supporting modules and other non-pipeline helpers remain unnumbered and are not run directly by Make.
 - Raw data in `data/raw/` is immutable by default
 - Derived data goes to `data/clean/` or `data/tmp/`
+- Every substantive, non-excluded file under the governed pipeline-code, exploration, data, and result roots has an immutable Asset Graph ID. Moves keep the ID; deletions remain as historical tombstones; documentation and directory placeholders are excluded.
+- Hooks report new, changed, moved, or deleted governed files. The agent inspects the affected file contract and updates direct typed dependencies manually.
 
 ### D. Analyze
 
@@ -89,6 +92,7 @@ Use `/strategize` for empirical design. The output should clarify the estimand, 
 - Generated tables, figures, and model outputs go to `results/`
 - Use `/analyze` or `/data-analysis` for paper-facing empirical work
 - If a result changes, update the relevant paper claim or record a follow-up plan
+- Use `/inspect-asset-graph` to answer producer, raw-source, lineage, impact, path-history, and rebuildability questions without scanning the repository.
 
 ### E. Write The Paper
 
@@ -213,11 +217,11 @@ If a derived output looks wrong, fix upstream code and rerun the pipeline. Do no
 
 ## 9. Quick Reference
 
-**Make targets:** `setup`, `fetch`, `build`, `analysis`, `all`, `clean`
+**Make targets:** `setup`, `fetch`, `build`, `analysis`, `provenance`, `asset-graph-check`, `asset-graph-test`, `asset-graph-query`, `all`, `clean`
 
 **Paper workflow:** `/discover`, `/strategize`, `/analyze`, `/write`, `/review`, `/revise`, `/talk`, `/checkpoint`, `/tools`
 
-**Existing utilities:** `/compile-latex`, `/validate-bib`, `/proofread`, `/review-paper`, `/review-r`, `/data-analysis`, `/slide-excellence`, `/visual-audit`, `/pedagogy-review`, `/devils-advocate`, `/commit`, `/learn`, `/context-status`
+**Existing utilities:** `/inspect-asset-graph`, `/provenance-ledger`, `/compile-latex`, `/validate-bib`, `/proofread`, `/review-paper`, `/review-r`, `/data-analysis`, `/slide-excellence`, `/visual-audit`, `/pedagogy-review`, `/devils-advocate`, `/commit`, `/learn`, `/context-status`
 
 **Key folders:**
 

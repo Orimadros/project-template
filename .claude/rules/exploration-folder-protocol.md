@@ -40,3 +40,4 @@ code/99_explorations/
 - [ ] Results replicate within tolerance
 - [ ] Code is clear without deep context
 - [ ] README explains approach and findings
+- [ ] Asset Graph IDs are preserved across graduation/archive moves and lifecycle events record the old and new paths

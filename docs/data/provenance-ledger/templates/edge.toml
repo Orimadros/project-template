@@ -1,0 +1,12 @@
+[[edges]]
+id = "edge_REPLACE_WITH_IMMUTABLE_UUID"
+upstream = "file_REPLACE"
+downstream = "file_REPLACE"
+relationship = "membership"
+edge_class = "organizational"
+valid_from = "YYYY-MM-DDTHH:MM:SSZ"
+status = "active"
+provenance_relevance = true
+operational_relevance = false
+evidence = "REPLACE with source-grounded evidence for this direct relationship."
+

@@ -1,0 +1,6 @@
+manifest_version = 1
+subsystem = "data-and-results"
+
+# Empty at the template baseline. The only current files are excluded
+# directory placeholders.
+nodes = []

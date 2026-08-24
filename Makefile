@@ -4,7 +4,7 @@ R_SCRIPT ?= Rscript
 PYTHON_RUN ?= uv run
 LATEX ?= xelatex
 
-.PHONY: help setup setup-python setup-r fetch build analysis provenance check agents all latex articles slides compile-tex _compile-tex clean
+.PHONY: help setup setup-python setup-r fetch build analysis provenance asset-graph-check asset-graph-test asset-graph-query check agents all latex articles slides compile-tex _compile-tex clean
 
 define RUN_PIPELINE_SCRIPTS
 	@set -e; \
@@ -35,6 +35,9 @@ help:
 	@echo "  make build      Run numbered pipeline scripts in code/01_build/"
 	@echo "  make analysis   Run numbered scripts + notebooks in code/02_analyze/"
 	@echo "  make provenance Validate docs/data/provenance-ledger coverage"
+	@echo "  make asset-graph-check  Validate Asset Graph identity, history, lineage, and freshness"
+	@echo "  make asset-graph-test   Run Asset Graph unit and historical-lineage fixtures"
+	@echo "  make asset-graph-query NODE=path-or-id  Show a compact node/adjacency view"
 	@echo "  make agents     Regenerate .codex/agents/*.toml from .claude/agents/*.md"
 	@echo "  make check      Validate Claude Code / Codex cross-harness parity"
 	@echo "  make latex      Compile every root .tex document in articles/ and slides/"
@@ -84,6 +87,18 @@ analysis:
 
 provenance:
 	@python3 code/03_quality/check_provenance_ledger.py
+
+asset-graph-check: provenance
+
+asset-graph-test:
+	@python3 -m unittest discover -s code/03_quality/tests -p 'test_asset_graph*.py'
+
+asset-graph-query:
+	@if [ -z "$(NODE)" ]; then \
+		echo "Usage: make asset-graph-query NODE=path-or-id"; \
+		exit 2; \
+	fi
+	@python3 code/03_quality/asset_graph.py show "$(NODE)" --format agent
 
 agents:
 	@python3 code/03_quality/gen_codex_agents.py

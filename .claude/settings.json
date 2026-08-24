@@ -114,7 +114,7 @@
           {
             "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/provenance-reminder.py",
-            "timeout": 5
+            "timeout": 30
           },
           {
             "type": "command",
@@ -129,7 +129,7 @@
           {
             "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/provenance-reminder.py",
-            "timeout": 5
+            "timeout": 30
           },
           {
             "type": "command",
@@ -154,6 +154,17 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/provenance-reminder.py",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
@@ -166,6 +177,11 @@
             "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/plan-name-check.py",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.agents/hooks/provenance-reminder.py",
+            "timeout": 30
           }
         ]
       }

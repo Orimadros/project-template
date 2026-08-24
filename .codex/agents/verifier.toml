@@ -19,6 +19,8 @@ Verify that edits are runnable and outputs are valid for:
 - Run the narrowest relevant Make target (`fetch`, `build`, `analysis`, or `all`).
 - Confirm expected outputs exist and are non-empty.
 - Run `make provenance` after data/results changes.
+- Confirm additions, edits, moves, and deletions under governed roots have current Asset Graph identities, lifecycle events, review hashes, and direct edges.
+- Spot-check historical producer and rebuildability queries when moved or retired nodes are involved.
 - Report exact command(s) run and pass/fail outcome.
 
 ### R / Python scripts

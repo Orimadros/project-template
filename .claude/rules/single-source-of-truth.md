@@ -24,7 +24,7 @@ docs/data/provenance-ledger/*                   canonical data provenance
 ```
 
 The paper is authoritative for the research argument, notation, empirical claims, tables, and figures. Beamer talks and appendices must derive from it.
-The Provenance Ledger is authoritative for how data-bearing assets and their variables, codes, fields, bands, and layers were generated.
+The Provenance Ledger is authoritative for immutable identity and dependency lineage within governed pipeline code, data, and results, and for how data-bearing assets and their variables, codes, fields, bands, and layers were generated. Documents are consumers of results but are not Asset Graph nodes.
 
 ## Derived Layers
 
@@ -46,6 +46,7 @@ compiled PDFs
 - If a slide is hard to read, fix the Beamer source according to `.claude/rules/slide-writing-principles.md`; do not create a parallel presentation artifact.
 - Every numerical claim in the paper should be traceable to a script and generated output.
 - Every data-bearing asset in `data/raw/`, `data/tmp/`, `data/clean/`, and `results/` must be traceable through `docs/data/provenance-ledger/`.
+- Every governed pipeline-code, exploration, data, and result file must have an immutable Asset Graph node; preserve historical identities and edges across moves and deletions.
 - Every queryable unit inside a data asset must have source-grounded provenance or an explicit `partial-flagged`, `missing-blocker`, or `accepted-limited` status.
 - Keep root article and slide documents one per folder: `articles/<name>/<name>.tex` and `slides/<name>/<name>.tex`.
 

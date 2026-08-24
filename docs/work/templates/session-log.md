@@ -37,6 +37,8 @@
 |-------|----------------|-----------------------------|--------|
 | [path or N/A] | YES / NO / N/A | YES / NO / N/A | complete / partial-flagged / missing-blocker / accepted-limited / N/A |
 
+**Asset Graph events:** [new IDs, moves, deletions/tombstones, edge/activity changes, or N/A]
+
 ## Open Questions / Blockers
 
 - [ ] [Question or blocker]

@@ -14,7 +14,7 @@
 - **Slides derive from the paper** -- Beamer decks in `docs/deliverables/slides/` are talks based on the canonical paper, not a parallel source of truth
 - **Reproducibility first** -- `code/` creates data/results; lockfiles pin dependencies; the Makefile defines the host pipeline
 - **Raw data is append-only** -- Claude/Codex hooks allow new files in `data/raw/` but block edits, overwrites, chmods, and deletes of existing raw files
-- **Provenance Ledger required** -- every data-bearing asset and nested variable/code/layer must be documented in `docs/data/provenance-ledger/`
+- **Provenance Ledger required** -- every governed pipeline-code, data, and result file has an immutable Asset Graph identity and every data-bearing asset retains nested variable/code/layer provenance
 - **Worker/critic separation** -- creative agents draft; critic agents evaluate; creators never self-score
 - **[LEARN] tags** -- save corrections as `[LEARN:category] wrong -> right` in `MEMORY.md`
 
@@ -83,6 +83,7 @@ make fetch
 make build
 make analysis
 make provenance
+make asset-graph-test
 make all
 
 # LaTeX documents (host, with TeX installed)
@@ -95,8 +96,11 @@ make latex      # compile both articles and slides
 
 ## Provenance Ledger
 
-- Follow `.claude/rules/provenance-ledger.md` for every data-bearing asset in `data/raw/`, `data/tmp/`, `data/clean/`, and `results/`.
-- Agents that fetch data, write data-generating code, create outputs, or answer variable/code questions must update `docs/data/provenance-ledger/` without waiting for a separate request.
+- Follow `.claude/rules/provenance-ledger.md` for files under `code/00_fetch/`, `code/01_build/`, `code/02_analyze/`, `code/99_explorations/`, `data/`, and `results/`. Documents and repository-control infrastructure are outside Asset Graph node coverage.
+- Every governed file has one immutable UUID-backed node ID. Preserve it across moves and renames; retain deleted files as tombstones with path history and historical relationships.
+- Agents that add, change, move, delete, or consume governed files must inspect the affected file contracts and update `docs/data/provenance-ledger/` manually. Graph tooling validates and queries; it does not infer dependency relationships.
+- Store direct typed edges once as upstream to downstream. Derive reverse adjacency and transitive lineage with the graph CLI.
+- Use `/inspect-asset-graph` for producers, raw sources, lineage, path history, rebuildability, and impact questions. If the graph is stale, use `/provenance-ledger` to repair it before relying on the answer.
 - The ledger must document every asset plus nested queryable units: variables, columns, fields, raster bands/layers, class codes, model-output fields, units, missing-value rules, and derivations.
 - Definitions and generation procedures must come from actual sources, code, codebooks, metadata, papers, or provider documentation. Do not fill provenance from memory.
 - If exact provenance cannot be found, record the gap with `partial-flagged` or `missing-blocker`, warn the user, and run `make provenance`.
@@ -181,7 +185,7 @@ Track live paper/pipeline/slides status in `docs/work/plans/` and `docs/data/pro
 | `pdf-processing.md` | `docs/sources/` |
 | `plan-first-workflow.md` | `docs/work/plans/` |
 | `proofreading-protocol.md` | articles, appendices, slides, reviews |
-| `provenance-ledger.md` | data, results, provenance-ledger, fetch/build/analyze code |
+| `provenance-ledger.md` | governed pipeline code, explorations, data/results, and ledger maintenance files |
 | `quality-gates.md` | articles, slides, code, Makefile |
 | `r-code-conventions.md` | R scripts |
 | `replication-protocol.md` | R scripts |

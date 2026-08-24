@@ -1,0 +1,8 @@
+dependency_manifest_version = 1
+subsystem = "explorations"
+
+# Intentionally empty at the template baseline. The exploration README is
+# guidance only and the archive contains only an empty directory marker.
+activities = []
+edges = []
+

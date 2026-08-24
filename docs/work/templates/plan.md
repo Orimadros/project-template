@@ -53,6 +53,7 @@ For a clear, specific, single-file task, it's fine for this table to be a single
 - **Affected assets:** [data/raw, data/tmp, data/clean, or results paths, if any — else N/A]
 - **Nested records required:** [variables, codes, raster bands/layers, model-output fields, or N/A]
 - **Expected status:** complete / partial-flagged / missing-blocker / accepted-limited / N/A
+- **Asset Graph changes:** immutable node IDs, lifecycle events, activities/edges, or N/A
 
 ---
 

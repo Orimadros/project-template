@@ -1,21 +1,100 @@
-ledger_version = 1
-title = "Provenance Ledger"
-description = "Machine-checkable registry for every data-bearing asset in data/raw, data/tmp, data/clean, and results."
+ledger_version = 2
+title = "Provenance Ledger and Asset Graph"
+description = "Durable lineage for project data, data-producing code, and generated results."
+edge_direction = "upstream_to_downstream"
+enforcement = "strict"
 
-asset_roots = [
-  "data/raw",
-  "data/tmp",
-  "data/clean",
+[governance]
+mode = "tracked-plus-roots"
+roots = [
+  "code/00_fetch",
+  "code/01_build",
+  "code/02_analyze",
+  "code/99_explorations",
+  "data",
   "results",
 ]
+untracked_outside_roots = "ignore"
+control_plane_review_mode = "schema"
+retain_retired_nodes = true
+retain_historical_edges = true
 
-valid_statuses = [
+# Exclusions apply only beneath the governed roots above. A matching path is
+# classified as excluded and must not also have an active node record.
+[[exclusions]]
+pattern = "**/.gitkeep"
+reason = "Directory placeholder, not data code, data, or a result asset."
+
+[[exclusions]]
+pattern = "code/99_explorations/README.md"
+reason = "Directory documentation, not data-producing code."
+
+[[exclusions]]
+pattern = "**/.DS_Store"
+reason = "Operating-system metadata, not a research asset."
+
+[[exclusions]]
+pattern = "**/__pycache__/**"
+reason = "Regenerable Python bytecode cache."
+
+[[exclusions]]
+pattern = "**/*.py[cod]"
+reason = "Regenerable Python bytecode."
+
+[[exclusions]]
+pattern = "**/.ipynb_checkpoints/**"
+reason = "Regenerable notebook editor checkpoints."
+
+[[exclusions]]
+pattern = "**/.Rhistory"
+reason = "Local interactive-session history."
+
+[[exclusions]]
+pattern = "**/.RData"
+reason = "Implicit local workspace state; reproducible assets must be written explicitly."
+
+[[exclusions]]
+pattern = "**/.cache/**"
+reason = "Local regenerable cache."
+
+[storage]
+manifests = [
+  "docs/data/provenance-ledger/manifests/code.toml",
+  "docs/data/provenance-ledger/manifests/explorations.toml",
+  "docs/data/provenance-ledger/manifests/data-results.toml",
+]
+dependencies = [
+  "docs/data/provenance-ledger/dependencies/pipeline.toml",
+  "docs/data/provenance-ledger/dependencies/explorations.toml",
+]
+history = [
+  "docs/data/provenance-ledger/history/file-events-2026.toml",
+  "docs/data/provenance-ledger/history/retired-relationships.toml",
+]
+asset_metadata_directory = "docs/data/provenance-ledger/assets"
+
+valid_node_types = [
+  "file",
+  "symlink",
+  "expected_file",
+  "logical_asset",
+  "pattern",
+  "external_source",
+  "external_package",
+  "unresolved",
+]
+valid_node_states = ["active", "retired"]
+valid_graph_statuses = [
   "complete",
   "partial-flagged",
   "missing-blocker",
   "accepted-limited",
 ]
-
-# Add one [[assets]] entry per data-bearing file or logical asset directory.
-# Asset-level structured metadata lives in docs/data/provenance-ledger/assets/<asset_id>.toml.
-# Narrative provenance lives in docs/data/provenance-ledger/assets/<asset_id>.md.
+valid_provenance_statuses = [
+  "complete",
+  "partial-flagged",
+  "missing-blocker",
+  "accepted-limited",
+  "not-applicable",
+]
+valid_event_types = ["created", "moved", "deleted", "restored", "superseded"]

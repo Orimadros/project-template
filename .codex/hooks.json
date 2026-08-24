@@ -55,7 +55,7 @@
           {
             "type": "command",
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/provenance-reminder.py\"",
-            "timeout": 5,
+            "timeout": 30,
             "statusMessage": "Checking Provenance Ledger reminder"
           },
           {
@@ -75,6 +75,18 @@
             "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/lock-raw-data.sh\"",
             "timeout": 5,
             "statusMessage": "Locking existing raw data files"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/provenance-reminder.py\"",
+            "timeout": 30,
+            "statusMessage": "Checking Asset Graph freshness"
           }
         ]
       }
@@ -118,6 +130,12 @@
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/plan-name-check.py\"",
             "timeout": 5,
             "statusMessage": "Checking plan filename convention"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/provenance-reminder.py\"",
+            "timeout": 30,
+            "statusMessage": "Checking Asset Graph freshness"
           }
         ]
       }

@@ -43,7 +43,7 @@ A submission/excellence score requires the aggregate score to be at least 95 and
 - Runtime or LaTeX compile failure.
 - Hardcoded absolute paths in code.
 - Generated numbers in the paper that do not match `results/`.
-- Missing Provenance Ledger coverage for data/results assets or their queryable variables/codes/layers.
+- Missing or stale Asset Graph identity/lineage for governed pipeline code, explorations, data, or results; or missing queryable variable/code/layer provenance.
 - Causal claim without identification support.
 - Missing or fabricated citation.
 - Slide claim that contradicts the paper.

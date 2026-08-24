@@ -1,0 +1,24 @@
+[[activities]]
+id = "activity_REPLACE_WITH_STABLE_NAME"
+revision_id = "activity_revision_REPLACE_WITH_IMMUTABLE_UUID"
+kind = "transformation"
+status = "active"
+valid_from = "YYYY-MM-DDTHH:MM:SSZ"
+producer = "file_REPLACE"
+reads = []
+imports = []
+sources = []
+includes = []
+configures = []
+writes = []
+invoked_by = []
+reproduction_command = "REPLACE"
+producer_sha256 = "sha256:REPLACE"
+producer_revision = "REPLACE"
+graph_status = "complete"
+reviewed_at = "YYYY-MM-DD"
+review_method = "manual-source-inspection"
+evidence = [
+  { node = "file_REPLACE", locator = "REPLACE with exact inspected locations" },
+]
+

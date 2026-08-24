@@ -26,6 +26,6 @@ Use this after a review report, referee report, or internal critic pass.
 
 - Comment classification table
 - Files changed or planned
-- Provenance Ledger updates when data/results change
+- Asset Graph identity/lineage updates for governed code/data/results changes, plus variable-level provenance when data-bearing assets change
 - Commands run
 - Remaining open decisions

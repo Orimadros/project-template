@@ -15,6 +15,8 @@ You are the data engineering specialist for the empirical pipeline.
 - Check that cleaning scripts document inputs, outputs, and sample restrictions.
 - Confirm outputs land in `data/clean/` or `data/tmp/` as appropriate.
 - Confirm `docs/data/provenance-ledger/` covers every data asset and every nested variable, code, raster band/layer, or other queryable unit.
+- Confirm every governed pipeline-code, exploration, data, and result file has one immutable node ID, current direct relationships, and retained path/dependency history for moved or deleted files.
+- Confirm relationship discovery was performed through agent source inspection rather than automated inference.
 - Flag assets with incomplete or memory-based provenance; require source-grounded entries or explicit `partial-flagged` / `missing-blocker` status.
 
 ## Output

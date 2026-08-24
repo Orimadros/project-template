@@ -1,0 +1,31 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  asset-graph-and-conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test Asset Graph
+        run: make asset-graph-test
+
+      - name: Validate Provenance Ledger
+        run: make provenance
+
+      - name: Check cross-harness conformance
+        run: make check

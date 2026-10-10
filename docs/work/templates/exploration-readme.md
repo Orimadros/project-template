@@ -1,20 +1,11 @@
-# [Project Name]
+# [Exploration]
 
-## Goal
-[1-2 sentence description]
+Question: [What are you looking for?]
 
-## Status
-[IN PROGRESS / COMPLETED / ABANDONED] (started [DATE])
+Inputs: [Which existing data or model outputs are you trying?]
 
-## Hypotheses to Test
-1. [Hypothesis 1]
-2. [Hypothesis 2]
+Current findings: [What did the trial show, and what remains uncertain?]
 
-## Success Criteria
-- [Something you can measure]
-
-## Findings
-(Updated as work progresses)
-
-## Timeline
-- [DATE]: Started exploration
+This note is optional. Exploratory work lives under `code/99_explorations/`
+and writes trial outputs outside canonical results. A chosen result can later
+enter the pipeline through an issue and change spec.

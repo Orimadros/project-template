@@ -1,178 +1,66 @@
-# Personal Research Project Template
+# Research project template
 
-This is my personal research project template. It is based on Pedro Sant'Anna's original [pedrohcgs/claude-code-my-workflow](https://github.com/pedrohcgs/claude-code-my-workflow) template and Hugo Sant'Anna's paper-focused fork, [hugosantanna/clo-author](https://github.com/hugosantanna/clo-author), with project structure, naming, document organization, Makefile conventions, and paper-first workflow adjusted to my taste.
+This template starts an empirical research project with staged code, a canonical paper,
+Beamer talks, and a small set of agent skills. It builds on
+[Pedro Sant'Anna's workflow](https://github.com/pedrohcgs/claude-code-my-workflow) and
+[Hugo Sant'Anna's paper-focused fork](https://github.com/hugosantanna/clo-author).
 
-The template is designed for empirical paper projects using staged code, host-native Make targets, and a paper-first Claude/Codex workflow.
+## Where work lives
 
-This version includes:
-- a canonical paper at `docs/deliverables/articles/main/main.tex`
-- staged code folders (`code/00_fetch`, `code/01_build`, `code/02_analyze`)
-- explicit host-native file-based pipelines via `make`
-- a Provenance Ledger and durable Asset Graph for substantive pipeline code, data, results, and variable-level data generation records; documents and repository-control placeholders stay outside the graph
-- hook-level protection that makes `data/raw/` append-only for Claude/Codex
-- lockfile-based dependency setup when available
-- Beamer only for presentations, with talks derived from the paper
-- slide-writing standards adapted from Paul Goldsmith-Pinkham's Beamer tips
-- selective clo-author-style worker/critic agents and paper quality gates
-- tracked placeholder folders, including `data/` and `results/`; add project-specific ignore rules only after forking if desired
+| Path | Purpose |
+|---|---|
+| `code/00_fetch/`, `code/01_build/`, `code/02_analyze/` | Numbered pipeline entry scripts, run in order by Make |
+| `code/lib/` | Shared R, Python, and Julia input/run-record helpers |
+| `code/99_explorations/` | Trial plots and diagnostics, outside the canonical pipeline |
+| `data/raw/`, `data/clean/`, `data/tmp/` | Source, assembled, and temporary data |
+| `results/` | Generated tables, figures, and model outputs |
+| `docs/deliverables/articles/main/main.tex` | Canonical paper |
+| `docs/deliverables/slides/` | Beamer talks derived from the paper |
+| `pending-approval/` | Issue-specific candidate code, outputs, spec, and review |
+| `docs/work/` | Archived specs, plans, and factual session logs |
 
----
+Each entry script names its inputs and outputs in the source and explains its
+current purpose and substantive choices there. For work that generates data or
+results, the shared helper records the direct inputs the script registers, their
+observed modification times, and the last run's status beside each output. A
+directory or filename pattern registers many files in one lightweight call. The
+record does not discover undeclared reads or prove the old inputs' contents.
 
-## Project Layout
+## Working with agents
 
-```text
-.
-├── AGENTS.md
-├── CLAUDE.md
-├── .agents/                # Codex repo skills
-├── .codex/                 # Codex project agents and hooks
-├── .claude/                # Claude Code agents, skills, hooks, rules, references
-├── Makefile
-├── code/
-│   ├── 00_fetch/
-│   ├── 01_build/
-│   ├── 02_analyze/
-│   ├── 03_quality/
-│   └── 99_explorations/
-├── data/                   # Tracked empty scaffold; add project policy after fork
-│   ├── raw/
-│   ├── clean/
-│   └── tmp/
-├── results/                # Generated tables, figures, model outputs
-└── docs/
-    ├── data/                # Provenance Ledger and data-facing metadata
-    ├── sources/             # External reference/input documents + references.bib
-    ├── work/                # Plans (with clarity/requirements sections), logs, meetings, checkpoints, reviews
-    └── deliverables/        # Articles, slides, appendices, preambles, document assets
-```
+`AGENTS.md` holds the few rules that always apply. Skills in `.agents/skills/`
+provide task-specific procedures for Codex; `.claude/skills/` links to the same
+files for Claude Code. Leo makes substantive research choices. Agents can advise,
+teach when asked, and implement settled choices. An instruction becomes lasting
+only when Leo deliberately adds it to a routed project file or skill.
 
----
+For tracked work, invoke `open-issue`, settle the choices, then invoke `to-spec`
+or `grill-to-spec`. The spec describes one change to the repository and lists
+independently shippable components. `implement` builds candidates under that
+issue's `pending-approval/` folder; `code-review` checks them separately.
+Invoke `ship` with the particular components to move the reviewed files and
+outputs into their production paths. Invoke `close-issue` after every component
+is shipped; it archives the unchanged spec, commits, pushes, and closes the
+issue. `sitrep` reads issue progress from the spec and files, without a separate
+status ledger. A small, exact edit can go straight to the working copy, and
+exploration needs no issue or spec unless Leo wants it tracked.
 
-## Workflow Philosophy
+`implement` uses a Luna agent at `xhigh` effort in Codex and a Sonnet agent at
+`xhigh` effort in Claude Code unless Leo specifies a model and effort together.
+`unslop` applies to all natural-language text Leo will read. Other action skills
+require explicit invocation. See [the user guide](docs/sources/USER-GUIDE.md)
+for their names and boundaries.
 
-### 1. The paper is the source of truth
-- The canonical manuscript is `docs/deliverables/articles/main/main.tex`.
-- Section files live in `docs/deliverables/articles/main/sections/`.
-- Root article and slide documents live one per folder: `articles/<name>/<name>.tex` and `slides/<name>/<name>.tex`.
-- `make latex` compiles every root `.tex` document under `articles/` and `slides/`.
-- Slides and appendices derive from the paper's argument, notation, claims, tables, and figures.
+## Commands
 
-### 2. Scripts are staged and explicit
-- `00_fetch`: acquire raw inputs
-- `01_build`: construct analysis datasets/objects
-- `02_analyze`: estimate models and generate results
-- `03_quality`: template utilities for scoring/checking files
+Run `make help` for the target list. `make setup` restores available lockfiles.
+`make fetch`, `make build`, and `make analysis` run numbered `.R`, `.py`, `.jl`,
+and `.sh` entry scripts in their respective folders. `make all` runs the three
+stages in sequence, then `make check`. `make check` verifies the harness wiring,
+bibliography keys, and shared-helper tests. `make articles`, `make slides`, and
+`make latex` compile the paper and talks when a TeX installation is available.
 
-### 3. Makefile encodes orchestration
-- The root `Makefile` runs directly on the host
-- Targets encode the staged pipeline: setup, fetch, build, analysis, all, clean
-
-### 4. Results are generated, not hand-edited
-- Generated empirical outputs belong in `results/`
-- If a result looks wrong, fix upstream code and rerun the relevant Make target
-- Paper and slides include generated outputs rather than copying numbers by hand
-
-### 5. Data provenance is explicit and queryable
-- `docs/data/provenance-ledger/` records every governed file under the staged pipeline code, `code/99_explorations/`, `data/`, and `results/`. Paper, slide, work, and repository-control documents are intentionally outside graph-node coverage.
-- Each file receives an immutable ID that survives moves and renames. Deleted files remain tombstones, so historical outputs can still identify producers that no longer exist.
-- Agents inspect and author direct typed dependencies manually; the graph tooling validates those records and derives downstream and transitive relationships without scanning source code for inferred edges.
-- Each asset has structured TOML metadata plus a narrative dossier.
-- Structured assets must document every variable, field, raster band/layer, class code, model-output field, unit, missing-value rule, and derivation.
-- Hooks notify agents when governed files are added, changed, moved, or deleted; agents then update the relevant records and review hashes.
-- `make provenance` validates graph coverage, identity/history consistency, relationships, freshness, and variable-level provenance.
-- `/inspect-asset-graph` answers producer, raw-source, lineage, impact, path-history, and rebuildability questions from the committed graph.
-
-### 6. Raw data is append-only
-- Claude/Codex project hooks allow adding new files under `data/raw/`.
-- The hooks block direct edits, patch updates/deletes, chmods, overwrites, and deletions of existing raw files.
-- Before and after agent shell commands, hooks leave raw directories writable but lock existing raw files so fetch scripts can add new inputs without mutating old ones.
-
-### 7. Worker and critic roles stay separate
-- Creative agents draft or implement
-- Critic agents review but do not create
-- Quality gates use weighted paper components, with identification and paper quality carrying the most weight
-
-### 8. Talks are simple, visual, and paper-derived
-- Beamer talks follow `.claude/rules/slide-writing-principles.md`.
-- New decks should use `docs/deliverables/preambles/beamer-preamble.tex` for 16:9 defaults, spacing helpers, color-blind-conscious accents, `\sectiontransition` dividers, and backup-slide helpers.
-- A good talk request should include audience, duration, talk type/status, and goal; the agents then plan the Big 5 opening, intuition bridge, empirical credibility sequence, and review loop.
-- Slides make one point at a time, with substantive frame titles, low-clutter data graphics, compact `booktabs`/`siunitx` tables, and non-hue-only encodings; dense tables, proofs, and robustness detail move to linked backup slides.
-
-### 9. Agent customization is tool-native
-- Codex intentionally uses both `.codex/` and `.agents/`. This differs from Claude Code, which puts agents, skills, hooks, and settings under `.claude/`.
-- For Codex, `.codex/` is for project agents, hooks, and optional portable config: `.codex/agents/*.toml`, `.codex/hooks.json`, and `.codex/hooks/`.
-- For Codex, `.agents/skills/` is the repo skill location: `.agents/skills/<skill-name>/SKILL.md`. Do not move these to `.codex/skills/`.
-- Codex reads project instructions from `AGENTS.md`, repo skills from `.agents/skills/`, custom agents from `.codex/agents/*.toml`, and project hooks from `.codex/hooks.json` after the project `.codex/` layer is trusted.
-- Claude Code keeps its parallel setup in `.claude/`: agents, skills, hooks, settings, rules, and references.
-- Shared research calibration lives once in `.claude/rules/` and `.claude/references/`; Codex instructions point there instead of mirroring those files.
-
-### 10. Meeting records have a stable filename convention
-- Meeting notes and transcripts belong in `docs/work/meetings/`.
-- Their filenames must be `YYYY-MM-DD_topic-slug.md`, using a real ISO calendar date and a lowercase, hyphen-separated topic slug; for example, `2026-08-10_bard-harstad-theta.md`.
-- Claude and Codex pre-tool hooks reject non-conforming meeting-file paths.
-
----
-
-## Quick Start
-
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
-make setup
-make help
-```
-
-Then customize:
-- `AGENTS.md`
-- `CLAUDE.md`
-- `.claude/references/domain-profile.md`
-- `.claude/references/personal-style-guide.md`
-- `.claude/references/journal-profiles.md`
-- `.claude/rules/slide-writing-principles.md`
-- `.agents/skills/` for Codex repo skills, if the project needs new workflows
-- `.codex/agents/` for Codex project agents, if the project needs role changes
-- `docs/deliverables/articles/main/main.tex`
-- `Makefile` target/output names, if your project needs a custom dependency graph
-
----
-
-## Make Targets
-
-Run `make help` to view target descriptions.
-
-Default template targets include:
-- `setup`: restore lockfile dependencies if present
-- `fetch`, `build`, `analysis`: staged project tasks
-- `provenance`: validate Provenance Ledger coverage
-- `asset-graph-check`: validate identity, history, lineage, and freshness
-- `asset-graph-test`: run Asset Graph unit and historical-lineage fixtures
-- `asset-graph-query NODE=path-or-id`: show compact node metadata and immediate adjacency
-- `all`: run the full host-native pipeline
-- `articles`: compile every root `.tex` document in `docs/deliverables/articles/`
-- `slides`: compile every root `.tex` document in `docs/deliverables/slides/`
-- `latex`: compile all article and slide documents
-- `clean`: remove generated artifacts
-
----
-
-## Paper Compile Reference
-
-```bash
-make articles
-```
-
-## Beamer Talk Compile Reference
-
-```bash
-make slides
-```
-
----
-
-## Quality Gates
-
-- `80`: commit threshold
-- `90`: PR threshold
-- `95`: submission/excellence threshold
-
-Weighted paper quality lives in `.claude/rules/quality-gates.md`. Reviews and checkpoints live in `docs/work/`.
+Existing files under `data/raw/` are append-only. A narrow Claude/Codex hook
+blocks direct agent edits to those files; scripts and other indirect writes still
+need care. Generated results should be changed by editing and rerunning their
+producer, not by hand.

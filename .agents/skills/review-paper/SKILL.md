@@ -1,71 +1,40 @@
 ---
 name: review-paper
-description: Comprehensive manuscript review of the canonical paper or an external paper, with referee-style objections and quality components.
-allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "Task"]
+description: Review a canonical or external paper for argument, evidence, methods, or prose.
+disable-model-invocation: true
 ---
 
-# Manuscript Review
+# Review a paper
 
-Produce a thorough, constructive review of an academic manuscript.
-
-## Target Resolution
-
-Default to `docs/deliverables/articles/main/main.tex`. If `$ARGUMENTS` is provided, check:
-
-- direct path from `$ARGUMENTS`
-- `docs/sources/$ARGUMENTS`
-- partial matches under `docs/sources/` and `docs/deliverables/articles/`
-
-If the target resolves to a PDF, follow `.claude/rules/pdf-processing.md`:
-create a pdf-inspector Markdown version and read that unless visual/layout
-information is essential to the review.
+Use this when Leo requests a manuscript review. The request controls the scope: a
+referee-style review, methods review, or focused proofreading pass. If no lens is
+specified, provide a concise referee-style review. This skill reviews articles and
+appendices; code review belongs to the code-review workflow, and talk review belongs
+to `review-slides`.
 
 ## Workflow
 
-1. Read the manuscript and relevant section files.
-2. Read `.claude/references/domain-profile.md` and `.claude/references/journal-profiles.md` if available.
-3. Evaluate the paper across weighted quality components:
-   - Literature 10%
-   - Data 10%
-   - Identification 25%
-   - Code 15%
-   - Paper 25%
-   - Polish 10%
-   - Replication 5%
-4. Generate 3-5 referee objections.
-5. Save to `docs/work/reviews/paper_review_[sanitized_name].md`.
+1. Resolve the target from Leo's request. Default to
+   `docs/deliverables/articles/main/main.tex`. Include appendices when they bear on the
+   requested paper review. For an external PDF, follow
+   `../../references/pdf-source-reading.md` and state any extraction limits.
+2. Read the relevant article files and, for the canonical paper, the linked generated
+   outputs and bibliography entries that support its main claims. Read the domain or
+   journal profile only when relevant and meaningfully filled in.
+3. Review the requested lens. For a broad review, assess question and contribution,
+   literature positioning, data and measurement, identification or theoretical logic,
+   inference, results, limitations, exposition, and consistency with cited evidence.
+   For methods, focus on assumptions, estimand, design, estimation, inference, and
+   robustness. For proofreading, report language, notation, and citation-consistency
+   issues without expanding into a methods review.
+4. Make each material finding specific: location, issue, why it matters, and a
+   practical correction or decision for Leo. Separate evidence-based concerns from
+   interpretation. Verify an external source before asserting that the paper
+   misrepresents it; if source access is incomplete, say so.
+5. Return prioritized findings and a short assessment of what works. Do not edit the
+   manuscript or make research choices. Save a report only if Leo asks for a file.
 
-## Output Format
-
-```markdown
-# Manuscript Review: [Paper Title]
-
-**Date:** [YYYY-MM-DD]
-**Reviewer:** review-paper skill
-**File:** [path]
-
-## Summary Assessment
-
-**Overall recommendation:** [Accept / Minor / Major / Reject]
-**Aggregate score:** [0-100]
-
-## Component Scores
-
-| Component | Weight | Score | Notes |
-|-----------|--------|-------|-------|
-| Literature | 10% | [N] | [notes] |
-| Data | 10% | [N] | [notes] |
-| Identification | 25% | [N] | [notes] |
-| Code | 15% | [N] | [notes] |
-| Paper | 25% | [N] | [notes] |
-| Polish | 10% | [N] | [notes] |
-| Replication | 5% | [N] | [notes] |
-
-## Major Concerns
-
-## Minor Concerns
-
-## Referee Objections
-
-## Suggested Revision Plan
-```
+Do not assign an aggregate score or numerical quality grade. Do not invent a concern to
+fill a quota. The review is complete when the requested scope has been covered, every
+major concern points to the relevant text or evidence, and limits of verification are
+clear.

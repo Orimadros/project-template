@@ -4,7 +4,6 @@
 __pycache__/
 *.py[cod]
 .venv/
-.cache/asset-graph/
 
 # LaTeX build outputs stay next to their root .tex document.
 *.aux

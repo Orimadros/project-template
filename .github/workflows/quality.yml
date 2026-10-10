@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  asset-graph-and-conformance:
+  template-checks:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -21,11 +21,5 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test Asset Graph
-        run: make asset-graph-test
-
-      - name: Validate Provenance Ledger
-        run: make provenance
-
-      - name: Check cross-harness conformance
+      - name: Check workflow and helpers
         run: make check

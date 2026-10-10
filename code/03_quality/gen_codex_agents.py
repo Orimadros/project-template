@@ -3,10 +3,9 @@
 Generate .codex/agents/*.toml from .claude/agents/*.md.
 
 Claude subagents are the canonical source: YAML frontmatter (name,
-description, optional tools/model) plus a markdown body. Codex has no
-equivalent of `tools`/`model`, so a per-agent tool-boundary paragraph is
-synthesized into the body to carry that restriction forward as (unenforced)
-text -- better than silently dropping it.
+description, optional tools/model/effort) plus a markdown body. Codex model
+and effort defaults are set for the implementer. A tool-boundary paragraph
+carries the Claude tool restriction into Codex as guidance.
 """
 
 from __future__ import annotations
@@ -19,6 +18,7 @@ from pathlib import Path
 CLAUDE_AGENTS = Path(".claude/agents")
 CODEX_AGENTS = Path(".codex/agents")
 GENERATED_HEADER = "# GENERATED — do not edit. Source: .claude/agents/{name}.md. Run: make agents\n"
+CODEX_DEFAULTS = {"implementer": ("gpt-6-luna", "xhigh")}
 
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
@@ -71,10 +71,15 @@ def generate_toml(md_path: Path) -> str:
     escaped_body = escape_toml_basic_multiline(full_body)
 
     header = GENERATED_HEADER.format(name=name)
+    model_lines = ""
+    if name in CODEX_DEFAULTS:
+        model, effort = CODEX_DEFAULTS[name]
+        model_lines = f'model = "{model}"\nmodel_reasoning_effort = "{effort}"\n'
     return (
         f"{header}"
         f'description = "{escaped_description}"\n'
         f'developer_instructions = """\n{escaped_body}"""\n'
+        f"{model_lines}"
         f'name = "{name}"\n'
     )
 
@@ -114,6 +119,17 @@ def main() -> int:
 
         toml_path.write_text(generated, encoding="utf-8")
         written += 1
+
+    expected = {path.stem for path in claude_dir.glob("*.md")}
+    for toml_path in codex_dir.glob("*.toml"):
+        if toml_path.stem in expected:
+            continue
+        if not toml_path.read_text(encoding="utf-8").startswith("# GENERATED"):
+            continue
+        if args.check:
+            stale.append(toml_path.stem)
+        else:
+            toml_path.unlink()
 
     if args.check:
         if stale:

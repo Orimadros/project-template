@@ -1,5 +1,0 @@
-history_version = 1
-
-# Historical edges remain here after they cease to describe the operational
-# pipeline. The template baseline has no retired relationships.
-edges = []

@@ -1,48 +1,17 @@
-# Session Log: [Date] -- [Brief Title]
+# [Date]: [Substantial work]
 
-**Status:** IN PROGRESS | COMPLETED
+## What changed
 
-## Objective
-[What we set out to accomplish this session]
+- [Factual changes and paths]
 
-## Changes Made
+## Decisions and discoveries
 
-| File | Change | Reason | Quality Score |
-|------|--------|--------|---|
-| `path/to/file` | [What changed] | [Why] | [N]/100 |
+- [Decision Leo made, or a discovery that affected this work]
 
-## Design Decisions
+## Checks
 
-| Decision | Alternatives Considered | Rationale |
-|----------|------------------------|-----------|
-| [Choice made] | [Other options] | [Why this one] |
+- [Command or inspection and result]
 
-## Incremental Work Log
+## Still open
 
-**HH:MM UTC:** [event description]
-
-## Learnings & Corrections
-
-- [LEARN:category] What you learned for future reference
-
-## Verification Results
-
-| Check | Result | Status |
-|-------|--------|--------|
-| [What was checked] | [Result] | PASS / FAIL |
-
-## Provenance Ledger
-
-| Asset | Record Updated | Variable/Code/Layer Entries | Status |
-|-------|----------------|-----------------------------|--------|
-| [path or N/A] | YES / NO / N/A | YES / NO / N/A | complete / partial-flagged / missing-blocker / accepted-limited / N/A |
-
-**Asset Graph events:** [new IDs, moves, deletions/tombstones, edge/activity changes, or N/A]
-
-## Open Questions / Blockers
-
-- [ ] [Question or blocker]
-
-## Next Steps
-
-- [ ] [What remains]
+- [Remaining work or uncertainty, if any]

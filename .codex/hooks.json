@@ -1,141 +1,14 @@
 {
   "hooks": {
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/notify.sh\"",
-            "timeout": 5,
-            "statusMessage": "Sending approval notification"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
-        "matcher": "Read",
+        "matcher": "Bash|Edit|Write|^apply_patch$|^exec_command$",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/pdf-read-guard.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guard_raw_data.py\"",
             "timeout": 5,
-            "statusMessage": "Checking PDF source reading rule"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|Edit|Write|^apply_patch$",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/protect-files.sh\"",
-            "timeout": 5,
-            "statusMessage": "Checking protected files"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Read|Bash|Edit|Write|^apply_patch$",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/context-monitor.py\"",
-            "timeout": 5,
-            "statusMessage": "Checking context budget"
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/rule-injector.py\"",
-            "timeout": 10,
-            "statusMessage": "Checking path-scoped project rules"
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/provenance-reminder.py\"",
-            "timeout": 30,
-            "statusMessage": "Checking Provenance Ledger reminder"
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/verify-reminder.py\"",
-            "timeout": 5,
-            "statusMessage": "Checking verification reminders"
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/plan-name-check.py\"",
-            "timeout": 5,
-            "statusMessage": "Checking plan filename convention"
-          },
-          {
-            "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/.agents/hooks/lock-raw-data.sh\"",
-            "timeout": 5,
-            "statusMessage": "Locking existing raw data files"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/provenance-reminder.py\"",
-            "timeout": 30,
-            "statusMessage": "Checking Asset Graph freshness"
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/pre-compact.py\"",
-            "timeout": 10,
-            "statusMessage": "Saving pre-compact state"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "compact|resume",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/post-compact-restore.py\"",
-            "timeout": 5,
-            "statusMessage": "Restoring compacted context"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/log-reminder.py\"",
-            "timeout": 10,
-            "statusMessage": "Checking session log"
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/plan-name-check.py\"",
-            "timeout": 5,
-            "statusMessage": "Checking plan filename convention"
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/provenance-reminder.py\"",
-            "timeout": 30,
-            "statusMessage": "Checking Asset Graph freshness"
+            "statusMessage": "Protecting existing raw files"
           }
         ]
       }

@@ -1,14 +1,9 @@
-# Abandoned: [Project Name] ([DATE RANGE])
+# [Archived exploration]
 
-## Why Abandoned
-[1-2 sentence explanation]
+Question: [What was tried?]
 
-## What Was Tried
-- [Approach 1]
-- [Approach 2]
+Result: [What did the trial show?]
 
-## Learnings
-- [LEARN:category] What you learned for future reference
+Reason for stopping: [What changed or remained unresolved?]
 
-## Would Revisiting Require
-- [What would need to be true to try this again?]
+Revisit if: [Concrete condition, if any.]

@@ -1,6 +1,0 @@
-manifest_version = 1
-subsystem = "explorations"
-
-# Empty at the template baseline. The README and directory placeholder are
-# documentation/control files, not research assets.
-nodes = []

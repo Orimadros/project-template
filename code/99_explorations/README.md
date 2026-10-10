@@ -1,28 +1,9 @@
 # Explorations
 
-This folder is a **sandbox** for experimental and exploratory work. All new ideas, prototypes, and research experiments go here first — never directly into production folders.
+Use this folder for trial graphs, diagnostics, and prototype models. Keep
+their outputs in a temporary location, outside `results/` and the canonical
+paper. Iteration here needs no issue, spec, score, or formal plan unless Leo
+asks to track it.
 
-## How It Works
-
-1. **Create a subfolder** for each exploration (e.g., `code/99_explorations/new-estimator/`)
-2. **Work freely** — lower quality threshold (60/100) during exploration
-3. **Decide:** graduate to production (80/100 required), keep exploring, or archive
-
-## Rules
-
-- See `.claude/rules/exploration-folder-protocol.md` for the full protocol
-- See `.claude/rules/exploration-fast-track.md` for the lightweight workflow
-
-## Structure
-
-```
-code/99_explorations/
-├── [active-project]/       # Work in progress
-│   ├── README.md           # Goal, hypotheses, status
-│   ├── R/                  # Experimental code
-│   ├── checks/             # Lightweight tests and validation checks
-│   └── output/             # Results
-└── ARCHIVE/                # Completed or abandoned
-    ├── completed_[name]/   # Graduated to production
-    └── abandoned_[name]/   # Documented why stopped
-```
+If Leo chooses a trial result for lasting use, agree on the resulting change,
+then use one issue and change spec to move it into the staged pipeline.

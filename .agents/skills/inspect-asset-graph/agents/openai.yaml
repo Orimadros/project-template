@@ -1,4 +1,0 @@
-interface:
-  display_name: "Inspect Asset Graph"
-  short_description: "Trace durable data and results lineage"
-  default_prompt: "Use $inspect-asset-graph to trace what produced this result and which raw data it ultimately depends on."

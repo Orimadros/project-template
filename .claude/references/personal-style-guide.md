@@ -33,7 +33,7 @@ This file records the user's writing and presentation preferences. It should be 
 ## Slide And Article Aesthetics
 
 - Paper aesthetic: [fill]
-- Beamer aesthetic: paper-derived, sparse, visual-first, 16:9, generous spacing, one point per slide; follow `.claude/rules/slide-writing-principles.md`
+- Beamer aesthetic: paper-derived, sparse, visual-first, 16:9, generous spacing, one point per slide; follow `.agents/references/slide-writing-principles.md`
 - Figure/table aesthetic: central figures with readable labels; compact `booktabs` tables; full detail in backup slides
 - Color/typography preferences: use the color-blind-conscious Beamer palette and clean sans-serif defaults in `docs/deliverables/preambles/beamer-preamble.tex`
 

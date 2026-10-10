@@ -1,8 +1,0 @@
-dependency_manifest_version = 1
-subsystem = "pipeline"
-
-# Intentionally empty at the template baseline. Manual inspection found no
-# executable entry scripts, data inputs, generated data, or results to connect.
-activities = []
-edges = []
-

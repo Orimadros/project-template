@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Ship
 
+Run this skill only when Leo invokes it by name.
+
 Leo's invocation must identify the issue and the subset of pending component
 IDs or files to ship. Read the issue, `pending-approval/issue-<number>-<slug>/spec.md`,
 its review report, and [the progress rules](../../references/issue-progress.md).

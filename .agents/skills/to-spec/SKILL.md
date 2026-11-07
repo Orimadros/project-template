@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Write the change specification
 
+Run this skill only when Leo invokes it by name.
+
 Turn settled decisions into the issue's single delta contract. This skill records decisions; it does not interview, teach, recommend substantive choices, or convert an assumption into a requirement.
 
 **Input:** an existing GitHub issue and the conversation in which Leo settled the change.

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Open Issue"
+  short_description: "Create a GitHub issue for tracked work."
+
+policy:
+  allow_implicit_invocation: false

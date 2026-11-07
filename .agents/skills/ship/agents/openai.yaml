@@ -1,0 +1,6 @@
+interface:
+  display_name: "Accept"
+  short_description: "Move reviewed candidate components into production."
+
+policy:
+  allow_implicit_invocation: false

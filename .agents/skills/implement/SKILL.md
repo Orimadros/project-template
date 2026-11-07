@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Implement
 
+Run this skill only when Leo invokes it by name.
+
 Delegate implementation to the named `implementer` agent in the active harness by default. Keep the main conversation available to Leo. In Codex, that role uses Luna at `xhigh` reasoning effort. In Claude Code, it uses Sonnet at `xhigh` effort. Override that pair only when Leo explicitly names both a model and an effort; apply the pair to this invocation or use a generic agent that can honor it. If the selected pair is unavailable, report that and ask how to proceed; do not substitute silently. Add more implementers only when the specification defines non-overlapping file ownership.
 
 **Input:** one of (1) an issue's completed spec, (2) a specific refinement to its active candidate, (3) an exact post-ship small edit, or (4) an exploratory request.

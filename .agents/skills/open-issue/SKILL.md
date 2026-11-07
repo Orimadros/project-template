@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Open an issue
 
+Run this skill only when Leo invokes it by name.
+
 Create one GitHub issue when Leo invokes this skill to track a task.
 
 First determine whether the request is one coherent deliverable. Read the relevant repository context and search open issues for an existing issue covering the same work. Do not create a duplicate. A small exact edit or an exploratory session can proceed without an issue; create one only when Leo asks to track that work.

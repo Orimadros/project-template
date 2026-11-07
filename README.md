@@ -53,13 +53,17 @@ for their names and boundaries.
 
 ## Starting a project from this template
 
-After creating a repository from this template, start an agent session with this
-prompt:
+From an empty project folder, start an agent session with this prompt:
 
 ```text
-I’m starting a new research project from this repository template. Read
-AGENTS.md, README.md, and CONTEXT.md, then inspect the scaffold and relevant
-skills before proposing changes.
+I’m starting a new research project in this empty folder. Use the template at
+https://github.com/Orimadros/project-template to populate this folder, with the
+template files at the root rather than in a nested directory. Do not carry over
+the template repository’s Git history or remote.
+
+After populating the folder, read AGENTS.md, README.md, and CONTEXT.md, then
+inspect the scaffold and relevant skills before proposing project-specific
+changes.
 
 Help me tailor this repository to the project. Identify the setup choices you
 need from me, including the project title and short name, research question,
